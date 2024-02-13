@@ -1,7 +1,7 @@
 public class Client {
     player_entry_view playerscreen = new player_entry_view();
     Splash splash = new Splash();
-    Database playerbase = new Database();
+    SupaBaseIntegration playerbase = new SupaBaseIntegration();
     UDP upd = new UDP();
 
     public void screen(){
