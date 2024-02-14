@@ -17,7 +17,7 @@ public class SupaBaseIntegration {
             Constructor   
                     Intialize variables 
     -----------------------------------------------------------------------------------------------------------*/
-    private SupaBaseIntegration(){
+    SupaBaseIntegration(){
         //intializing variables
         this.supabaseUrl = "https://aqlqduwzdzfsbiiaqtgc.supabase.co/rest/v1/player";
         this.supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFxbHFkdXd6ZHpmc2JpaWFxdGdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDc0MTU3NjcsImV4cCI6MjAyMjk5MTc2N30.BAq7EErRELTrKFkCAsWQrfy975RgUxfT71xOnzvvQpM";
