@@ -10,12 +10,45 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import java.awt.Toolkit;
 
-class player_entry_view
+
+class player_entry_view extends JPanel
 {
+    Model model;
+    Controller controller;
+
+    //Contructor
+    player_entry_view(Controller c, Model m)
+    {
+        //Link up the controller
+        c.setView(this);
+        model = m;
+        controller = c;
+
+        // send key events to the controller
+	this.addKeyListener(c);
+    }
     public static void main(String args[])
     {
-        player_entry_view p = new player_entry_view();
+        Model model = new Model();
+        Controller controller = new Controller(model);
+        player_entry_view p = new player_entry_view(controller, model);
         p.create();
+        while(true)
+		{
+			controller.update();
+			model.update();
+			//view.repaint(); // Indirectly calls View.paintComponent
+			Toolkit.getDefaultToolkit().sync(); // Updates screen
+
+			// Go to sleep for a brief moment
+			try
+			{
+				Thread.sleep(25);
+			} catch(Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+		}
     }
 
     public void create()
@@ -28,16 +61,17 @@ class player_entry_view
 		frame.setFocusable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+        frame.addKeyListener(controller);
 
         //create a panel for the green team and red team
         JPanel Redpanel = new JPanel();
         JPanel Greenpanel = new JPanel();
         Redpanel.setBackground(new Color(122, 37, 34));
         Greenpanel.setBackground(new Color(34, 122, 66));
-        Redpanel.setBounds(50,35,525, 575);
-        Greenpanel.setBounds(675, 35, 525, 575);
         frame.add(Redpanel);
         frame.add(Greenpanel);
+        Redpanel.setBounds(50,35,525,575);
+        Greenpanel.setBounds(675,35,525,575);
 
         //create the label telling the user to edit the current game
         JLabel j = new JLabel("Edit Current Game");
@@ -62,6 +96,7 @@ class player_entry_view
         Greenpanel.add(g);
 
         //create the text fields for player entry
+
        JTextField RedName1 = new JTextField("Enter your name");
        RedName1.setBackground(Color.WHITE);
        Redpanel.add(RedName1);
