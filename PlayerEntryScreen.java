@@ -106,8 +106,8 @@ class player_entry_view extends JPanel
  	int Nx, y, Nwidth, Nheight, Ix;
     JTextField RedTeam[];
     JTextField GreenTeam[];
-    RedTeam = new JTextField[30];
-    GreenTeam = new JTextField[30];
+    RedTeam = new JTextField[45];
+    GreenTeam = new JTextField[45];
         Nx = 25;
         y = 50;
         Nwidth = 225;
