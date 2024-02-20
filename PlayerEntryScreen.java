@@ -65,6 +65,7 @@ class player_entry_view extends JPanel
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
         frame.addKeyListener(controller);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
        //create a panel for the green team and red team
         JPanel Redpanel = new JPanel();
@@ -103,6 +104,10 @@ class player_entry_view extends JPanel
         //create the text fields for player entry
 
  	int Nx, y, Nwidth, Nheight, Ix;
+    JTextField RedTeam[];
+    JTextField GreenTeam[];
+    RedTeam = new JTextField[30];
+    GreenTeam = new JTextField[30];
         Nx = 25;
         y = 50;
         Nwidth = 225;

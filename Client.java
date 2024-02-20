@@ -1,5 +1,7 @@
 public class Client {
-    player_entry_view playerscreen = new player_entry_view();
+    Model model = new Model();
+    Controller controller = new Controller(model);
+    player_entry_view playerscreen = new player_entry_view(controller, model);
     Splash splashscreen = new Splash();
     SupaBaseIntegration playerbase = new SupaBaseIntegration();
     UDP upd = new UDP();
