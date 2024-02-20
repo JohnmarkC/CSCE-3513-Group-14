@@ -3,13 +3,13 @@ Group 14's phaser station software engineering project
 
 **Team Members:**
 
-Alexander Brasher - abrasher123
-Amna Khan - amnaxkhan
-Antonio Chipollini - aechipol
-Damian Stevenson - drs3513
-Eva Casto - ecasto9542
-Johnmark Clements - JohnmarkC
-Tyson Lucas - tjl010
+Alexander Brasher - abrasher123\n
+Amna Khan - amnaxkhan\n
+Antonio Chipollini - aechipol\n
+Damian Stevenson - drs3513\n
+Eva Casto - ecasto9542\n
+Johnmark Clements - JohnmarkC\n
+Tyson Lucas - tjl010\n
 
 Please run this in the VM provided : *attach link*
 
