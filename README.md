@@ -12,7 +12,7 @@ Group 14's phaser station software engineering project
 | Tyson Lucas  | tjl010  |
 
 
-Please run this in the VM provided : *attach link*
+Please run this in the VM provided: http://turing.csce.uark.edu/~jps011/ubuntu_22.04.03.7z
 
 General Steps:
 - blah blah
