@@ -14,5 +14,5 @@ Group 14's phaser station software engineering project
 
 Please run this in the VM provided: http://turing.csce.uark.edu/~jps011/ubuntu_22.04.03.7z
 
-General Steps:
-- blah blah
+Instructions:
+- Add instructions here...
