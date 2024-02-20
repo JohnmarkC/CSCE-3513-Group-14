@@ -2,12 +2,11 @@ public class Client {
     Model model = new Model();
     Controller controller = new Controller(model);
     player_entry_view playerscreen = new player_entry_view(controller, model);
-    Splash splashscreen = new Splash();
     SupaBaseIntegration playerbase = new SupaBaseIntegration();
     UDP upd = new UDP();
 
     public void screen(){
-        splashscreen.create();
+        playerscreen.create_splash();
         try {
             // Wait 3 seconds
             Thread.sleep(3000);
