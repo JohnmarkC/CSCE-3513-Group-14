@@ -16,10 +16,13 @@ class player_entry_view extends JPanel
 {
     Model model;
     Controller controller;
+    
+    String [] game;
+    String [] Red_team;
+    String [] Green_team;
     JFrame frame = new JFrame();
     int width = 1250;
     int height = 1250;
-
 
     //Contructor
     player_entry_view(Controller c, Model m)
@@ -42,6 +45,11 @@ class player_entry_view extends JPanel
 
         // send key events to the controller
 	this.addKeyListener(c);
+
+	//setting up callable for model interaction of database
+	this.Red_team = new String[45];
+        this.Green_team = new String[45];
+        this.game = new String[60];  
     }
     public static void main(String args[])
     {
@@ -163,5 +171,26 @@ class player_entry_view extends JPanel
             GreenTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
             y += 35;
         }
+    }
+
+	//callable for id and codename
+public String[] Entry(){
+       
+        for(int i =0; i<60; i++){
+            if(i<15){
+                game[i]=Red_team[i+15];
+            }
+            else if(i<30){
+                game[i]=Green_team[i];
+            }
+            else if(i<45){
+                game[i]=Red_team[i-30];
+            }
+            else{
+                game[i]=Green_team[i-45];
+            }
+        }
+        return game;
+        
     }
 }
