@@ -9,15 +9,20 @@ import javax.swing.*;
 import java.awt.Color;
 import javax.swing.JFrame;
 import java.awt.Toolkit;
+import java.awt.Image;
 
 
 class player_entry_view extends JPanel
 {
     Model model;
     Controller controller;
+    
     String [] game;
     String [] Red_team;
     String [] Green_team;
+    JFrame frame = new JFrame();
+    int width = 1250;
+    int height = 1250;
 
     //Contructor
     player_entry_view(Controller c, Model m)
@@ -26,6 +31,17 @@ class player_entry_view extends JPanel
         c.setView(this);
         model = m;
         controller = c;
+
+        //create a JFrame on which to create the player entry screen
+        frame.setTitle("Entry Terminal");
+        frame.getContentPane().setBackground(Color.BLACK);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setFocusable(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+        frame.addKeyListener(controller);
+        frame.setResizable(false);
+
 
         // send key events to the controller
 	this.addKeyListener(c);
@@ -59,23 +75,23 @@ class player_entry_view extends JPanel
 		}
     }
 
+    public void create_splash()
+    {
+        ImageIcon imageIcon = new ImageIcon("logo.jpg");
+        Image originalImage = imageIcon.getImage();
+        Image scaledImage = originalImage.getScaledInstance(this.frame.getWidth(), this.frame.getHeight(), Image.SCALE_SMOOTH); 
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel imageLabel = new JLabel(scaledIcon);
+        this.frame.add(imageLabel);
+
+        this.frame.setVisible(true);
+        this.frame.remove(imageLabel);
+    }
+
     public void create()
     {
-	int width, height;
-	    width = 1250;
-	    height = 1250;
-        //create a JFrame on which to create the player entry screen
-        JFrame frame = new JFrame();
-        frame.setTitle("Entry Terminal");
-        frame.getContentPane().setBackground(Color.BLACK);
-        frame.setSize(width, height);
-		frame.setFocusable(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-        frame.addKeyListener(controller);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
        //create a panel for the green team and red team
+       this.frame.repaint();
         JPanel Redpanel = new JPanel();
         JPanel Greenpanel = new JPanel();
         Redpanel.setBackground(new Color(122, 37, 34));
@@ -84,16 +100,15 @@ class player_entry_view extends JPanel
         frame.add(Greenpanel);
         Redpanel.setBounds(25,35,width/2-75,height/2);
         Greenpanel.setBounds(width/2+25, 35, width/2-75,height/2);
-        
 
 
         //create the label telling the user to edit the current game
-        JLabel j = new JLabel("Edit Current Game");
+        JLabel j = new JLabel("Edit Current Game : Press Enter to enter player information; Press F5 to start the game; Press F12 to clear all players");
         j.setForeground(Color.WHITE);
         j.setHorizontalAlignment(JLabel.CENTER);
         j.setVerticalAlignment(JLabel.TOP);
         j.setFont(new Font("calibri", Font.BOLD, 20));
-        frame.add(j);
+        this.frame.add(j);
 
         //create the red team and green team labels
         JLabel r = new JLabel("Red Team");
@@ -108,6 +123,8 @@ class player_entry_view extends JPanel
         g.setHorizontalAlignment(JLabel.CENTER);
         Redpanel.add(r);
         Greenpanel.add(g);
+        
+        this.frame.setVisible(true);
 
         //create the text fields for player entry
 
