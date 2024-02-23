@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import java.awt.Toolkit;
 import java.awt.Image;
 
-
 class player_entry_view extends JPanel
 {
     Model model;
@@ -123,7 +122,33 @@ class player_entry_view extends JPanel
         g.setHorizontalAlignment(JLabel.CENTER);
         Redpanel.add(r);
         Greenpanel.add(g);
-        
+
+        //headers for each text field column
+
+        JLabel redHeader = new JLabel("Player Name");
+        redHeader.setHorizontalAlignment(JLabel.CENTER);
+        Redpanel.add(redHeader);
+    
+        JLabel redHeader2 = new JLabel("Player ID");
+        redHeader2.setHorizontalAlignment(JLabel.CENTER);
+        Redpanel.add(redHeader2);
+    
+        JLabel redHeader3 = new JLabel("Equipment ID");
+        redHeader3.setHorizontalAlignment(JLabel.CENTER);
+        Redpanel.add(redHeader3);
+    
+        JLabel greenHeader = new JLabel("Player Name");
+        greenHeader.setHorizontalAlignment(JLabel.CENTER);
+        Greenpanel.add(greenHeader);
+    
+        JLabel greenHeader2 = new JLabel("Player ID");
+        greenHeader2.setHorizontalAlignment(JLabel.CENTER);
+        Greenpanel.add(greenHeader2);
+    
+        JLabel greenHeader3 = new JLabel("Equipment ID");
+        greenHeader3.setHorizontalAlignment(JLabel.CENTER);
+        Greenpanel.add(greenHeader3);
+    
         this.frame.setVisible(true);
 
         //create the text fields for player entry
@@ -136,39 +161,82 @@ class player_entry_view extends JPanel
         Nx = 25;
         y = 50;
         Nwidth = 225;
-        Nheight = 20;
+        Nheight = 25;
         for(int i = 0; i<15; i++){
-            RedTeam[i] = new JTextField("Enter your name");
+            RedTeam[i] = new JTextField(10);
+            TextPrompt tp1 = new TextPrompt("Enter your name", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
             RedTeam[i].setBackground(Color.WHITE);
             Redpanel.add(RedTeam[i]);
+            tp1.changeAlpha(0.5f);
             RedTeam[i].setBounds(Nx,y,Nwidth,Nheight);
-            GreenTeam[i] = new JTextField("Enter your name");
+            
+            GreenTeam[i] = new JTextField(10);
+            TextPrompt tp2 = new TextPrompt("Enter your name", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
+            GreenTeam[i].setBackground(Color.WHITE);
             Greenpanel.add(GreenTeam[i]);
+            tp2.changeAlpha(0.5f);
             GreenTeam[i].setBounds(Nx,y,Nwidth,Nheight);
+            
+            //old text fields
+            //RedTeam[i] = new JTextField("Enter your name");
+            //RedTeam[i].setBackground(Color.WHITE);
+            //Redpanel.add(RedTeam[i]);
+            //RedTeam[i].setBounds(Nx,y,Nwidth,Nheight);
+            // GreenTeam[i] = new JTextField("Enter your name");
+            // Greenpanel.add(GreenTeam[i]);
+            // GreenTeam[i].setBounds(Nx,y,Nwidth,Nheight);
             y += 35;
         }
         y = 50;
         Ix = 275;
         for(int i = 15; i<30; i++){
-            RedTeam[i] = new JTextField("Enter your id");
+            RedTeam[i] = new JTextField(10);
+            TextPrompt tp1 = new TextPrompt("Enter player ID", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
             RedTeam[i].setBackground(Color.WHITE);
             Redpanel.add(RedTeam[i]);
+            tp1.changeAlpha(0.5f);
             RedTeam[i].setBounds(Ix,y,Nwidth/2,Nheight);
-            GreenTeam[i] = new JTextField("Enter your id");
+
+            GreenTeam[i] = new JTextField(10);
+            TextPrompt tp2 = new TextPrompt("Enter player ID", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
+            GreenTeam[i].setBackground(Color.WHITE);
             Greenpanel.add(GreenTeam[i]);
+            tp2.changeAlpha(0.5f);
             GreenTeam[i].setBounds(Ix,y,Nwidth/2,Nheight);
+
+            // RedTeam[i] = new JTextField("Enter your id");
+            // RedTeam[i].setBackground(Color.WHITE);
+            // Redpanel.add(RedTeam[i]);
+            // RedTeam[i].setBounds(Ix,y,Nwidth/2,Nheight);
+            // GreenTeam[i] = new JTextField("Enter your id");
+            // Greenpanel.add(GreenTeam[i]);
+            // GreenTeam[i].setBounds(Ix,y,Nwidth/2,Nheight);
             y += 35;
         }
         y = 50;
         int Eidx = Nwidth/2+Ix+25;
         for(int i = 30; i<45; i++){
-            RedTeam[i] = new JTextField("Enter Equipment id");
+            RedTeam[i] = new JTextField(10);
+            TextPrompt tp1 = new TextPrompt("Equipment ID", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
             RedTeam[i].setBackground(Color.WHITE);
             Redpanel.add(RedTeam[i]);
+            tp1.changeAlpha(0.5f);
             RedTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
-            GreenTeam[i] = new JTextField("Enter Equipment id");
+
+            GreenTeam[i] = new JTextField(10);
+            TextPrompt tp2 = new TextPrompt("Equipment ID", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
+            GreenTeam[i].setBackground(Color.WHITE);
             Greenpanel.add(GreenTeam[i]);
+            tp2.changeAlpha(0.5f);
             GreenTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
+            
+            // RedTeam[i] = new JTextField("Enter Equipment id");
+            // RedTeam[i].setBackground(Color.WHITE);
+            // Redpanel.add(RedTeam[i]);
+            // RedTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
+            // GreenTeam[i] = new JTextField("Enter Equipment id");
+            // Greenpanel.add(GreenTeam[i]);
+            // GreenTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
             y += 35;
         }
     }
