@@ -15,6 +15,7 @@ class player_entry_view extends JPanel
 {
     Model model;
     Controller controller;
+    UDP udp = new UDP();
     
     String [] game;
     String [] Red_team;
@@ -165,6 +166,7 @@ class player_entry_view extends JPanel
         for(int i = 0; i<15; i++){
             RedTeam[i] = new JTextField(10);
             TextPrompt tp1 = new TextPrompt("Enter your name", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
+            udp.sendData(RedTeam[i].getText());
             RedTeam[i].setBackground(Color.WHITE);
             Redpanel.add(RedTeam[i]);
             tp1.changeAlpha(0.5f);
@@ -172,6 +174,7 @@ class player_entry_view extends JPanel
             
             GreenTeam[i] = new JTextField(10);
             TextPrompt tp2 = new TextPrompt("Enter your name", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
+            udp.sendData(GreenTeam[i].getText());
             GreenTeam[i].setBackground(Color.WHITE);
             Greenpanel.add(GreenTeam[i]);
             tp2.changeAlpha(0.5f);
