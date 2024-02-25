@@ -35,7 +35,9 @@ class player_entry_view extends JPanel
         //create a JFrame on which to create the player entry screen
         frame.setTitle("Entry Terminal");
         frame.getContentPane().setBackground(Color.BLACK);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	//I'm not sure why this line causes issues with the ubuntu VM but it does so I commented it out
+        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+	frame.setSize(width, height);
         frame.setFocusable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
@@ -107,7 +109,7 @@ class player_entry_view extends JPanel
         j.setForeground(Color.WHITE);
         j.setHorizontalAlignment(JLabel.CENTER);
         j.setVerticalAlignment(JLabel.TOP);
-        j.setFont(new Font("calibri", Font.BOLD, 20));
+        j.setFont(new Font("calibri", Font.BOLD, 18));
         this.frame.add(j);
 
         //create the red team and green team labels
