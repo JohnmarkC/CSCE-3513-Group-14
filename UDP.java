@@ -7,62 +7,53 @@ import java.net.UnknownHostException;
 
 public class UDP
 {
-    DatagramSocket receiver;
-    DatagramSocket transmitter;
-    InetAddress ip;
-    static boolean gameOn;
+    public static void main(String[] args) throws IOException, UnknownHostException
+    {   
+        DatagramSocket receiverSocket = new DatagramSocket(7501, InetAddress.getLocalHost());
+        byte[] packetData = new byte[256];
 
-    public UDP() {   //On startup, establish socket and IP
-        try{
-            receiver = new DatagramSocket(7501);
-            transmitter = new DatagramSocket(7500);
-            ip = InetAddress.getLocalHost();
-            gameOn = false;
-        }
-        catch(SocketException s){   //checking if ports are set, error if they aren't =7500/7501
-            if(receiver.getLocalPort() != 7501)
-                System.out.println("Receiver Port failed to initialize");
-            else if(transmitter.getLocalPort() != 7500)
-                System.out.println("Transmitter Port failed to initialize");
-        }
-        catch(UnknownHostException u){  //checking if local ip has been set
-            if(ip == null)
-                System.out.println("No IP found");
-        }
-    }
-
-    public static void main(String[] args) throws IOException
-    {
-        UDP udp = new UDP();
-        int code = 0;
-        byte[] buf = new byte[8];
-
-        while(gameOn)
+        while(true)
         {
-            DatagramPacket packetReceive = new DatagramPacket(buf, 5);  //all inbound packets limited to 5 char
-            DatagramPacket packetSend = new DatagramPacket(buf, 3);     //all outbound packets limited to 3 char
-            udp.receiver.receive(packetReceive);
-            udp.transmitter.send(packetSend);
+            //check for incoming packets
+            DatagramPacket receiverPacket = new DatagramPacket(packetData, packetData.length);
+            receiverSocket.receive(receiverPacket);
 
-            switch(code)
-            {
-                case 43:
-                    //green player has shot red player
-                    break;
-                case 53:
-                    //red player has shot green player
-                    break;
-                case 202:
-                    //GAME BEGIN
-                    break;
-                case 221:
-                    // for(int i = 0; i < 3; i++)
-                    //GAME OVER
-                    break;
-                default:
-                    System.out.println("Invalid code");
-                    break;
-            }
+            // terminate test file
+            // if(data(packetData).toString() == "quit")
+            //     break;
+
+            //reconstruct packet into string, separate player[0] = shooter, player[1] = player who was shot
+            String playerIn = data(packetData).toString();
+            String[] player = playerIn.split(":");
+            
+            sendData(player[1]);
         }
     }
+
+    public static void sendData(String data)
+    {
+        try {
+            DatagramSocket transmitterSocket = new DatagramSocket();
+            DatagramPacket transmitterPacket = new DatagramPacket(data.getBytes(), data.length(), InetAddress.getLocalHost(), 7500);
+            transmitterSocket.send(transmitterPacket);
+        } 
+        catch(IOException i) {
+            System.out.println("error occured in packet data transmission");
+        }
+    }
+
+    public static StringBuilder data(byte[] packetData)
+    {
+        StringBuilder ret = new StringBuilder();
+        int i = 0; 
+        if (packetData == null) 
+            return null; 
+        while (packetData[i] != 0) 
+        { 
+            ret.append((char) packetData[i]); 
+            i++; 
+        } 
+        return ret; 
+    }
+
 }
