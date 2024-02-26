@@ -20,6 +20,8 @@ class player_entry_view extends JPanel
     String [] game;
     String [] Red_team;
     String [] Green_team;
+    JTextField RedTeam[];
+    JTextField GreenTeam[];
     JFrame frame = new JFrame();
     int width = 1250;
     int height = 1250;
@@ -37,16 +39,18 @@ class player_entry_view extends JPanel
         frame.getContentPane().setBackground(Color.BLACK);
 	//I'm not sure why this line causes issues with the ubuntu VM but it does so I commented it out
         //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-	frame.setSize(width, height);
+	    frame.setSize(width, height);
         frame.setFocusable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
         frame.addKeyListener(controller);
+        frame.addMouseListener(controller);
         frame.setResizable(false);
 
 
         // send key events to the controller
 	this.addKeyListener(c);
+    this.addMouseListener(c);
 
 	//setting up callable for model interaction of database
 	this.Red_team = new String[45];
@@ -157,8 +161,6 @@ class player_entry_view extends JPanel
         //create the text fields for player entry
 
  	int Nx, y, Nwidth, Nheight, Ix;
-    JTextField RedTeam[];
-    JTextField GreenTeam[];
     RedTeam = new JTextField[45];
     GreenTeam = new JTextField[45];
         Nx = 25;
