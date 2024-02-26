@@ -63,6 +63,11 @@ class Model
     {
         System.out.println("F5 Key Pressed");
         //start the game
+        //view.frame.getContentPane().removeAll();
+        //view.frame.repaint();
+        //JLabel new_game = "Here is the game";
+        //new_game.setVerticalAlignment(JLabel.CENTER);
+        //new_game.setHorizontalAlignment(JLabel.CENTER);
     }
 
     public void clear()
@@ -70,10 +75,11 @@ class Model
 
         System.out.println("F12 Key Pressed");
         // reset all of the textfields on the player entry screen
-        for(int i = 0; i < view.Entry().length; i++)
+        /*for(int i = 0; i < 45; i++)
          {
-            view.game[i] = null;
-         }
+            view.RedTeam[i] = null;
+            view.GreenTeam[i] = null;
+         }*/
     }
 
     void update()
