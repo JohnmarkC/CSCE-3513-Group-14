@@ -7,9 +7,9 @@ Group 14's phaser station software engineering project
 | Amna Khan  | amnaxkhan  |
 | Antonio Chipollini  | aechipol  |
 | Damian Stevenson  | drs3513  |
-| Eva Casto  | ecasto9542  |
+| Eva Casto  | ecasto9542 & Eva Casto  |
 | Johnmark Clements  | JohnmarkC  |
-| Tyson Lucas  | tjl010  |
+| Tyson Lucas  | TLucas10  |
 
 
 Please run this in the VM provided: http://turing.csce.uark.edu/~jps011/ubuntu_22.04.03.7z
