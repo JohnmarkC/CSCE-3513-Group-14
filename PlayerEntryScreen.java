@@ -114,7 +114,7 @@ class player_entry_view extends JPanel
 
         JLabel redHeader = new JLabel("Player Name");
         redHeader.setForeground(Color.WHITE);
-        redHeader.setFont(new Font("calibri", Font.BOLD, 18));
+        redHeader.setFont(new Font("calibri", Font.BOLD, 15));
         redHeader.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel1 = new JPanel();
         transparent_panel1.setOpaque(false);
@@ -124,7 +124,7 @@ class player_entry_view extends JPanel
 
         JLabel redHeader2 = new JLabel("Player ID");
         redHeader2.setForeground(Color.WHITE);
-        redHeader2.setFont(new Font("calibri", Font.BOLD, 18));
+        redHeader2.setFont(new Font("calibri", Font.BOLD, 15));
         redHeader2.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel2 = new JPanel();
         transparent_panel2.setOpaque(false);
@@ -134,7 +134,7 @@ class player_entry_view extends JPanel
     
         JLabel redHeader3 = new JLabel("Equipment ID");
         redHeader3.setForeground(Color.WHITE);
-        redHeader3.setFont(new Font("calibri", Font.BOLD, 18));
+        redHeader3.setFont(new Font("calibri", Font.BOLD, 15));
         redHeader3.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel3 = new JPanel();
         transparent_panel3.setOpaque(false);
@@ -144,7 +144,7 @@ class player_entry_view extends JPanel
 
         JLabel greenHeader = new JLabel("Player Name");
         greenHeader.setForeground(Color.WHITE);
-        greenHeader.setFont(new Font("calibri", Font.BOLD, 18));
+        greenHeader.setFont(new Font("calibri", Font.BOLD, 15));
         greenHeader.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel4 = new JPanel();
         transparent_panel4.setOpaque(false);
@@ -154,7 +154,7 @@ class player_entry_view extends JPanel
 
         JLabel greenHeader2 = new JLabel("Player ID");
         greenHeader2.setForeground(Color.WHITE);
-        greenHeader2.setFont(new Font("calibri", Font.BOLD, 18));
+        greenHeader2.setFont(new Font("calibri", Font.BOLD, 15));
         greenHeader2.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel5 = new JPanel();
         transparent_panel5.setOpaque(false);
@@ -164,7 +164,7 @@ class player_entry_view extends JPanel
     
         JLabel GreenHeader3 = new JLabel("Equipment ID");
         GreenHeader3.setForeground(Color.WHITE);
-        GreenHeader3.setFont(new Font("calibri", Font.BOLD, 18));
+        GreenHeader3.setFont(new Font("calibri", Font.BOLD, 15));
         GreenHeader3.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel6 = new JPanel();
         transparent_panel6.setOpaque(false);
