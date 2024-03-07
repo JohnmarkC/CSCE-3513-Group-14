@@ -5,6 +5,10 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 class player_entry_view extends JPanel
 {
@@ -62,6 +66,40 @@ class player_entry_view extends JPanel
         this.frame.setVisible(true);
         this.frame.remove(imageLabel);
     }
+
+    private void startCountdownTimer(JLabel countdownLabel) {
+        //int minutes = 6;
+        //int sec = 0;
+
+        AtomicInteger minutes = new AtomicInteger(6);
+        AtomicInteger sec = new AtomicInteger(0);
+        // Start countdown timer
+        Timer timer = new Timer(1000, e -> {
+            if (minutes.get() == 0 && sec.get() == 0) {
+                ((Timer) e.getSource()).stop(); // Stop the timer when countdown reaches 0
+                JOptionPane.showMessageDialog(null, "Game Over!"); // Show game over message
+            } else {
+                if (sec.get() == 0) {
+                    minutes.decrementAndGet();
+                    sec.set(59);
+                } else {
+                    sec.decrementAndGet();
+                }
+
+                // Update countdown label text
+                String formattedTime = String.format("%02d:%02d", minutes.get(), sec.get());
+                countdownLabel.setText(formattedTime);
+
+                // Show 30-second warning
+                if (minutes.get() == 0 && sec.get() == 30) {
+                    JOptionPane.showMessageDialog(null, "30-Second Warning!");
+                }
+            }
+        });
+
+        timer.start(); // Start the timer
+    }
+
 
     public void create()
     {
@@ -239,6 +277,29 @@ class player_entry_view extends JPanel
             GreenTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
             y += 35;
         }
+
+
+            // Countdown Timer Label
+        JLabel countdownLabel = new JLabel("6:00");
+        countdownLabel.setForeground(Color.WHITE);
+        countdownLabel.setFont(new Font("calibri", Font.BOLD, 25));
+        countdownLabel.setHorizontalAlignment(JLabel.CENTER);
+        countdownLabel.setBounds(0, 100, width, 50);
+        this.frame.add(countdownLabel);
+
+        // Start Game Button
+        JButton startButton = new JButton("Start Game");
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startButton.setEnabled(false); // Disable button after starting the game
+                startCountdownTimer(countdownLabel); // Start the countdown timer
+            }
+        });
+        startButton.setBounds(0, 200, width, 50);
+        this.frame.add(startButton);
+
+        this.frame.setVisible(true);       
     }
 
 	//callable for id and codename
