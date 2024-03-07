@@ -68,8 +68,6 @@ class player_entry_view extends JPanel
     }
 
     private void startCountdownTimer(JLabel countdownLabel) {
-        //int minutes = 6;
-        //int sec = 0;
 
         AtomicInteger minutes = new AtomicInteger(6);
         AtomicInteger sec = new AtomicInteger(0);
@@ -279,7 +277,7 @@ class player_entry_view extends JPanel
         }
 
 
-            // Countdown Timer Label
+        // Countdown Timer Label
         JLabel countdownLabel = new JLabel("6:00");
         countdownLabel.setForeground(Color.WHITE);
         countdownLabel.setFont(new Font("calibri", Font.BOLD, 25));
