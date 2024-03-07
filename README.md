@@ -7,7 +7,7 @@ Group 14's phaser station software engineering project
 | Amna Khan  | amnaxkhan  |
 | Antonio Chipollini  | aechipol  |
 | Damian Stevenson  | drs3513  |
-| Eva Casto  | ecasto9542 & Eva Casto  |
+| Eva Casto  | ecasto9542|
 | Johnmark Clements  | JohnmarkC  |
 | Tyson Lucas  | TLucas10  |
 
