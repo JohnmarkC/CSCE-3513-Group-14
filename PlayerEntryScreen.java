@@ -162,7 +162,7 @@ class player_entry_view extends JPanel
         redHeader.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel1 = new JPanel();
         transparent_panel1.setOpaque(false);
-        transparent_panel1.setBounds(25, 40, 225, 25);
+        transparent_panel1.setBounds(50+(225/2), 40, 225, 25);
         transparent_panel1.add(redHeader);
         Redpanel.add(transparent_panel1);
 
@@ -172,7 +172,7 @@ class player_entry_view extends JPanel
         redHeader2.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel2 = new JPanel();
         transparent_panel2.setOpaque(false);
-        transparent_panel2.setBounds(275, 40, 225/2, 25);
+        transparent_panel2.setBounds(25, 40, 225/2, 25);
         transparent_panel2.add(redHeader2);
         Redpanel.add(transparent_panel2);
     
@@ -182,7 +182,7 @@ class player_entry_view extends JPanel
         redHeader3.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel3 = new JPanel();
         transparent_panel3.setOpaque(false);
-        transparent_panel3.setBounds(225/2+300, 40, 225/2, 25);
+        transparent_panel3.setBounds((225/2)+300, 40, 225/2, 25);
         transparent_panel3.add(redHeader3);
         Redpanel.add(transparent_panel3);
 
@@ -192,7 +192,7 @@ class player_entry_view extends JPanel
         greenHeader.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel4 = new JPanel();
         transparent_panel4.setOpaque(false);
-        transparent_panel4.setBounds(25, 40, 225, 25);
+        transparent_panel4.setBounds(50+(225/2), 40, 225, 25);
         transparent_panel4.add(greenHeader);
         Greenpanel.add(transparent_panel4);
 
@@ -202,7 +202,7 @@ class player_entry_view extends JPanel
         greenHeader2.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel5 = new JPanel();
         transparent_panel5.setOpaque(false);
-        transparent_panel5.setBounds(275, 40, 225/2, 25);
+        transparent_panel5.setBounds(25, 40, 225/2, 25);
         transparent_panel5.add(greenHeader2);
         Greenpanel.add(transparent_panel5);
     
@@ -212,7 +212,7 @@ class player_entry_view extends JPanel
         GreenHeader3.setHorizontalAlignment(JLabel.CENTER);
         JPanel transparent_panel6 = new JPanel();
         transparent_panel6.setOpaque(false);
-        transparent_panel6.setBounds(225/2+300, 40, 225/2, 25);
+        transparent_panel6.setBounds((225/2)+300, 40, 225/2, 25);
         transparent_panel6.add(GreenHeader3);
         Greenpanel.add(transparent_panel6);
     
@@ -225,10 +225,11 @@ class player_entry_view extends JPanel
  	int Nx, y, Nwidth, Nheight, Ix;
     RedTeam = new JTextField[45];
     GreenTeam = new JTextField[45];
-        Nx = 25;
+        Ix = 25;
         y = 75;
         Nwidth = 225;
         Nheight = 25;
+        Nx = 50 + (Nwidth/2); 
         for(int i = 0; i<15; i++){
             RedTeam[i] = new JTextField(10);
             TextPrompt tp1 = new TextPrompt("Enter your name", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
@@ -248,7 +249,6 @@ class player_entry_view extends JPanel
             y += 35;
         }
         y = 75;
-        Ix = 275;
         for(int i = 15; i<30; i++){
             RedTeam[i] = new JTextField(10);
             TextPrompt tp1 = new TextPrompt("Enter player ID", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
@@ -266,7 +266,7 @@ class player_entry_view extends JPanel
             y += 35;
         }
         y = 75;
-        int Eidx = Nwidth/2+Ix+25;
+        int Eidx = Nx + Nwidth + 25;
         for(int i = 30; i<45; i++){
             RedTeam[i] = new JTextField(10);
             TextPrompt tp1 = new TextPrompt("Equipment ID", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
