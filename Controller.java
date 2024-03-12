@@ -50,6 +50,7 @@ class Controller implements KeyListener, MouseListener
             case KeyEvent.VK_F5: //F5 key pressed
                 view.frame.getContentPane().removeAll();
                 view.frame.repaint();
+                view.create_timer();
                 //create the game
                 break;
             case KeyEvent.VK_F12: // F12 key pressed
