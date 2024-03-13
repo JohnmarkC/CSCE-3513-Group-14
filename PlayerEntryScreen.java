@@ -25,7 +25,7 @@ class player_entry_view extends JPanel
     JFrame frame = new JFrame();
     int width = 1250;
     int height = 1250;
-    JPanel actionScreen;	
+    JPanel actionScreen;
 
     //Contructor
     player_entry_view(Controller c, Model m)
@@ -310,39 +310,38 @@ class player_entry_view extends JPanel
     }
     public void create_action_screen()
     {
-        this.frame.getContentPane().removeAll();
-        this.frame.repaint();
+        frame.getContentPane().removeAll();
+        frame.repaint();
         actionScreen = new JPanel() {
             @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(new Color(0, 0, 0));
-                g.fillRect(0, 0, getWidth(), getHeight());
+            protected void paintComponent(Graphics action) {
+                super.paintComponent(action);
+                action.setColor(new Color(0, 0, 0));
+                action.fillRect(0, 0, getWidth(), getHeight());
                 // Yellow Box
-                g.setColor(Color.YELLOW);
-                g.fillRect(100, 50, 10, 550);
-                g.fillRect(1435, 50, 10, 550);
-                g.fillRect(100, 50, 1335, 10);
-                g.fillRect(100, 600, 1345, 5);
-                g.fillRect(100, 550, 1345, 5);
-                g.fillRect(100, 300, 1345, 5);
+                action.setColor(Color.YELLOW);
+                action.fillRect(100, 50, 10, 550);
+                action.fillRect(1435, 50, 10, 550);
+                action.fillRect(100, 50, 1335, 10);
+                action.fillRect(100, 600, 1345, 5);
+                action.fillRect(100, 550, 1345, 5);
+                action.fillRect(100, 300, 1345, 5);
 
                 // Blue Area
-                g.setColor(Color.BLUE);
-                g.fillRect(110, 305, 1325, 245);
-
+                action.setColor(Color.BLUE);
+                action.fillRect(110, 305, 1325, 245);
                 // Texts
-                g.setColor(Color.WHITE);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-                g.drawString("Red Team", 300, 100);
-                g.drawString("Green Team", 1050, 100);
+                action.setColor(Color.WHITE);
+                action.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+                action.drawString("Red Team", 300, 100);
+                action.drawString("Green Team", 1050, 100);
             }
         };
         this.frame.setContentPane(actionScreen);
         //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.frame.repaint();
 
-        this.frame.setVisible(true);
+        this.setVisible(true);
     }
 
 	//callable for id and codename
