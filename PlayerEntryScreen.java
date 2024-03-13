@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.awt.Graphics;
 
 
 class player_entry_view extends JPanel
@@ -24,6 +25,7 @@ class player_entry_view extends JPanel
     JFrame frame = new JFrame();
     int width = 1250;
     int height = 1250;
+    JPanel actionScreen;	
 
     //Contructor
     player_entry_view(Controller c, Model m)
@@ -310,12 +312,37 @@ class player_entry_view extends JPanel
     {
         frame.getContentPane().removeAll();
         frame.repaint();
-        JLabel action = new JLabel("Action screen goes here");
-        action.setFont(new Font("calibri", Font.BOLD, 25));
-        action.setForeground(Color.WHITE);
-        action.setHorizontalAlignment(JLabel.CENTER);
-        this.frame.add(action);
-        frame.setVisible(true);
+        actionScreen = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(new Color(0, 0, 0));
+                g.fillRect(0, 0, getWidth(), getHeight());
+                // Yellow Box
+                g.setColor(Color.YELLOW);
+                g.fillRect(100, 50, 10, 550);
+                g.fillRect(1435, 50, 10, 550);
+                g.fillRect(100, 50, 1335, 10);
+                g.fillRect(100, 600, 1345, 5);
+                g.fillRect(100, 550, 1345, 5);
+                g.fillRect(100, 300, 1345, 5);
+
+                // Blue Area
+                g.setColor(Color.BLUE);
+                g.fillRect(110, 305, 1325, 245);
+
+                // Texts
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+                g.drawString("Red Team", 300, 100);
+                g.drawString("Green Team", 1050, 100);
+            }
+        };
+        frame.setContentPane(actionScreen);
+        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.repaint();
+
+        this.setVisible(true);
     }
 
 	//callable for id and codename
