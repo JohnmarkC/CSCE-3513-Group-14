@@ -310,8 +310,8 @@ class player_entry_view extends JPanel
     }
     public void create_action_screen()
     {
-        frame.getContentPane().removeAll();
-        frame.repaint();
+        this.frame.getContentPane().removeAll();
+        this.frame.repaint();
         actionScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -338,11 +338,11 @@ class player_entry_view extends JPanel
                 g.drawString("Green Team", 1050, 100);
             }
         };
-        frame.setContentPane(actionScreen);
+        this.frame.setContentPane(actionScreen);
         //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.repaint();
+        this.frame.repaint();
 
-        this.setVisible(true);
+        this.frame.setVisible(true);
     }
 
 	//callable for id and codename
