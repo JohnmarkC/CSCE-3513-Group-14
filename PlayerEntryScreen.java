@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.awt.Graphics;
 
@@ -17,7 +18,7 @@ class player_entry_view extends JPanel
     Controller controller;
     UDP udp = new UDP();
     
-    String [] game;
+    Vector<String> game;
     String [] Red_team;
     String [] Green_team;
     JTextField RedTeam[];
@@ -28,12 +29,12 @@ class player_entry_view extends JPanel
     JPanel actionScreen;
 
     //Contructor
-    player_entry_view(Controller c, Model m)
+    player_entry_view(Model m)
     {
         //Link up the controller
-        c.setView(this);
+        controller = new Controller(m, this);
         model = m;
-        controller = c;
+    
 
         //create a JFrame on which to create the player entry screen
         frame.setTitle("Entry Terminal");
@@ -47,13 +48,13 @@ class player_entry_view extends JPanel
         frame.setResizable(false);
 
         // send key events to the controller
-	this.addKeyListener(c);
-    this.addMouseListener(c);
+	this.addKeyListener(controller);
+    this.addMouseListener(controller);
 
 	//setting up callable for model interaction of database
 	this.Red_team = new String[45];
         this.Green_team = new String[45];
-        this.game = new String[60];  
+        this.game = new Vector<String>();  
     }
 
     public void create_splash()
@@ -235,7 +236,6 @@ class player_entry_view extends JPanel
         for(int i = 0; i<15; i++){
             RedTeam[i] = new JTextField(10);
             TextPrompt tp1 = new TextPrompt("Enter your name", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
-            udp.sendData(RedTeam[i].getText());
             RedTeam[i].setBackground(Color.WHITE);
             Redpanel.add(RedTeam[i]);
             tp1.changeAlpha(0.5f);
@@ -243,7 +243,6 @@ class player_entry_view extends JPanel
             
             GreenTeam[i] = new JTextField(10);
             TextPrompt tp2 = new TextPrompt("Enter your name", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
-            udp.sendData(GreenTeam[i].getText());
             GreenTeam[i].setBackground(Color.WHITE);
             Greenpanel.add(GreenTeam[i]);
             tp2.changeAlpha(0.5f);
@@ -344,24 +343,55 @@ class player_entry_view extends JPanel
         this.setVisible(true);
     }
 
-	//callable for id and codename
-public String[] Entry(){
-       
-        for(int i =0; i<60; i++){
-            if(i<15){
-                game[i]=Red_team[i+15];
-            }
-            else if(i<30){
-                game[i]=Green_team[i];
-            }
-            else if(i<45){
-                game[i]=Red_team[i-30];
-            }
-            else{
-                game[i]=Green_team[i-45];
-            }
+    private void collect_entries(){
+        game.clear();
+        for(int i=0; i<RedTeam.length; i++){
+        if(!RedTeam[i].getText().equals("")){
+            Red_team[i]=RedTeam[i].getText();
         }
-        return game;
+        else{
+            Red_team[i]= " ";
+        }
+        if(!GreenTeam[i].getText().equals("")){
+            Green_team[i]=GreenTeam[i].getText();
+        }
+        else{
+            Green_team[i]= " ";
+        }
+        }
+    }	
+    //callable for id and codename
+    public Vector<String> Entry(boolean EqID){
+        collect_entries();
+        if(EqID){
+             for(int i =0; i<30; i++){
+                 if(i<15){
+                 game.add(Red_team[i+30]);
+                 }
+                 else{
+                 game.add(Green_team[i+15]);
+                 }
+             }
+             return game;
+        }
+        else{
+         for(int i =0; i<60; i++){
+             if(i<15){
+                 game.add(Red_team[i+15]);
+             }
+             else if(i<30){
+                 game.add(Green_team[i]);
+             }
+             else if(i<45){
+                 game.add(Red_team[i-30]);
+             }
+             else{
+                  game.add(Green_team[i-45]);
+              }
+         }
+             //first half red, second half green 30 id's followed by 30 names 
+             return game;
+       }
         
     }
 }
