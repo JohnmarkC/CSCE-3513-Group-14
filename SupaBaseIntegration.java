@@ -79,31 +79,18 @@ public class SupaBaseIntegration {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             //checking if id is in the database
-             idString = "\"id\":"+idString;
-             System.out.println(idString);
+             idString = "\"id\":"+idString+",\"codename\":";
              String name ="";
              int codename_spot = response.body().indexOf(idString);
              if(codename_spot!=-1){
-                codename_spot += idString.length()+13;
+                codename_spot += idString.length()+1;
              }
              if(codename_spot!=-1){
                 name = response.body().substring(codename_spot);
                 int remove = name.indexOf("\"");
                 name = name.substring(0, remove);
              }
-             System.out.println(codename_spot);
-            //stripping name from response
-            System.out.println(name);
-             //returning values depending on find
-             
-             if(name!=""){
-                System.out.println("FOUND");
                 return name;
-             }
-             else{
-                System.out.println("NOT FOUND");
-                return name;
-             }
         } catch (Exception e) {
             e.printStackTrace();
             return "";
