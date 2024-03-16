@@ -107,7 +107,39 @@ class player_entry_view extends JPanel
 
         timer.start(); // Start the timer
     }
+    private void startActionCountdownTimer(JLabel actionCountdownLabel, int m, int s) {
 
+        AtomicInteger minutes = new AtomicInteger(m);
+        AtomicInteger sec = new AtomicInteger(s);
+        // Start countdown timer
+        Timer timer = new Timer(1000, e -> {
+            if (minutes.get() == 0 && sec.get() == 0) {
+                ((Timer) e.getSource()).stop(); // Stop the timer when countdown reaches 0
+
+            } else {
+                if (sec.get() == 0) {
+                    minutes.decrementAndGet();
+                    sec.set(59);
+                } else {
+                    sec.decrementAndGet();
+                }
+
+                // Update countdown label text
+                if(minutes.get() == 0)
+                {
+                    String formattedTime = String.format("%02d", sec.get());
+                    actionCountdownLabel.setText(formattedTime);
+                }
+                else
+                {
+                    String formattedTime = String.format("%02d:%02d", minutes.get(), sec.get());
+                    actionCountdownLabel.setText(formattedTime);
+                }
+            }
+        });
+
+        timer.start(); // Start the timer
+    }
 
     public void create()
     {
@@ -308,9 +340,12 @@ class player_entry_view extends JPanel
         //start the timer
         startCountdownTimer(countdownLabel, 0, 30);
     }
-    public void create_action_screen()
-    {
+    public void create_action_screen() {
         this.frame.getContentPane().removeAll();
+        
+        actionScreen = new JPanel();
+        actionScreen.setLayout(null);
+    
         actionScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics action) {
@@ -325,7 +360,7 @@ class player_entry_view extends JPanel
                 action.fillRect(100, 600, 1345, 5);
                 action.fillRect(100, 550, 1345, 5);
                 action.fillRect(100, 300, 1345, 5);
-
+    
                 // Blue Area
                 action.setColor(Color.BLUE);
                 action.fillRect(110, 305, 1325, 245);
@@ -334,12 +369,38 @@ class player_entry_view extends JPanel
                 action.setFont(new Font("TimesRoman", Font.PLAIN, 30));
                 action.drawString("Red Team", 300, 100);
                 action.drawString("Green Team", 1050, 100);
+                action.setColor(Color.cyan);
+                action.drawString("Current Game Action", 1000, 330);
+                action.drawString("Current Game Scores", 1000, 40);
             }
         };
+    
         this.frame.add(actionScreen);
         this.frame.repaint();
-
         this.frame.setVisible(true);
+    
+        create_timer_actionScreen();
+    }
+    
+    public void create_timer_actionScreen() {
+    
+        // countdown timer label
+        actionScreen.setLayout(null);
+        JLabel timeRemaining = new JLabel("Time Remaining:");
+        timeRemaining.setFont(new Font("TimesRoman", Font.BOLD, 40));
+        timeRemaining.setBounds(900, 80, 960, 1000);
+        timeRemaining.setForeground(Color.WHITE);
+        actionScreen.add(timeRemaining);
+        JLabel actionCountdownLabel = new JLabel("6:00");
+        actionCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
+        actionCountdownLabel.setBounds(1250, 80, 1000, 1000);
+        actionCountdownLabel.setForeground(Color.WHITE);
+        actionScreen.add(actionCountdownLabel);
+    
+        actionScreen.setVisible(true);
+    
+        // start the timer
+        startActionCountdownTimer(actionCountdownLabel, 6, 0);
     }
 
 	//callable for id and codename
