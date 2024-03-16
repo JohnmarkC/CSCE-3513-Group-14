@@ -1,7 +1,7 @@
 public class Client {
     Model model = new Model();
-    player_entry_view playerscreen = new player_entry_view(model);
-    Controller controller = new Controller(model, playerscreen);
+    Controller controller = new Controller(model);
+    player_entry_view playerscreen = new player_entry_view(controller, model);
     SupaBaseIntegration playerbase = new SupaBaseIntegration();
     UDP upd = new UDP();
 
