@@ -12,13 +12,10 @@ class Controller implements KeyListener, MouseListener
     SupaBaseIntegration data;
 
     //Constructor
-    Controller(Model m, player_entry_view v)
+    Controller(Model m)
     {
         model = m;
-        model.view = v;
         data = new SupaBaseIntegration();
-        this.view = v;
-        v.controller = this;
     }
 
     void setView(player_entry_view v)
@@ -31,14 +28,37 @@ class Controller implements KeyListener, MouseListener
         switch (e.getKeyCode())
         {
             case KeyEvent.VK_ENTER: // Enter key is pressed
-                model.search();
+                int id = 0;
+                String name = "";
+                String result = "";
+                boolean changename = false;
+                for(int i = 0; i < 30; i++)
+                {
+                    name = view.RedTeam[i].getText();
+                    id = Integer.parseInt(view.RedTeam[i+15].getText());
+                    result = data.playerData(id, name, false);
+                    view.RedTeam[i].setText(result);
+                }
+                for(int i = 0; i < 30; i++)
+                {
+                    name = view.GreenTeam[i].getText();
+                    id = Integer.parseInt(view.RedTeam[i+15].getText());
+                    result = data.playerData(id, name, false);
+                    view.RedTeam[i].setText(result);
+                }
                 break;
             case KeyEvent.VK_F5: //F5 key pressed
-                model.start();
+                view.frame.getContentPane().removeAll();
+                view.frame.repaint();
+                view.create_timer();
                 //create the game
                 break;
             case KeyEvent.VK_F12: // F12 key pressed
-                model.clear();
+                for(int i = 0; i < 45; i++)
+                {
+                    view.RedTeam[i].setText("");
+                    view.GreenTeam[i].setText("");
+                }
                 break;
         }
     }
