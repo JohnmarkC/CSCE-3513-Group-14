@@ -158,7 +158,7 @@ class player_entry_view extends JPanel
 
 
         //create the label telling the user to edit the current game
-        JLabel j = new JLabel("Edit Current Game : Press Enter to enter player information; Press F5 to start the game; Press F12 to clear all players");
+        JLabel j = new JLabel("Edit Current Game: Press Enter To Enter Player Information; Press F5 To Start The Game; Press F12 To Clear All Players");
         j.setForeground(Color.WHITE);
         j.setHorizontalAlignment(JLabel.CENTER);
         j.setVerticalAlignment(JLabel.TOP);
