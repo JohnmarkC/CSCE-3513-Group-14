@@ -383,24 +383,71 @@ class player_entry_view extends JPanel
     }
     
     public void create_timer_actionScreen() {
+
+        //30s warning before the 6 minute game
+        JLabel warningLabel = new JLabel("Get Ready! Game starting in:");
+        warningLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
+        warningLabel.setBounds(750, 300, 700, 100);
+        warningLabel.setForeground(Color.WHITE);
+        actionScreen.add(warningLabel);
     
-        // countdown timer label
-        actionScreen.setLayout(null);
-        JLabel timeRemaining = new JLabel("Time Remaining:");
-        timeRemaining.setFont(new Font("TimesRoman", Font.BOLD, 40));
-        timeRemaining.setBounds(900, 80, 960, 1000);
-        timeRemaining.setForeground(Color.WHITE);
-        actionScreen.add(timeRemaining);
-        JLabel actionCountdownLabel = new JLabel("6:00");
-        actionCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
-        actionCountdownLabel.setBounds(1250, 80, 1000, 1000);
-        actionCountdownLabel.setForeground(Color.WHITE);
-        actionScreen.add(actionCountdownLabel);
+        JLabel warningCountdownLabel = new JLabel("00:30");
+        warningCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
+        warningCountdownLabel.setBounds(950, 400, 500, 100);
+        warningCountdownLabel.setForeground(Color.WHITE);
+        actionScreen.add(warningCountdownLabel);
     
         actionScreen.setVisible(true);
     
-        // start the timer
-        startActionCountdownTimer(actionCountdownLabel, 6, 0);
+        // start countdown for 30 seconds
+        startCountdownTimer(warningCountdownLabel, 0, 30, () -> {
+            // After the 30-second warning, start the main game countdown
+            actionScreen.remove(warningCountdownLabel);
+            actionScreen.repaint();
+            // start 6 minute game countdown
+            JLabel timeRemaining = new JLabel("Time Remaining:");
+            timeRemaining.setFont(new Font("TimesRoman", Font.BOLD, 40));
+            timeRemaining.setBounds(900, 80, 960, 1000);
+            timeRemaining.setForeground(Color.WHITE);
+            actionScreen.add(timeRemaining);
+
+            JLabel actionCountdownLabel = new JLabel("6:00");
+            actionCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
+            actionCountdownLabel.setBounds(1250, 80, 1000, 1000);
+            actionCountdownLabel.setForeground(Color.WHITE);
+            actionScreen.add(actionCountdownLabel);
+            startActionCountdownTimer(actionCountdownLabel, 6, 0);
+            actionScreen.setVisible(true);
+        });
+    }
+
+    private void startCountdownTimer(JLabel countdownLabel, int m, int s, Runnable callback) {
+        AtomicInteger minutes = new AtomicInteger(m);
+        AtomicInteger sec = new AtomicInteger(s);
+    
+        Timer timer = new Timer(1000, e -> {
+            if (minutes.get() == 0 && sec.get() == 0) {
+                ((Timer) e.getSource()).stop();
+                callback.run();
+            } else {
+                if (sec.get() == 0) {
+                    minutes.decrementAndGet();
+                    sec.set(59);
+                } else {
+                    sec.decrementAndGet();
+                }
+    
+                if (minutes.get() == 0) {
+                    String formattedTime = String.format("%02d", sec.get());
+                    countdownLabel.setText(formattedTime);
+                } else {
+                    String formattedTime = String.format("%02d:%02d", minutes.get(), sec.get());
+                    countdownLabel.setText(formattedTime);
+                }
+            }
+        });
+    
+        timer.start();
     }
 
 	//callable for id and codename
