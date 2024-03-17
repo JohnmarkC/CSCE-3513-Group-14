@@ -385,7 +385,7 @@ class player_entry_view extends JPanel
     public void create_timer_actionScreen() {
 
         //30s warning before the 6 minute game
-        JLabel warningLabel = new JLabel("Get Ready! Game starting in:");
+        JLabel warningLabel = new JLabel("Get Ready! Game starting in: ");
         warningLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
         warningLabel.setBounds(750, 300, 700, 100);
         warningLabel.setForeground(Color.WHITE);
