@@ -1,27 +1,31 @@
-import javax.swing.JPanel;
-import javax.swing.JComponent;
-import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import java.io.File;
 import javax.swing.*;
 import java.awt.Color;
-import javax.swing.JFrame;
 import java.awt.Toolkit;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.awt.Graphics;
+
 
 class player_entry_view extends JPanel
 {
     Model model;
     Controller controller;
+    UDP udp = new UDP();
     
     String [] game;
     String [] Red_team;
     String [] Green_team;
+    JTextField RedTeam[];
+    JTextField GreenTeam[];
     JFrame frame = new JFrame();
     int width = 1250;
     int height = 1250;
+    JPanel actionScreen;
 
     //Contructor
     player_entry_view(Controller c, Model m)
@@ -34,44 +38,22 @@ class player_entry_view extends JPanel
         //create a JFrame on which to create the player entry screen
         frame.setTitle("Entry Terminal");
         frame.getContentPane().setBackground(Color.BLACK);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
         frame.setFocusable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
         frame.addKeyListener(controller);
+        frame.addMouseListener(controller);
         frame.setResizable(false);
-
 
         // send key events to the controller
 	this.addKeyListener(c);
+    this.addMouseListener(c);
 
 	//setting up callable for model interaction of database
 	this.Red_team = new String[45];
         this.Green_team = new String[45];
         this.game = new String[60];  
-    }
-    public static void main(String args[])
-    {
-        Model model = new Model();
-        Controller controller = new Controller(model);
-        player_entry_view p = new player_entry_view(controller, model);
-        p.create();
-        while(true)
-		{
-			controller.update();
-			model.update();
-			//view.repaint(); // Indirectly calls View.paintComponent
-			Toolkit.getDefaultToolkit().sync(); // Updates screen
-
-			// Go to sleep for a brief moment
-			try
-			{
-				Thread.sleep(25);
-			} catch(Exception e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-		}
     }
 
     public void create_splash()
@@ -87,12 +69,86 @@ class player_entry_view extends JPanel
         this.frame.remove(imageLabel);
     }
 
+    private void startCountdownTimer(JLabel countdownLabel, int m, int s) {
+
+        AtomicInteger minutes = new AtomicInteger(m);
+        AtomicInteger sec = new AtomicInteger(s);
+        // Start countdown timer
+        Timer timer = new Timer(1000, e -> {
+            if (minutes.get() == 0 && sec.get() == 0) {
+                ((Timer) e.getSource()).stop(); // Stop the timer when countdown reaches 0
+                create_action_screen();
+            } else {
+                if (sec.get() == 0) {
+                    minutes.decrementAndGet();
+                    sec.set(59);
+                } else {
+                    sec.decrementAndGet();
+                }
+
+                // Update countdown label text
+                if(minutes.get() == 0)
+                {
+                    String formattedTime = String.format("%02d", sec.get());
+                    countdownLabel.setText(formattedTime);
+                }
+                else
+                {
+                    String formattedTime = String.format("%02d:%02d", minutes.get(), sec.get());
+                    countdownLabel.setText(formattedTime);
+                }
+
+                // Show 30-second warning
+                if (minutes.get() == 0 && sec.get() == 30) {
+                    JOptionPane.showMessageDialog(null, "30-Second Warning!");
+                }
+            }
+        });
+
+        timer.start(); // Start the timer
+    }
+    private void startActionCountdownTimer(JLabel actionCountdownLabel, int m, int s) {
+
+        AtomicInteger minutes = new AtomicInteger(m);
+        AtomicInteger sec = new AtomicInteger(s);
+        // Start countdown timer
+        Timer timer = new Timer(1000, e -> {
+            if (minutes.get() == 0 && sec.get() == 0) {
+                ((Timer) e.getSource()).stop(); // Stop the timer when countdown reaches 0
+
+            } else {
+                if (sec.get() == 0) {
+                    minutes.decrementAndGet();
+                    sec.set(59);
+                } else {
+                    sec.decrementAndGet();
+                }
+
+                // Update countdown label text
+                if(minutes.get() == 0)
+                {
+                    String formattedTime = String.format("%02d", sec.get());
+                    actionCountdownLabel.setText(formattedTime);
+                }
+                else
+                {
+                    String formattedTime = String.format("%02d:%02d", minutes.get(), sec.get());
+                    actionCountdownLabel.setText(formattedTime);
+                }
+            }
+        });
+
+        timer.start(); // Start the timer
+    }
+
     public void create()
     {
        //create a panel for the green team and red team
        this.frame.repaint();
         JPanel Redpanel = new JPanel();
         JPanel Greenpanel = new JPanel();
+        Redpanel.setLayout(null);
+        Greenpanel.setLayout(null);
         Redpanel.setBackground(new Color(122, 37, 34));
         Greenpanel.setBackground(new Color(34, 122, 66));
         frame.add(Redpanel);
@@ -106,7 +162,7 @@ class player_entry_view extends JPanel
         j.setForeground(Color.WHITE);
         j.setHorizontalAlignment(JLabel.CENTER);
         j.setVerticalAlignment(JLabel.TOP);
-        j.setFont(new Font("calibri", Font.BOLD, 20));
+        j.setFont(new Font("calibri", Font.BOLD, 18));
         this.frame.add(j);
 
         //create the red team and green team labels
@@ -114,57 +170,104 @@ class player_entry_view extends JPanel
         JLabel g = new JLabel("Green Team");
         r.setForeground(Color.WHITE);
         g.setForeground(Color.WHITE);
-        r.setFont(new Font("calibri", Font.BOLD, 20));
-        g.setFont(new Font("calibri", Font.BOLD, 20));
+        r.setFont(new Font("calibri", Font.BOLD, 25));
+        g.setFont(new Font("calibri", Font.BOLD, 25));
         r.setVerticalAlignment(JLabel.TOP);
         g.setVerticalAlignment(JLabel.TOP);
         r.setHorizontalAlignment(JLabel.CENTER);
         g.setHorizontalAlignment(JLabel.CENTER);
-        Redpanel.add(r);
-        Greenpanel.add(g);
 
-        //headers for each text field column
+        JPanel redTitle = new JPanel();
+        redTitle.setOpaque(false);
+        redTitle.setBounds(0, 5, width/2 -75, height/2);
+        redTitle.add(r);
+        Redpanel.add(redTitle);
+
+        JPanel greenTitle = new JPanel();
+        greenTitle.setOpaque(false);
+        greenTitle.setBounds(0, 5, width/2 -75, height/2);
+        greenTitle.add(g);
+        Greenpanel.add(greenTitle);
+        //create the labels indicating what each column of text fields represents
 
         JLabel redHeader = new JLabel("Player Name");
+        redHeader.setForeground(Color.WHITE);
+        redHeader.setFont(new Font("calibri", Font.BOLD, 15));
         redHeader.setHorizontalAlignment(JLabel.CENTER);
-        Redpanel.add(redHeader);
-    
+        JPanel transparent_panel1 = new JPanel();
+        transparent_panel1.setOpaque(false);
+        transparent_panel1.setBounds(50+(225/2), 40, 225, 25);
+        transparent_panel1.add(redHeader);
+        Redpanel.add(transparent_panel1);
+
         JLabel redHeader2 = new JLabel("Player ID");
+        redHeader2.setForeground(Color.WHITE);
+        redHeader2.setFont(new Font("calibri", Font.BOLD, 15));
         redHeader2.setHorizontalAlignment(JLabel.CENTER);
-        Redpanel.add(redHeader2);
+        JPanel transparent_panel2 = new JPanel();
+        transparent_panel2.setOpaque(false);
+        transparent_panel2.setBounds(25, 40, 225/2, 25);
+        transparent_panel2.add(redHeader2);
+        Redpanel.add(transparent_panel2);
     
         JLabel redHeader3 = new JLabel("Equipment ID");
+        redHeader3.setForeground(Color.WHITE);
+        redHeader3.setFont(new Font("calibri", Font.BOLD, 15));
         redHeader3.setHorizontalAlignment(JLabel.CENTER);
-        Redpanel.add(redHeader3);
-    
+        JPanel transparent_panel3 = new JPanel();
+        transparent_panel3.setOpaque(false);
+        transparent_panel3.setBounds((225/2)+300, 40, 225/2, 25);
+        transparent_panel3.add(redHeader3);
+        Redpanel.add(transparent_panel3);
+
         JLabel greenHeader = new JLabel("Player Name");
+        greenHeader.setForeground(Color.WHITE);
+        greenHeader.setFont(new Font("calibri", Font.BOLD, 15));
         greenHeader.setHorizontalAlignment(JLabel.CENTER);
-        Greenpanel.add(greenHeader);
-    
+        JPanel transparent_panel4 = new JPanel();
+        transparent_panel4.setOpaque(false);
+        transparent_panel4.setBounds(50+(225/2), 40, 225, 25);
+        transparent_panel4.add(greenHeader);
+        Greenpanel.add(transparent_panel4);
+
         JLabel greenHeader2 = new JLabel("Player ID");
+        greenHeader2.setForeground(Color.WHITE);
+        greenHeader2.setFont(new Font("calibri", Font.BOLD, 15));
         greenHeader2.setHorizontalAlignment(JLabel.CENTER);
-        Greenpanel.add(greenHeader2);
+        JPanel transparent_panel5 = new JPanel();
+        transparent_panel5.setOpaque(false);
+        transparent_panel5.setBounds(25, 40, 225/2, 25);
+        transparent_panel5.add(greenHeader2);
+        Greenpanel.add(transparent_panel5);
     
-        JLabel greenHeader3 = new JLabel("Equipment ID");
-        greenHeader3.setHorizontalAlignment(JLabel.CENTER);
-        Greenpanel.add(greenHeader3);
+        JLabel GreenHeader3 = new JLabel("Equipment ID");
+        GreenHeader3.setForeground(Color.WHITE);
+        GreenHeader3.setFont(new Font("calibri", Font.BOLD, 15));
+        GreenHeader3.setHorizontalAlignment(JLabel.CENTER);
+        JPanel transparent_panel6 = new JPanel();
+        transparent_panel6.setOpaque(false);
+        transparent_panel6.setBounds((225/2)+300, 40, 225/2, 25);
+        transparent_panel6.add(GreenHeader3);
+        Greenpanel.add(transparent_panel6);
+    
+        
     
         this.frame.setVisible(true);
 
         //create the text fields for player entry
 
  	int Nx, y, Nwidth, Nheight, Ix;
-    JTextField RedTeam[];
-    JTextField GreenTeam[];
     RedTeam = new JTextField[45];
     GreenTeam = new JTextField[45];
-        Nx = 25;
-        y = 50;
+        Ix = 25;
+        y = 75;
         Nwidth = 225;
         Nheight = 25;
+        Nx = 50 + (Nwidth/2); 
         for(int i = 0; i<15; i++){
             RedTeam[i] = new JTextField(10);
             TextPrompt tp1 = new TextPrompt("Enter your name", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
+            udp.sendData(RedTeam[i].getText());
             RedTeam[i].setBackground(Color.WHITE);
             Redpanel.add(RedTeam[i]);
             tp1.changeAlpha(0.5f);
@@ -172,23 +275,14 @@ class player_entry_view extends JPanel
             
             GreenTeam[i] = new JTextField(10);
             TextPrompt tp2 = new TextPrompt("Enter your name", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
+            udp.sendData(GreenTeam[i].getText());
             GreenTeam[i].setBackground(Color.WHITE);
             Greenpanel.add(GreenTeam[i]);
             tp2.changeAlpha(0.5f);
             GreenTeam[i].setBounds(Nx,y,Nwidth,Nheight);
-            
-            //old text fields
-            //RedTeam[i] = new JTextField("Enter your name");
-            //RedTeam[i].setBackground(Color.WHITE);
-            //Redpanel.add(RedTeam[i]);
-            //RedTeam[i].setBounds(Nx,y,Nwidth,Nheight);
-            // GreenTeam[i] = new JTextField("Enter your name");
-            // Greenpanel.add(GreenTeam[i]);
-            // GreenTeam[i].setBounds(Nx,y,Nwidth,Nheight);
             y += 35;
         }
-        y = 50;
-        Ix = 275;
+        y = 75;
         for(int i = 15; i<30; i++){
             RedTeam[i] = new JTextField(10);
             TextPrompt tp1 = new TextPrompt("Enter player ID", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
@@ -203,18 +297,10 @@ class player_entry_view extends JPanel
             Greenpanel.add(GreenTeam[i]);
             tp2.changeAlpha(0.5f);
             GreenTeam[i].setBounds(Ix,y,Nwidth/2,Nheight);
-
-            // RedTeam[i] = new JTextField("Enter your id");
-            // RedTeam[i].setBackground(Color.WHITE);
-            // Redpanel.add(RedTeam[i]);
-            // RedTeam[i].setBounds(Ix,y,Nwidth/2,Nheight);
-            // GreenTeam[i] = new JTextField("Enter your id");
-            // Greenpanel.add(GreenTeam[i]);
-            // GreenTeam[i].setBounds(Ix,y,Nwidth/2,Nheight);
             y += 35;
         }
-        y = 50;
-        int Eidx = Nwidth/2+Ix+25;
+        y = 75;
+        int Eidx = Nx + Nwidth + 25;
         for(int i = 30; i<45; i++){
             RedTeam[i] = new JTextField(10);
             TextPrompt tp1 = new TextPrompt("Equipment ID", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
@@ -229,16 +315,92 @@ class player_entry_view extends JPanel
             Greenpanel.add(GreenTeam[i]);
             tp2.changeAlpha(0.5f);
             GreenTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
-            
-            // RedTeam[i] = new JTextField("Enter Equipment id");
-            // RedTeam[i].setBackground(Color.WHITE);
-            // Redpanel.add(RedTeam[i]);
-            // RedTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
-            // GreenTeam[i] = new JTextField("Enter Equipment id");
-            // Greenpanel.add(GreenTeam[i]);
-            // GreenTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
             y += 35;
         }
+
+
+        // Countdown Timer Label
+
+        this.frame.setVisible(true);       
+    }
+
+    public void create_timer()
+    {
+        //countdown timer label
+        JLabel countdownLabel = new JLabel("30");
+        countdownLabel.setForeground(Color.WHITE);
+        countdownLabel.setFont(new Font("calibri", Font.BOLD, 400));
+        countdownLabel.setHorizontalAlignment(JLabel.CENTER);
+        countdownLabel.setVerticalAlignment(JLabel.CENTER);
+        countdownLabel.setBounds(0, 100, width, 50);
+        this.frame.add(countdownLabel);
+
+        this.frame.setVisible(true);
+
+        //start the timer
+        startCountdownTimer(countdownLabel, 0, 30);
+    }
+    public void create_action_screen() {
+        this.frame.getContentPane().removeAll();
+        
+        actionScreen = new JPanel();
+        actionScreen.setLayout(null);
+    
+        actionScreen = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics action) {
+                super.paintComponent(action);
+                action.setColor(new Color(0, 0, 0));
+                action.fillRect(0, 0, getWidth(), getHeight());
+                // Yellow Box
+                action.setColor(Color.YELLOW);
+                action.fillRect(100, 50, 10, 550);
+                action.fillRect(1435, 50, 10, 550);
+                action.fillRect(100, 50, 1335, 10);
+                action.fillRect(100, 600, 1345, 5);
+                action.fillRect(100, 550, 1345, 5);
+                action.fillRect(100, 300, 1345, 5);
+    
+                // Blue Area
+                action.setColor(Color.BLUE);
+                action.fillRect(110, 305, 1325, 245);
+                // Texts
+                action.setColor(Color.WHITE);
+                action.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+                action.drawString("Red Team", 300, 100);
+                action.drawString("Green Team", 1050, 100);
+                action.setColor(Color.cyan);
+                action.drawString("Current Game Action", 1000, 330);
+                action.drawString("Current Game Scores", 1000, 40);
+            }
+        };
+    
+        this.frame.add(actionScreen);
+        this.frame.repaint();
+        this.frame.setVisible(true);
+    
+        create_timer_actionScreen();
+    }
+    
+    public void create_timer_actionScreen() {
+    
+        // countdown timer label
+        actionScreen.setLayout(null);
+        JLabel timeRemaining = new JLabel("Time Remaining:");
+        timeRemaining.setFont(new Font("TimesRoman", Font.BOLD, 40));
+        timeRemaining.setBounds(900, 80, 960, 1000);
+        timeRemaining.setForeground(Color.WHITE);
+        actionScreen.add(timeRemaining);
+        JLabel actionCountdownLabel = new JLabel("6:00");
+        actionCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
+        actionCountdownLabel.setBounds(1250, 80, 1000, 1000);
+        actionCountdownLabel.setForeground(Color.WHITE);
+        actionScreen.add(actionCountdownLabel);
+    
+        actionScreen.setVisible(true);
+    
+        // start the timer
+        startActionCountdownTimer(actionCountdownLabel, 6, 0);
     }
 
 	//callable for id and codename
