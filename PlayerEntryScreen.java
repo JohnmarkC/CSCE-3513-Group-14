@@ -402,6 +402,7 @@ class player_entry_view extends JPanel
         // start countdown for 30 seconds
         startCountdownTimer(warningCountdownLabel, 0, 30, () -> {
             // After the 30-second warning, start the main game countdown
+            actionScreen.remove(warningLabel);
             actionScreen.remove(warningCountdownLabel);
             actionScreen.repaint();
             // start 6 minute game countdown
