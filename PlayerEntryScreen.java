@@ -2,13 +2,11 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.awt.Graphics;
 
@@ -19,7 +17,7 @@ class player_entry_view extends JPanel
     Controller controller;
     UDP udp = new UDP();
     
-    Vector<String> game;
+    String [] game;
     String [] Red_team;
     String [] Green_team;
     JTextField RedTeam[];
@@ -30,12 +28,12 @@ class player_entry_view extends JPanel
     JPanel actionScreen;
 
     //Contructor
-    player_entry_view(Model m)
+    player_entry_view(Controller c, Model m)
     {
         //Link up the controller
-        controller = new Controller(m, this);
+        c.setView(this);
         model = m;
-    
+        controller = c;
 
         //create a JFrame on which to create the player entry screen
         frame.setTitle("Entry Terminal");
@@ -49,13 +47,13 @@ class player_entry_view extends JPanel
         frame.setResizable(false);
 
         // send key events to the controller
-	this.addKeyListener(controller);
-    this.addMouseListener(controller);
+	this.addKeyListener(c);
+    this.addMouseListener(c);
 
 	//setting up callable for model interaction of database
 	this.Red_team = new String[45];
         this.Green_team = new String[45];
-        this.game = new Vector<String>();  
+        this.game = new String[60];  
     }
 
     public void create_splash()
@@ -269,6 +267,7 @@ class player_entry_view extends JPanel
         for(int i = 0; i<15; i++){
             RedTeam[i] = new JTextField(10);
             TextPrompt tp1 = new TextPrompt("Enter your name", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
+            udp.sendData(RedTeam[i].getText());
             RedTeam[i].setBackground(Color.WHITE);
             Redpanel.add(RedTeam[i]);
             tp1.changeAlpha(0.5f);
@@ -276,6 +275,7 @@ class player_entry_view extends JPanel
             
             GreenTeam[i] = new JTextField(10);
             TextPrompt tp2 = new TextPrompt("Enter your name", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
+            udp.sendData(GreenTeam[i].getText());
             GreenTeam[i].setBackground(Color.WHITE);
             Greenpanel.add(GreenTeam[i]);
             tp2.changeAlpha(0.5f);
@@ -372,71 +372,71 @@ class player_entry_view extends JPanel
                 action.setColor(Color.cyan);
                 action.drawString("Current Game Action", 1000, 330);
                 action.drawString("Current Game Scores", 1000, 40);
+
+                // setting up red team player name display for action screen 
+                int rx = 250;
+                int ry = 120;
+                for(int i = 0; i < 8; i++)
+                {
+                    action.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+                    action.setColor(Color.WHITE);
+                    action.drawString(RedTeam[i].getText(), rx, ry);
+                    ry += 18;
+                }
+
+                int ry2 = 120;
+                int rx2 = 400;
+                for(int i = 9; i < 15; i++)
+                {
+                    rx2 = 350;
+                    action.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+                    action.setColor(Color.WHITE);
+                    action.drawString(RedTeam[i].getText(), rx2, ry2);
+                    ry2 += 18;
+                }
+
+                // setting up green team player name display for action screen 
+                int gx = 1000;
+                int gy = 120;
+                for(int i = 0; i < 8; i++)
+                {
+                    action.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+                    action.setColor(Color.WHITE);
+                    action.drawString(GreenTeam[i].getText(), gx, gy);
+                    gy += 18;
+                }
+
+                int gx2 = 1150;
+                int gy2 = 120;
+                for(int i = 9; i < 15; i++)
+                {
+                    action.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+                    action.setColor(Color.WHITE);
+                    action.drawString(GreenTeam[i].getText(), gx2, gy2);
+                    gy2 += 18;
+                }
             }
         };
     
         this.frame.add(actionScreen);
         this.frame.repaint();
         this.frame.setVisible(true);
-        
-        load_players();
+    
         create_timer_actionScreen();
     }
-    
-    public void load_players()
-    {
-    	ArrayList<String> redNames = new ArrayList<String>();
-    	ArrayList<String> greenNames = new ArrayList<String>();
-    	for(int i = 0; i < 15; i++)
-    	{
-		if(RedTeam[i].getText() != "")
-		{
-			redNames.add(RedTeam[i].getText());
-		}
-		if(GreenTeam[i].getText() != "")
-		{
-			greenNames.add(GreenTeam[i].getText());
-		}
-	}
-    	JLabel[] RedPlayers = new JLabel[redNames.size()];
-    	JLabel[] GreenPlayers = new JLabel[greenNames.size()];
-    	int rx = 125;
-    	int gx = 800;
-    	int y = 100;
-    	int offset = 20;
-    	
-	for(int i = 0; i < RedPlayers.length; i++)
-	{
-		RedPlayers[i] = new JLabel();
-		RedPlayers[i].setText(redNames.get(i));
-		RedPlayers[i].setForeground(Color.WHITE);
-		RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 18));
-		RedPlayers[i].setBounds(rx, y + (offset * i), 250, 20);
-		actionScreen.add(RedPlayers[i]);
-	}
-	for(int i = 0; i < GreenPlayers.length; i++)
-	{
-		GreenPlayers[i] = new JLabel();
-		GreenPlayers[i].setText(greenNames.get(i));
-		GreenPlayers[i].setForeground(Color.WHITE);
-		GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 18));
-		GreenPlayers[i].setBounds(gx, y + (offset * i), 250, 20);
-		actionScreen.add(GreenPlayers[i]);
-	}
-	}
     
     public void create_timer_actionScreen() {
 
         //30s warning before the 6 minute game
         JLabel warningLabel = new JLabel("Get ready! Game starting in: ");
-        warningLabel.setFont(new Font("TimesRoman", Font.BOLD, 35));
-        warningLabel.setBounds(735, 525, 700, 100);
+        warningLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
+        warningLabel.setBounds(750, 300, 700, 100);
         warningLabel.setForeground(Color.WHITE);
         actionScreen.add(warningLabel);
     
-        JLabel warningCountdownLabel = new JLabel("30");
-        warningCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 35));
-        warningCountdownLabel.setBounds(1300, 525, 500, 100);
+        JLabel warningCountdownLabel = new JLabel("00:30");
+        warningCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
+        warningCountdownLabel.setBounds(950, 400, 500, 100);
         warningCountdownLabel.setForeground(Color.WHITE);
         actionScreen.add(warningCountdownLabel);
     
@@ -494,55 +494,24 @@ class player_entry_view extends JPanel
         timer.start();
     }
 
-    private void collect_entries(){
-        game.clear();
-        for(int i=0; i<RedTeam.length; i++){
-        if(!RedTeam[i].getText().equals("")){
-            Red_team[i]=RedTeam[i].getText();
+	//callable for id and codename
+public String[] Entry(){
+       
+        for(int i =0; i<60; i++){
+            if(i<15){
+                game[i]=Red_team[i+15];
+            }
+            else if(i<30){
+                game[i]=Green_team[i];
+            }
+            else if(i<45){
+                game[i]=Red_team[i-30];
+            }
+            else{
+                game[i]=Green_team[i-45];
+            }
         }
-        else{
-            Red_team[i]= " ";
-        }
-        if(!GreenTeam[i].getText().equals("")){
-            Green_team[i]=GreenTeam[i].getText();
-        }
-        else{
-            Green_team[i]= " ";
-        }
-        }
-    }	
-    //callable for id and codename
-    public Vector<String> Entry(boolean EqID){
-        collect_entries();
-        if(EqID){
-             for(int i =0; i<30; i++){
-                 if(i<15){
-                 game.add(Red_team[i+30]);
-                 }
-                 else{
-                 game.add(Green_team[i+15]);
-                 }
-             }
-             return game;
-        }
-        else{
-         for(int i =0; i<60; i++){
-             if(i<15){
-                 game.add(Red_team[i+15]);
-             }
-             else if(i<30){
-                 game.add(Green_team[i]);
-             }
-             else if(i<45){
-                 game.add(Red_team[i-30]);
-             }
-             else{
-                  game.add(Green_team[i-45]);
-              }
-         }
-             //first half red, second half green 30 id's followed by 30 names 
-             return game;
-       }
+        return game;
         
     }
 }
