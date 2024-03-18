@@ -2,6 +2,7 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.Image;
@@ -377,22 +378,65 @@ class player_entry_view extends JPanel
         this.frame.add(actionScreen);
         this.frame.repaint();
         this.frame.setVisible(true);
-    
+        
+        load_players();
         create_timer_actionScreen();
     }
+    
+    public void load_players()
+    {
+    	ArrayList<String> redNames = new ArrayList<String>();
+    	ArrayList<String> greenNames = new ArrayList<String>();
+    	for(int i = 0; i < 15; i++)
+    	{
+		if(RedTeam[i].getText() != "")
+		{
+			redNames.add(RedTeam[i].getText());
+		}
+		if(GreenTeam[i].getText() != "")
+		{
+			greenNames.add(GreenTeam[i].getText());
+		}
+	}
+    	JLabel[] RedPlayers = new JLabel[redNames.size()];
+    	JLabel[] GreenPlayers = new JLabel[greenNames.size()];
+    	int rx = 125;
+    	int gx = 800;
+    	int y = 100;
+    	int offset = 20;
+    	
+	for(int i = 0; i < RedPlayers.length; i++)
+	{
+		RedPlayers[i] = new JLabel();
+		RedPlayers[i].setText(redNames.get(i));
+		RedPlayers[i].setForeground(Color.WHITE);
+		RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 18));
+		RedPlayers[i].setBounds(rx, y + (offset * i), 250, 20);
+		actionScreen.add(RedPlayers[i]);
+	}
+	for(int i = 0; i < GreenPlayers.length; i++)
+	{
+		GreenPlayers[i] = new JLabel();
+		GreenPlayers[i].setText(greenNames.get(i));
+		GreenPlayers[i].setForeground(Color.WHITE);
+		GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 18));
+		GreenPlayers[i].setBounds(gx, y + (offset * i), 250, 20);
+		actionScreen.add(GreenPlayers[i]);
+	}
+	}
     
     public void create_timer_actionScreen() {
 
         //30s warning before the 6 minute game
         JLabel warningLabel = new JLabel("Get ready! Game starting in: ");
-        warningLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
-        warningLabel.setBounds(750, 300, 700, 100);
+        warningLabel.setFont(new Font("TimesRoman", Font.BOLD, 35));
+        warningLabel.setBounds(735, 525, 700, 100);
         warningLabel.setForeground(Color.WHITE);
         actionScreen.add(warningLabel);
     
-        JLabel warningCountdownLabel = new JLabel("00:30");
-        warningCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 40));
-        warningCountdownLabel.setBounds(950, 400, 500, 100);
+        JLabel warningCountdownLabel = new JLabel("30");
+        warningCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 35));
+        warningCountdownLabel.setBounds(1300, 525, 500, 100);
         warningCountdownLabel.setForeground(Color.WHITE);
         actionScreen.add(warningCountdownLabel);
     
