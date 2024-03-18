@@ -25,7 +25,7 @@ public class SupaBaseIntegration {
         this.request = HttpRequest.newBuilder()
         .uri(URI.create(supabaseUrl))
         .header("apikey", supabaseKey)
-        .header("Authroization", "Bearer"+supabaseKey)
+        .header("Authroization", "Bearer " + supabaseKey)
         .build();
     }
 
@@ -45,7 +45,7 @@ public class SupaBaseIntegration {
         .uri(URI.create(supabaseUrl))
         .header("apikey", supabaseKey)
         .header("Authorization", "Bearer " + supabaseKey)
-        .header("Content-Typea","application/json")
+        .header("Content-Type","application/json")
         .header("Prefer","return=minimal")
         .POST(HttpRequest.BodyPublishers.ofString(requestBody))
         .build();
@@ -66,7 +66,7 @@ public class SupaBaseIntegration {
                  return the code name of the player
             Variables: integer id - player id to check data base
     -----------------------------------------------------------------------------------------------------------*/
-    private String checkDatabase(int id){
+    private String checkDatabase(int id, String Name){
         //setting variable to determine placement of name
         String idString = String.valueOf(id);
 
@@ -78,22 +78,19 @@ public class SupaBaseIntegration {
        
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-          
             //checking if id is in the database
+             idString = "\"id\":"+idString+",\"codename\":";
+             String name ="";
              int codename_spot = response.body().indexOf(idString);
-             
-            //stripping name from response
-             String name = response.body().substring(codename_spot+14);
-             int remove = name.indexOf("\"");
-             name = name.substring(0, remove);
-             
-             //returning values depending on find
-             if(codename_spot !=-1){
+             if(codename_spot!=-1){
+                codename_spot += idString.length()+1;
+             }
+             if(codename_spot!=-1){
+                name = response.body().substring(codename_spot);
+                int remove = name.indexOf("\"");
+                name = name.substring(0, remove);
+             }
                 return name;
-             }
-             else{
-                return "";
-             }
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -138,43 +135,30 @@ public class SupaBaseIntegration {
     public String playerData(int id, String name,boolean changename){
         //checking if player wished for name change
         if(changename){
+            System.out.println(id +" name: "+ name);
+            changename(id,name);
             //checking if player is in data base
-            if(checkDatabase(id)== ""){
+            if(checkDatabase(id, name)== ""){
                 addplayer(id, name);
                 return name;
             }
             else{
                 changename(id, name);
-                return checkDatabase(id);
+                return checkDatabase(id,name);
             }
         }
         else{ 
-            //checking if player is in data base
-            if(checkDatabase(id)== ""){
+            if(checkDatabase(id, name)== ""){
                 addplayer(id, name);
                 return name;
             }
             else{
-                return checkDatabase(id);
+            return checkDatabase(id, name);
             }
         }
         
     }
+  
 
-    /*-----------------------------------------------------------------------------------------------------------
-                    Test main #needs removal before implementing 
-     -----------------------------------------------------------------------------------------------------------*/
-
-
-    public static void main(String[] args) {
-        Vector<String> me = new Vector<>();
-        SupaBaseIntegration data = new SupaBaseIntegration();
-        me.add(data.playerData(2,"no",false));
-        me.add(data.playerData(3,"HI",false));
-        me.add(data.playerData(1, "me",false));
-        me.add(data.playerData(4,"yellow",false));
-        me.add(data.playerData(3,"Bad",true));
-        System.out.println(me);
-
-    }
+    
 }

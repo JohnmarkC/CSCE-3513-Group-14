@@ -14,7 +14,6 @@ class Model
     Model()
     {
        data = new SupaBaseIntegration(); 
-
     }
 
     public void search()
@@ -22,71 +21,52 @@ class Model
         int id = 0;
         String name = "";
         boolean changename = false;
-
+        String result = "";
         System.out.println("Enter Key Pressed");
         
-    //send all ids in the textfields to the database to be searched
-    //if id is found fill codename textfield with found codename
-    //if id is not found update the database with codename
-    //prompt for the equipment id
-    
-   
-    String[] arrString = view.Entry();
-         
-         for(int i = 0; i < view.game[i].length(); i++)
-         {
-            data.playerData(id, name, changename);
-            String ID_string = String.valueOf(id);
-
-            if( ID_string == view.game[i]) //if id is found
-            {
-                name = view.game[i];
-                System.out.println("ID found, filling textfield with found codename");
+        //sending id search and adding name to teams
+        String[] arrString =  view.Entry(false).toArray(new String[0]);
+        for(int i = 0; i < arrString.length/2; i++)
+        {
+        if(arrString[i]!=" "){
+            id = Integer.parseInt(arrString[i]);
+            name = arrString[i+30];
+            result = data.playerData(id, name, changename);
+            if(i<15){
+                 view.RedTeam[i].setText(result);
             }
-            else
-            {
-                System.out.println("ID not found, updating database with codename");
-                update();
-            }
-
-
-
+             else if(i>=15 && i<30){
+                view.GreenTeam[i-15].setText(result);
+             }
          }
-
-            
-        
-
-        /////equipment id prompt
+        }
+        //sending signal to equipment
+        String[] Eqid = view.Entry(true).toArray(new String[0]);
+        for(String Eq : Eqid){
+             UDP.sendData(Eq);
+        }
     }
 
     public void start()
     {
         System.out.println("F5 Key Pressed");
-        //start the game
-        //view.frame.getContentPane().removeAll();
-        //view.frame.repaint();
-        //JLabel new_game = "Here is the game";
-        //new_game.setVerticalAlignment(JLabel.CENTER);
-        //new_game.setHorizontalAlignment(JLabel.CENTER);
+        view.frame.getContentPane().removeAll();
+        view.frame.repaint();
+        view.create_timer();
     }
 
     public void clear()
     {
 
         System.out.println("F12 Key Pressed");
-        // reset all of the textfields on the player entry screen
-        /*for(int i = 0; i < 45; i++)
-         {
-            view.RedTeam[i] = null;
-            view.GreenTeam[i] = null;
-         }*/
+        for(int i = 0; i <45 ; i++)
+        {
+             view.RedTeam[i].setText("");
+             view.GreenTeam[i].setText("");
+             view.Red_team[i] = "";
+             view.Green_team[i] = "";
+        }
+        view.game.clear();
     }
-
-    void update()
-    {
-        //data.add(data.playerData(id, name, changename));
-         System.out.println("Player data updated to database");
-    }
-
 
 }
