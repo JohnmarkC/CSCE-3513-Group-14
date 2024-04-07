@@ -271,6 +271,7 @@ class player_entry_view extends JPanel
             TextPrompt tp1 = new TextPrompt("Enter your name", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
             RedTeam[i].setBackground(Color.WHITE);
             Redpanel.add(RedTeam[i]);
+            RedTeam[i].addKeyListener(controller);
             tp1.changeAlpha(0.5f);
             RedTeam[i].setBounds(Nx,y,Nwidth,Nheight);
             
@@ -278,6 +279,7 @@ class player_entry_view extends JPanel
             TextPrompt tp2 = new TextPrompt("Enter your name", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
             GreenTeam[i].setBackground(Color.WHITE);
             Greenpanel.add(GreenTeam[i]);
+            GreenTeam[i].addKeyListener(controller);
             tp2.changeAlpha(0.5f);
             GreenTeam[i].setBounds(Nx,y,Nwidth,Nheight);
             y += 35;
@@ -288,6 +290,7 @@ class player_entry_view extends JPanel
             TextPrompt tp1 = new TextPrompt("Enter player ID", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
             RedTeam[i].setBackground(Color.WHITE);
             Redpanel.add(RedTeam[i]);
+            RedTeam[i].addKeyListener(controller);
             tp1.changeAlpha(0.5f);
             RedTeam[i].setBounds(Ix,y,Nwidth/2,Nheight);
 
@@ -295,6 +298,7 @@ class player_entry_view extends JPanel
             TextPrompt tp2 = new TextPrompt("Enter player ID", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
             GreenTeam[i].setBackground(Color.WHITE);
             Greenpanel.add(GreenTeam[i]);
+            GreenTeam[i].addKeyListener(controller);
             tp2.changeAlpha(0.5f);
             GreenTeam[i].setBounds(Ix,y,Nwidth/2,Nheight);
             y += 35;
@@ -306,6 +310,7 @@ class player_entry_view extends JPanel
             TextPrompt tp1 = new TextPrompt("Equipment ID", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
             RedTeam[i].setBackground(Color.WHITE);
             Redpanel.add(RedTeam[i]);
+            RedTeam[i].addKeyListener(controller);
             tp1.changeAlpha(0.5f);
             RedTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
 
@@ -313,6 +318,7 @@ class player_entry_view extends JPanel
             TextPrompt tp2 = new TextPrompt("Equipment ID", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
             GreenTeam[i].setBackground(Color.WHITE);
             Greenpanel.add(GreenTeam[i]);
+            GreenTeam[i].addKeyListener(controller);
             tp2.changeAlpha(0.5f);
             GreenTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
             y += 35;
