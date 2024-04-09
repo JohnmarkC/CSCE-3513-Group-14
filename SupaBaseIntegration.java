@@ -135,10 +135,9 @@ public class SupaBaseIntegration {
     public String playerData(int id, String name,boolean changename){
         //checking if player wished for name change
         if(changename){
-            System.out.println(id +" name: "+ name);
             changename(id,name);
             //checking if player is in data base
-            if(checkDatabase(id, name)== ""){
+            if(checkDatabase(id, name)== "" && !name.isBlank()){
                 addplayer(id, name);
                 return name;
             }
@@ -148,7 +147,7 @@ public class SupaBaseIntegration {
             }
         }
         else{ 
-            if(checkDatabase(id, name)== ""){
+            if(checkDatabase(id, name)== "" && !name.isBlank()){
                 addplayer(id, name);
                 return name;
             }
@@ -158,7 +157,5 @@ public class SupaBaseIntegration {
         }
         
     }
-  
-
     
 }

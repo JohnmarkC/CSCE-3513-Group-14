@@ -2,6 +2,8 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.Image;
@@ -21,17 +23,28 @@ class player_entry_view extends JPanel
     Vector<String> game;
     String [] Red_team;
     String [] Green_team;
+    HashMap<String, Integer> GreenScores, RedScores;
+
     JTextField RedTeam[];
     JTextField GreenTeam[];
     JFrame frame = new JFrame();
     int width = 1250;
     int height = 1250;
     JPanel actionScreen;
+    JPanel warning, timer;
+    JPanel actionRed[], actionGreen[], actiondisplay[];
+    JLabel timeRemaining;
+    JLabel warningLabel;
+    JLabel actionCountdownLabel;
+    JLabel warningCountdownLabel;
+
 
     //Contructor
     player_entry_view(Model m)
     {
         //Link up the controller
+        GreenScores = new HashMap<String, Integer>();
+        RedScores = new HashMap<String, Integer>();
         controller = new Controller(m, this);
         model = m;
     
@@ -70,10 +83,11 @@ class player_entry_view extends JPanel
         this.frame.remove(imageLabel);
     }
 
-    private void startCountdownTimer(JLabel countdownLabel, int m, int s) {
+    /*private void startCountdownTimer( int m, int s) {
 
         AtomicInteger minutes = new AtomicInteger(m);
         AtomicInteger sec = new AtomicInteger(s);
+       
         // Start countdown timer
         Timer timer = new Timer(1000, e -> {
             if (minutes.get() == 0 && sec.get() == 0) {
@@ -107,8 +121,42 @@ class player_entry_view extends JPanel
         });
 
         timer.start(); // Start the timer
-    }
+    }*/
+    private void startActionCountdownTimer(int m, int s) {
+        actionCountdownLabel.setBounds(1250, 80, 1000, 1000);
+        AtomicInteger minutes = new AtomicInteger(m);
+        AtomicInteger sec = new AtomicInteger(s);
+        // Start countdown timer
+        Timer timer = new Timer(1000, e -> {
+            if (minutes.get() == 0 && sec.get() == 0) {
+                ((Timer) e.getSource()).stop(); // Stop the timer when countdown reaches 0
 
+            } else {
+                if (sec.get() == 0) {
+                    minutes.decrementAndGet();
+                    sec.set(59);
+                } else {
+                    sec.decrementAndGet();
+                }
+
+                // Update countdown label text
+                if(minutes.get() == 0)
+                {
+                    String formattedTime = String.format("%02d", sec.get());
+                    actionCountdownLabel.setText(formattedTime);
+                    actionScreen.setVisible(true);
+                }
+                else
+                {
+                    String formattedTime = String.format("%02d:%02d", minutes.get(), sec.get());
+                    actionCountdownLabel.setText(formattedTime);
+                    actionScreen.setVisible(true);
+                }
+            }
+        });
+
+        timer.start(); // Start the timer
+    }
 
     public void create()
     {
@@ -127,7 +175,7 @@ class player_entry_view extends JPanel
 
 
         //create the label telling the user to edit the current game
-        JLabel j = new JLabel("Edit Current Game : Press Enter to enter player information; Press F5 to start the game; Press F12 to clear all players");
+        JLabel j = new JLabel("Edit Current Game: Press Enter To Enter Player Information; Press F5 To Start The Game; Press F12 To Clear All Players");
         j.setForeground(Color.WHITE);
         j.setHorizontalAlignment(JLabel.CENTER);
         j.setVerticalAlignment(JLabel.TOP);
@@ -290,7 +338,7 @@ class player_entry_view extends JPanel
 
         this.frame.setVisible(true);       
     }
-
+/* 
     public void create_timer()
     {
         //countdown timer label
@@ -307,10 +355,13 @@ class player_entry_view extends JPanel
         //start the timer
         startCountdownTimer(countdownLabel, 0, 30);
     }
-    public void create_action_screen()
-    {
-        frame.getContentPane().removeAll();
-        frame.repaint();
+*/
+    public void create_action_screen() {
+        this.frame.getContentPane().removeAll();
+        
+        actionScreen = new JPanel();
+        actionScreen.setLayout(null);
+    
         actionScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics action) {
@@ -325,7 +376,7 @@ class player_entry_view extends JPanel
                 action.fillRect(100, 600, 1345, 5);
                 action.fillRect(100, 550, 1345, 5);
                 action.fillRect(100, 300, 1345, 5);
-
+    
                 // Blue Area
                 action.setColor(Color.BLUE);
                 action.fillRect(110, 305, 1325, 245);
@@ -334,25 +385,228 @@ class player_entry_view extends JPanel
                 action.setFont(new Font("TimesRoman", Font.PLAIN, 30));
                 action.drawString("Red Team", 300, 100);
                 action.drawString("Green Team", 1050, 100);
+                action.setColor(Color.cyan);
+                action.drawString("Current Game Action", 1000, 330);
+                action.drawString("Current Game Scores", 1000, 40);
+                
             }
         };
-        this.frame.setContentPane(actionScreen);
-        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.frame.repaint();
+        warning = new JPanel();
+        warning.setBounds(250, 0, 700, 50);
+        warning.setBackground(Color.BLACK);
+        warning.setVisible(false);
+        frame.add(warning);
+        timer = new JPanel(){
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                g.setColor(Color.YELLOW);
+                g.fillRect(-10,-5, width, 10);
+             
+            }
+        };
+        timer.setBounds(900, 550, 500, 50);
+        timer.setBackground(null);
+        timer.setVisible(false);
+        frame.add(timer);
+        actionScreen.setVisible(true);
+       
+       
+        load_players();
+        
+        create_timer_actionScreen();
+        for(int i =0; i<actionRed.length; i++){
+            frame.add(actionRed[i]);
+        }
+        for(int i =0; i<actionGreen.length; i++){
+            frame.add(actionGreen[i]);
+        }
+       
+        frame.add(actionScreen);
+        frame.repaint();
 
-        this.setVisible(true);
+    }
+    
+    public void load_players()
+    {
+        //have one for database search. can use it instead of this
+    	ArrayList<String> redNames = new ArrayList<String>();
+    	ArrayList<String> greenNames = new ArrayList<String>();
+    	for(int i = 0; i < 15; i++)
+    	{
+		if(!RedTeam[i].getText().isBlank())
+		{
+			redNames.add(RedTeam[i].getText());
+            RedScores.put(RedTeam[i].getText(),0);
+		}
+		if(!GreenTeam[i].getText().isBlank())
+		{
+			greenNames.add(GreenTeam[i].getText());
+            GreenScores.put(GreenTeam[i].getText(),0);
+		}
+	}
+        actionRed = new JPanel[redNames.size()];
+        actionGreen = new JPanel[greenNames.size()];
+    	JLabel[] RedPlayers = new JLabel[redNames.size()];
+    	JLabel[] GreenPlayers = new JLabel[greenNames.size()];
+    	int rx = 250;
+    	int gx = 800;
+    	int y = 100;
+    	int offset = 20;
+    	
+	for(int i = 0; i < RedPlayers.length; i++)
+	{
+        actionRed[i] = new JPanel();
+        actionRed[i].setBounds(rx,y,100,30);
+        actionRed[i].setBackground(Color.BLACK);
+		if(i>7){
+            if(i==8){
+                y=100;
+            }
+		    RedPlayers[i] = new JLabel();
+		    RedPlayers[i].setText((i+1)+". "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+		    RedPlayers[i].setForeground(Color.WHITE);
+		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
+		    RedPlayers[i].setBounds(0, 0, 250, 25);
+            actionRed[i].setBounds(rx+150,y,100,30);
+        }
+        else{
+            RedPlayers[i] = new JLabel();
+		    RedPlayers[i].setText((i+1)+". "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+		    RedPlayers[i].setForeground(Color.WHITE);
+		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
+		    RedPlayers[i].setBounds(0, 0, 250, 25);
+        }
+		actionRed[i].add(RedPlayers[i]);
+        actionRed[i].setVisible(true);
+        actionRed[i].repaint();
+        y=y+offset;
+	}
+    y =100;
+	for(int i = 0; i < GreenPlayers.length; i++)
+	{
+        actionGreen[i] = new JPanel();
+        actionGreen[i].setBounds(gx,y,100,30);
+        actionGreen[i].setBackground(Color.BLACK);
+        if(i>7){
+            if(i==8){
+                y=100;
+            }
+		    GreenPlayers[i] = new JLabel();
+		    GreenPlayers[i].setText((i+1)+". "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+		    GreenPlayers[i].setForeground(Color.WHITE);
+		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
+		    GreenPlayers[i].setBounds(0, 0, 50, 25);
+            actionGreen[i].setBounds(gx+150,y,100,30);
+
+        }
+        else{
+            GreenPlayers[i] = new JLabel();
+		    GreenPlayers[i].setText((i+1)+". "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+            GreenPlayers[i].setForeground(Color.WHITE);
+		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
+		    GreenPlayers[i].setBounds(0, 0, 250, 25);
+        }
+        actionGreen[i].add(GreenPlayers[i]);
+        actionGreen[i].setVisible(true);
+        actionGreen[i].repaint();
+        y=y+offset;
+	}
+
+	}
+    
+    public void create_timer_actionScreen() {
+
+        //30s warning before the 6 minute game
+        warningLabel = new JLabel("Get ready! Game starting in: ");
+        warningLabel.setFont(new Font("TimesRoman", Font.BOLD, 35));
+        warningLabel.setBounds(0, 0, 700, 100);
+        warningLabel.setForeground(Color.WHITE);
+        warning.add(warningLabel);
+    
+        warningCountdownLabel = new JLabel("30");
+        warningCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 35));
+        warningCountdownLabel.setBounds(365, 0, 500, 100);
+        warningCountdownLabel.setForeground(Color.WHITE);
+        warning.add(warningCountdownLabel);
+        warning.setVisible(true);
+        actionScreen.setVisible(true);
+        actionScreen.repaint();
+        
+    
+        // start countdown for 30 seconds
+          startCountdownTimer( 0, 30, () -> {
+            // After the 30-second warning, start the main game countdown
+            warning.remove(warningLabel);
+            warning.remove(warningCountdownLabel);
+            warning.repaint();
+            frame.repaint();
+            
+            timer.setVisible(true);
+            
+                
+            // start 6 minute game countdown
+            timeRemaining = new JLabel("Time Remaining:");
+            timeRemaining.setFont(new Font("TimesRoman", Font.BOLD, 40));
+            timeRemaining.setBounds(0, -20, 960, 1000);
+            timeRemaining.setForeground(Color.WHITE);
+            timer.add(timeRemaining);
+
+            actionCountdownLabel = new JLabel("6:00");
+            actionCountdownLabel.setFont(new Font("TimesRoman", Font.BOLD, 35));
+            actionCountdownLabel.setBounds(0, -20, 1000, 1000);
+            actionCountdownLabel.setForeground(Color.WHITE);
+            timer.add(actionCountdownLabel);
+            timer.revalidate();
+            timer.repaint();
+
+            startActionCountdownTimer( 6, 0);
+            actionScreen.setVisible(true);
+        });
+    }
+
+    private void startCountdownTimer( int m, int s, Runnable callback) {
+        AtomicInteger minutes = new AtomicInteger(m);
+        AtomicInteger sec = new AtomicInteger(s);
+    
+        Timer timer = new Timer(1000, e -> {
+            if (minutes.get() == 0 && sec.get() == 0) {
+                ((Timer) e.getSource()).stop();
+                callback.run();
+            } else {
+                if (sec.get() == 0) {
+                    minutes.decrementAndGet();
+                    sec.set(59);
+                } else {
+                    sec.decrementAndGet();
+                }
+    
+                if (minutes.get() == 0) {
+                    String formattedTime = String.format("%02d", sec.get());
+                    warningCountdownLabel.setText(formattedTime);
+                    actionScreen.setVisible(true);
+                    
+                } else {
+                    String formattedTime = String.format("%02d:%02d", minutes.get(), sec.get());
+                    warningCountdownLabel.setText(formattedTime);
+                    actionScreen.setVisible(true);
+                }
+            }
+        });
+    
+        timer.start();
     }
 
     private void collect_entries(){
         game.clear();
         for(int i=0; i<RedTeam.length; i++){
-        if(!RedTeam[i].getText().equals("")){
+        if(!RedTeam[i].getText().isBlank()){
             Red_team[i]=RedTeam[i].getText();
         }
         else{
             Red_team[i]= " ";
         }
-        if(!GreenTeam[i].getText().equals("")){
+        if(!GreenTeam[i].getText().isBlank()){
             Green_team[i]=GreenTeam[i].getText();
         }
         else{

@@ -52,7 +52,7 @@ class Model
         System.out.println("F5 Key Pressed");
         view.frame.getContentPane().removeAll();
         view.frame.repaint();
-        view.create_timer();
+        view.create_action_screen();
     }
 
     public void clear()
