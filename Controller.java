@@ -10,6 +10,8 @@ class Controller implements KeyListener, MouseListener
     player_entry_view view;
     Model model;
     SupaBaseIntegration data;
+   
+    
 
     //Constructor
     Controller(Model m, player_entry_view v)
@@ -28,6 +30,7 @@ class Controller implements KeyListener, MouseListener
 
     public void keyPressed(KeyEvent e)
     {
+      if(model.entryscreen){
         switch (e.getKeyCode())
         {
             case KeyEvent.VK_ENTER: // Enter key is pressed
@@ -41,6 +44,12 @@ class Controller implements KeyListener, MouseListener
                 model.clear();
                 break;
         }
+     }
+     if(!model.actiondisplay && !model.entryscreen && !model.splash){
+         if(e.getKeyCode()==KeyEvent.VK_ENTER){
+            model.resetgame();
+         }
+     }
     }
 
     public void keyReleased(KeyEvent e)

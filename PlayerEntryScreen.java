@@ -4,7 +4,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -12,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 
 
 class player_entry_view extends JPanel
@@ -37,6 +41,7 @@ class player_entry_view extends JPanel
     JLabel warningLabel;
     JLabel actionCountdownLabel;
     JLabel warningCountdownLabel;
+    JPanel game_over;
 
 
     //Contructor
@@ -83,45 +88,6 @@ class player_entry_view extends JPanel
         this.frame.remove(imageLabel);
     }
 
-    /*private void startCountdownTimer( int m, int s) {
-
-        AtomicInteger minutes = new AtomicInteger(m);
-        AtomicInteger sec = new AtomicInteger(s);
-       
-        // Start countdown timer
-        Timer timer = new Timer(1000, e -> {
-            if (minutes.get() == 0 && sec.get() == 0) {
-                ((Timer) e.getSource()).stop(); // Stop the timer when countdown reaches 0
-                create_action_screen();
-            } else {
-                if (sec.get() == 0) {
-                    minutes.decrementAndGet();
-                    sec.set(59);
-                } else {
-                    sec.decrementAndGet();
-                }
-
-                // Update countdown label text
-                if(minutes.get() == 0)
-                {
-                    String formattedTime = String.format("%02d", sec.get());
-                    countdownLabel.setText(formattedTime);
-                }
-                else
-                {
-                    String formattedTime = String.format("%02d:%02d", minutes.get(), sec.get());
-                    countdownLabel.setText(formattedTime);
-                }
-
-                // Show 30-second warning
-                if (minutes.get() == 0 && sec.get() == 30) {
-                    JOptionPane.showMessageDialog(null, "30-Second Warning!");
-                }
-            }
-        });
-
-        timer.start(); // Start the timer
-    }*/
     private void startActionCountdownTimer(int m, int s) {
         actionCountdownLabel.setBounds(1250, 80, 1000, 1000);
         AtomicInteger minutes = new AtomicInteger(m);
@@ -130,6 +96,8 @@ class player_entry_view extends JPanel
         Timer timer = new Timer(1000, e -> {
             if (minutes.get() == 0 && sec.get() == 0) {
                 ((Timer) e.getSource()).stop(); // Stop the timer when countdown reaches 0
+                gameOver();
+                model.actiondisplay = false;
 
             } else {
                 if (sec.get() == 0) {
@@ -159,7 +127,7 @@ class player_entry_view extends JPanel
     }
 
     public void create()
-    {
+    {   
        //create a panel for the green team and red team
        this.frame.repaint();
         JPanel Redpanel = new JPanel();
@@ -338,24 +306,7 @@ class player_entry_view extends JPanel
 
         this.frame.setVisible(true);       
     }
-/* 
-    public void create_timer()
-    {
-        //countdown timer label
-        JLabel countdownLabel = new JLabel("30");
-        countdownLabel.setForeground(Color.WHITE);
-        countdownLabel.setFont(new Font("calibri", Font.BOLD, 400));
-        countdownLabel.setHorizontalAlignment(JLabel.CENTER);
-        countdownLabel.setVerticalAlignment(JLabel.CENTER);
-        countdownLabel.setBounds(0, 100, width, 50);
-        this.frame.add(countdownLabel);
 
-        this.frame.setVisible(true);
-
-        //start the timer
-        startCountdownTimer(countdownLabel, 0, 30);
-    }
-*/
     public void create_action_screen() {
         this.frame.getContentPane().removeAll();
         
@@ -450,14 +401,14 @@ class player_entry_view extends JPanel
     	JLabel[] RedPlayers = new JLabel[redNames.size()];
     	JLabel[] GreenPlayers = new JLabel[greenNames.size()];
     	int rx = 250;
-    	int gx = 800;
+    	int gx = 1000;
     	int y = 100;
     	int offset = 20;
     	
 	for(int i = 0; i < RedPlayers.length; i++)
 	{
-        actionRed[i] = new JPanel();
-        actionRed[i].setBounds(rx,y,100,30);
+        actionRed[i] = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        actionRed[i].setBounds(rx,y,200,30);
         actionRed[i].setBackground(Color.BLACK);
 		if(i>7){
             if(i==8){
@@ -468,13 +419,15 @@ class player_entry_view extends JPanel
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
 		    RedPlayers[i].setBounds(0, 0, 250, 25);
-            actionRed[i].setBounds(rx+150,y,100,30);
+            RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
+            actionRed[i].setBounds(rx+200,y,200,30);
         }
         else{
             RedPlayers[i] = new JLabel();
 		    RedPlayers[i].setText((i+1)+". "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
+            RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
 		    RedPlayers[i].setBounds(0, 0, 250, 25);
         }
 		actionRed[i].add(RedPlayers[i]);
@@ -485,8 +438,8 @@ class player_entry_view extends JPanel
     y =100;
 	for(int i = 0; i < GreenPlayers.length; i++)
 	{
-        actionGreen[i] = new JPanel();
-        actionGreen[i].setBounds(gx,y,100,30);
+        actionGreen[i] = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        actionGreen[i].setBounds(gx,y,200,30);
         actionGreen[i].setBackground(Color.BLACK);
         if(i>7){
             if(i==8){
@@ -497,7 +450,8 @@ class player_entry_view extends JPanel
 		    GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
 		    GreenPlayers[i].setBounds(0, 0, 50, 25);
-            actionGreen[i].setBounds(gx+150,y,100,30);
+            GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
+            actionGreen[i].setBounds(gx+200,y,200,30);
 
         }
         else{
@@ -505,6 +459,7 @@ class player_entry_view extends JPanel
 		    GreenPlayers[i].setText((i+1)+". "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
             GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
+            GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
 		    GreenPlayers[i].setBounds(0, 0, 250, 25);
         }
         actionGreen[i].add(GreenPlayers[i]);
@@ -647,5 +602,33 @@ class player_entry_view extends JPanel
              return game;
        }
         
+    }
+
+    public void gameOver(){
+        game_over = new JPanel();
+
+        game_over.setOpaque(false);
+        game_over.setBounds(frame.getWidth()/4,frame.getHeight()/4,frame.getWidth()/2, frame.getHeight()/2);
+        
+        JLabel endgame = new JLabel("Game Over", SwingConstants.CENTER);
+        endgame.setFont(new Font("TimesRoman", Font.BOLD, 100));
+        endgame.setForeground(Color.WHITE);
+       
+        JLabel instructions = new JLabel("Press Enter to return", SwingConstants.CENTER);
+        instructions.setFont(new Font("TimesRoman", Font.BOLD, 50));
+        instructions.setForeground(Color.WHITE);
+    
+
+        game_over.setLayout(new GridLayout(2,1));
+        game_over.add(endgame);
+        game_over.add(instructions);
+        game_over.setVisible(true);
+
+        frame.add(game_over);
+        frame.setComponentZOrder(game_over, 0);
+
+        frame.repaint();
+        frame.revalidate();
+
     }
 }
