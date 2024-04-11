@@ -6,14 +6,7 @@ public class Client {
     UDP upd = new UDP();
 
     public void screen(){
-        playerscreen.create_splash();
-        try {
-            // Wait 3 seconds
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        playerscreen.create();
+        model.launch();
     }
 
 

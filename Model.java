@@ -9,7 +9,7 @@ class Model
 {
     SupaBaseIntegration data;
     player_entry_view view;
-   
+    boolean entryscreen, actiondisplay, splash;
     
     Model()
     {
@@ -18,26 +18,28 @@ class Model
 
     public void search()
     {
-        int id = 0;
-        String name = "";
-        boolean changename = false;
-        String result = "";
-        System.out.println("Enter Key Pressed");
+        if(entryscreen){
+          int id = 0;
+          String name = "";
+          boolean changename = false;
+          String result = "";
+          System.out.println("Enter Key Pressed");
         
-        //sending id search and adding name to teams
-        String[] arrString =  view.Entry(false).toArray(new String[0]);
-        for(int i = 0; i < arrString.length/2; i++)
-        {
-        if(arrString[i]!=" "){
-            id = Integer.parseInt(arrString[i]);
-            name = arrString[i+30];
-            result = data.playerData(id, name, changename);
-            if(i<15){
-                 view.RedTeam[i].setText(result);
-            }
-             else if(i>=15 && i<30){
-                view.GreenTeam[i-15].setText(result);
+         //sending id search and adding name to teams
+         String[] arrString =  view.Entry(false).toArray(new String[0]);
+         for(int i = 0; i < arrString.length/2; i++)
+         {
+             if(arrString[i]!=" "){
+               id = Integer.parseInt(arrString[i]);
+               name = arrString[i+30];
+              result = data.playerData(id, name, changename);
+                if(i<15){
+                     view.RedTeam[i].setText(result);
              }
+              else if(i>=15 && i<30){
+                  view.GreenTeam[i-15].setText(result);
+               }
+            }
          }
         }
         //sending signal to equipment
@@ -47,12 +49,48 @@ class Model
         }
     }
 
+    public void launch(){
+        splash = true;
+        view.create_splash();
+        try {
+            // Wait 3 seconds
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        splash = false;
+        entryscreen = true;
+        view.create();
+    }
+
+    public void resetgame(){
+       
+        view.actionScreen.setVisible(false);
+        view.actionCountdownLabel.setVisible(false);
+        for(int i=0; i<view.actionGreen.length;i++){
+            view.actionGreen[i].setVisible(false);
+        }
+        for(int i=0; i<view.actionRed.length;i++){
+            view.actionRed[i].setVisible(false);
+        }
+        view.timeRemaining.setVisible(false);
+        view.warningLabel.setVisible(false);
+        view.timer.setVisible(false);
+        view.warning.setVisible(false);
+        view.game_over.setVisible(false);
+        view.create();
+        entryscreen = true;
+        clear();
+    }
+
     public void start()
-    {
+    {   
+        entryscreen = false;
+        actiondisplay = true;
         System.out.println("F5 Key Pressed");
         view.frame.getContentPane().removeAll();
         view.frame.repaint();
-        view.create_timer();
+        view.create_action_screen();
     }
 
     public void clear()
