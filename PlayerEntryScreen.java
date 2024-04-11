@@ -388,12 +388,12 @@ class player_entry_view extends JPanel
 		if(!RedTeam[i].getText().isBlank())
 		{
 			redNames.add(RedTeam[i].getText());
-            RedScores.put(RedTeam[i].getText(),1000000);
+            RedScores.put(RedTeam[i].getText(),0);
 		}
 		if(!GreenTeam[i].getText().isBlank())
 		{
 			greenNames.add(GreenTeam[i].getText());
-            GreenScores.put(GreenTeam[i].getText(),1000000);
+            GreenScores.put(GreenTeam[i].getText(),0);
 		}
 	}
         actionRed = new JPanel[redNames.size()];
