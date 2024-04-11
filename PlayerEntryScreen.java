@@ -388,12 +388,12 @@ class player_entry_view extends JPanel
 		if(!RedTeam[i].getText().isBlank())
 		{
 			redNames.add(RedTeam[i].getText());
-            RedScores.put(RedTeam[i].getText(),0);
+            RedScores.put(RedTeam[i].getText(),1000000);
 		}
 		if(!GreenTeam[i].getText().isBlank())
 		{
 			greenNames.add(GreenTeam[i].getText());
-            GreenScores.put(GreenTeam[i].getText(),0);
+            GreenScores.put(GreenTeam[i].getText(),1000000);
 		}
 	}
         actionRed = new JPanel[redNames.size()];
@@ -490,7 +490,7 @@ class player_entry_view extends JPanel
         
     
         // start countdown for 30 seconds
-          startCountdownTimer( 0, 30, () -> {
+          startCountdownTimer( 0, 1, () -> {
             // After the 30-second warning, start the main game countdown
             warning.remove(warningLabel);
             warning.remove(warningCountdownLabel);
@@ -515,7 +515,7 @@ class player_entry_view extends JPanel
             timer.revalidate();
             timer.repaint();
 
-            startActionCountdownTimer( 6, 0);
+            startActionCountdownTimer( 0, 1);
             actionScreen.setVisible(true);
         });
     }
