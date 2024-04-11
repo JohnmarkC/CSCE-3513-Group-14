@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -313,6 +312,7 @@ class player_entry_view extends JPanel
         this.frame.setVisible(true);       
     }
 
+
     public void create_action_screen() {
         this.frame.getContentPane().removeAll();
         
@@ -381,12 +381,10 @@ class player_entry_view extends JPanel
        
         frame.add(actionScreen);
         frame.repaint();
-
     }
     
     public void load_players()
     {
-        //have one for database search. can use it instead of this
     	ArrayList<String> redNames = new ArrayList<String>();
     	ArrayList<String> greenNames = new ArrayList<String>();
     	for(int i = 0; i < 15; i++)
@@ -408,6 +406,7 @@ class player_entry_view extends JPanel
     	JLabel[] GreenPlayers = new JLabel[greenNames.size()];
     	int rx = 250;
     	int gx = 1000;
+
     	int y = 100;
     	int offset = 20;
     	
