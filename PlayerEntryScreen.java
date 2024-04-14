@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -41,6 +42,7 @@ class player_entry_view extends JPanel
     JLabel actionCountdownLabel;
     JLabel warningCountdownLabel;
     JPanel game_over;
+    JLabel[] RedPlayers, GreenPlayers;
 
 
     //Contructor
@@ -312,7 +314,6 @@ class player_entry_view extends JPanel
         this.frame.setVisible(true);       
     }
 
-
     public void create_action_screen() {
         this.frame.getContentPane().removeAll();
         
@@ -381,6 +382,7 @@ class player_entry_view extends JPanel
        
         frame.add(actionScreen);
         frame.repaint();
+
     }
     
     public void load_players()
@@ -402,11 +404,10 @@ class player_entry_view extends JPanel
 	}
         actionRed = new JPanel[redNames.size()];
         actionGreen = new JPanel[greenNames.size()];
-    	JLabel[] RedPlayers = new JLabel[redNames.size()];
-    	JLabel[] GreenPlayers = new JLabel[greenNames.size()];
+    	RedPlayers = new JLabel[redNames.size()];
+    	GreenPlayers = new JLabel[greenNames.size()];
     	int rx = 250;
     	int gx = 1000;
-
     	int y = 100;
     	int offset = 20;
     	
@@ -420,7 +421,7 @@ class player_entry_view extends JPanel
                 y=100;
             }
 		    RedPlayers[i] = new JLabel();
-		    RedPlayers[i].setText((i+1)+". "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+		    RedPlayers[i].setText("   "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
 		    RedPlayers[i].setBounds(0, 0, 250, 25);
@@ -429,7 +430,7 @@ class player_entry_view extends JPanel
         }
         else{
             RedPlayers[i] = new JLabel();
-		    RedPlayers[i].setText((i+1)+". "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+		    RedPlayers[i].setText("   "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -451,7 +452,7 @@ class player_entry_view extends JPanel
                 y=100;
             }
 		    GreenPlayers[i] = new JLabel();
-		    GreenPlayers[i].setText((i+1)+". "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+		    GreenPlayers[i].setText("   "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
 		    GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
 		    GreenPlayers[i].setBounds(0, 0, 50, 25);
@@ -461,7 +462,7 @@ class player_entry_view extends JPanel
         }
         else{
             GreenPlayers[i] = new JLabel();
-		    GreenPlayers[i].setText((i+1)+". "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+		    GreenPlayers[i].setText("   "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
             GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -504,7 +505,6 @@ class player_entry_view extends JPanel
             
             timer.setVisible(true);
             
-                
             // start 6 minute game countdown
             timeRemaining = new JLabel("Time Remaining:");
             timeRemaining.setFont(new Font("TimesRoman", Font.BOLD, 40));
@@ -607,7 +607,7 @@ class player_entry_view extends JPanel
              return game;
        }
         
-    }
+    }   
 
     public void gameOver(){
         game_over = new JPanel();
@@ -635,5 +635,47 @@ class player_entry_view extends JPanel
         frame.repaint();
         frame.revalidate();
 
+    }
+    public void StylizedB(String Name){
+        int y = 110;
+        int x = 0;
+        int offset = 20;
+        Color teamColor = Color.RED;
+        for(int i =0; i<RedPlayers.length;i++){
+            if(RedPlayers[i].getText().contains(Name)){
+                y = (i>7)? y=110+offset*i:y+offset*i;
+                x=(i>7)? 450: 250;
+                break;
+            }
+        }
+        for(int i =0; i<GreenPlayers.length;i++){
+            if(GreenPlayers[i].getText().contains(Name)){
+                y = (i>7)? y=100+offset*i:y+offset*i;
+                x = (i>7)? 1200: 800;
+                teamColor = Color.GREEN;
+                break;
+            }
+        }
+
+        final Color finalTeamColor = teamColor;
+        final int xbase = x;
+        final int ybase = y;
+       
+    
+        JPanel styledB = new JPanel(){
+            protected void paintComponent(Graphics action) {
+                action.setColor(finalTeamColor);
+                action.drawRect(xbase, ybase, 12, 12);
+                action.drawString("B", xbase+2, ybase+10);
+                
+            }
+        };
+        styledB.setBounds(x,y,20,20);
+        styledB.repaint();
+        styledB.setVisible(true);
+        frame.add(styledB);
+        frame.setComponentZOrder(styledB, 0);
+        frame.repaint();
+        frame.validate();
     }
 }
