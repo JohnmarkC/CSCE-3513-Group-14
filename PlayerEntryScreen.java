@@ -643,14 +643,14 @@ class player_entry_view extends JPanel
         Color teamColor = Color.RED;
         for(int i =0; i<RedPlayers.length;i++){
             if(RedPlayers[i].getText().contains(Name)){
-                y = (i>7)? y=110+offset*i-8:y+offset*i;
+                y = (i>7)? y=110+offset*(i-8):y+offset*i;
                 x=(i>7)? 450: 250;
                 break;
             }
         }
         for(int i =0; i<GreenPlayers.length;i++){
             if(GreenPlayers[i].getText().contains(Name)){
-                y = (i>7)? y=100+offset*i-8:y+offset*i;
+                y = (i>7)? y=100+offset*(i-8):y+offset*i;
                 x = (i>7)? 1200: 800;
                 teamColor = Color.GREEN;
                 break;
