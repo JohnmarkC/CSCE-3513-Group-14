@@ -476,8 +476,9 @@ class player_entry_view extends JPanel
         actionGreen[i].repaint();
         y=y+offset;
 
-	players_loaded = true;
 	}
+    players_loaded = true;
+
 
 	}
 	
@@ -515,7 +516,7 @@ class player_entry_view extends JPanel
     {
         for(int i = 0; i < RedPlayers.length; i++)
         {
-            RedPlayers[i].setText((i+1)+". "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+            RedPlayers[i].setText("   " +redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -523,7 +524,7 @@ class player_entry_view extends JPanel
         }
         for(int i = 0; i < GreenPlayers.length; i++)
         {
-            GreenPlayers[i].setText((i+1)+". "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+            GreenPlayers[i].setText("   "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
 		    GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
