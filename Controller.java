@@ -1,8 +1,20 @@
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.TimerTask;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.Clip;
+
 import java.awt.event.MouseEvent;
 import static java.lang.System.*;
+import java.util.Timer;
+
 
 
 class Controller implements KeyListener, MouseListener
@@ -10,7 +22,8 @@ class Controller implements KeyListener, MouseListener
     player_entry_view view;
     Model model;
     SupaBaseIntegration data;
-   
+    private Clip audioClip;
+    private Timer audioTimer;
     
 
     //Constructor
@@ -28,6 +41,40 @@ class Controller implements KeyListener, MouseListener
         view = v;
     }
 
+    // Load the audio file
+    private void loadAudio() {
+        try {
+            File audioFile = new File("Track01.wav"); // Replace with your audio file path
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+            audioClip = AudioSystem.getClip();
+            audioClip.open(audioInputStream);
+        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Start playing the audio
+    private void playAudio() {
+        if (audioClip != null) {
+            audioClip.setFramePosition(0); // Start from the beginning
+            audioClip.start();
+        }
+    }
+
+    private void loadAndStartAudioAfterDelay() {
+        if (audioTimer != null) {
+            audioTimer.cancel();
+        }
+        audioTimer = new Timer();
+        audioTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                loadAudio();
+                playAudio();
+            }
+        }, 14000); // 16 seconds in milliseconds
+    }
+
     public void keyPressed(KeyEvent e)
     {
       if(model.entryscreen){
@@ -39,6 +86,8 @@ class Controller implements KeyListener, MouseListener
             case KeyEvent.VK_F5: //F5 key pressed
                 model.start();
                 //create the game
+                //start the audio when F5 is pressed
+                loadAndStartAudioAfterDelay(); 
                 break;
             case KeyEvent.VK_F12: // F12 key pressed
                 model.clear();
