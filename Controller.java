@@ -72,7 +72,7 @@ class Controller implements KeyListener, MouseListener
                 loadAudio();
                 playAudio();
             }
-        }, 14000); // 16 seconds in milliseconds
+        }, 14000); // 14 seconds in milliseconds
     }
 
     public void keyPressed(KeyEvent e)
