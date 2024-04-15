@@ -27,7 +27,11 @@ class player_entry_view extends JPanel
     Vector<String> game;
     String [] Red_team;
     String [] Green_team;
+    boolean players_loaded;
     HashMap<String, Integer> GreenScores, RedScores;
+    ArrayList<String> redNames = new ArrayList<String>();
+    ArrayList<String> greenNames = new ArrayList<String>();
+	
 
     JTextField RedTeam[];
     JTextField GreenTeam[];
@@ -388,8 +392,6 @@ class player_entry_view extends JPanel
     
     public void load_players()
     {
-    	ArrayList<String> redNames = new ArrayList<String>();
-    	ArrayList<String> greenNames = new ArrayList<String>();
     	for(int i = 0; i < 15; i++)
     	{
 		if(!RedTeam[i].getText().isBlank())
@@ -405,8 +407,8 @@ class player_entry_view extends JPanel
 	}
         actionRed = new JPanel[redNames.size()];
         actionGreen = new JPanel[greenNames.size()];
-    	RedPlayers = new JLabel[redNames.size()];
-    	GreenPlayers = new JLabel[greenNames.size()];
+    	this.RedPlayers = new JLabel[redNames.size()];
+    	this.GreenPlayers = new JLabel[greenNames.size()];
     	int rx = 250;
     	int gx = 1000;
     	int y = 100;
@@ -473,11 +475,63 @@ class player_entry_view extends JPanel
         actionGreen[i].setVisible(true);
         actionGreen[i].repaint();
         y=y+offset;
+
+	players_loaded = true;
 	}
 
 	}
-    
-    public void create_timer_actionScreen() {
+	
+    public void sort_players()
+    {
+        for(int i = 0; i < redNames.size() -1; i++)
+        {
+            for(int j = 0; j < redNames.size() -i -1; j++)
+            {
+                if (RedScores.get(redNames.get(j)) < RedScores.get(redNames.get(j + 1)))
+                {
+                    String temp = redNames.get(j);
+                    redNames.set(j, redNames.get(j + 1));
+                    redNames.set(j + 1, temp);
+                }
+            }
+        }
+        for(int i = 0; i < greenNames.size() -1; i++)
+        {
+            for(int j = 0; j < greenNames.size() -i -1; j++)
+            {
+                if (GreenScores.get(greenNames.get(j)) > GreenScores.get(greenNames.get(j + 1)))
+                {
+                    String temp = greenNames.get(j);
+                    greenNames.set(j, greenNames.get(j + 1));
+                    greenNames.set(j + 1, temp);
+                }
+            }
+        }
+        draw_players();
+    }
+
+	
+    public void draw_players()
+    {
+        for(int i = 0; i < RedPlayers.length; i++)
+        {
+            RedPlayers[i].setText((i+1)+". "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+		    RedPlayers[i].setForeground(Color.WHITE);
+		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
+            RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
+		    RedPlayers[i].setBounds(0, 0, 250, 25);
+        }
+        for(int i = 0; i < GreenPlayers.length; i++)
+        {
+            GreenPlayers[i].setText((i+1)+". "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+		    GreenPlayers[i].setForeground(Color.WHITE);
+		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
+            GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
+		    GreenPlayers[i].setBounds(0, 0, 250, 25);
+        }
+    }
+	
+	public void create_timer_actionScreen() {
 
         //30s warning before the 6 minute game
         warningLabel = new JLabel("Get ready! Game starting in: ");
