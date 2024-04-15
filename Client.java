@@ -13,7 +13,7 @@ public class Client {
             {
                 Thread.sleep(5000);
             }
-            catch
+            catch(InterruptedException e)
             {
                 Thread.currentThread().interrupt();
             }
