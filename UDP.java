@@ -70,7 +70,7 @@ public class UDP
         // sendData(player[1]);
     }
 
-    public void gameState(int state)
+    public static void gameState(int state)
     {
         switch(state)
         {
