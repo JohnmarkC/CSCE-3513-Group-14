@@ -101,7 +101,7 @@ class player_entry_view extends JPanel
         Timer timer = new Timer(1000, e -> {
             if (minutes.get() == 0 && sec.get() == 0) {
                 ((Timer) e.getSource()).stop(); // Stop the timer when countdown reaches 0
-		UDP.gameState(221);
+		        UDP.gameState(221);
                 gameOver();
                 model.actiondisplay = false;
 
@@ -125,6 +125,7 @@ class player_entry_view extends JPanel
                     String formattedTime = String.format("%02d:%02d", minutes.get(), sec.get());
                     actionCountdownLabel.setText(formattedTime);
                     actionScreen.setVisible(true);
+                    UDP.sendData("-1");
                 }
             }
         });
