@@ -21,6 +21,7 @@ public class UDP
 
         while(true)
         {
+            //System.out.println("while loop 1:");
             // while(receive)
             // {
                 String[] players = receiveData(packetData, receiverSocket);
@@ -49,25 +50,27 @@ public class UDP
         //reconstruct packet into string, separate player[0] = shooter, player[1] = player who was shot
         String playerIn = data(packetData).toString();
         String[] player = playerIn.split(":");
+        //System.out.println(player[1]);
         
-        return player;
-        /*
         switch(player[1])
         {
-            case 53:
+            case "53":
                 //green player shot red base
+                //System.out.println("53 works");
                 break;
-            case 43:
+            case "43":
                 //red player shot green base
+                //System.out.println("53 works");
                 break;
             default:
                 //red/green player has shot green/red player
                 sendData(player[1]);
                 break;
         } 
-        */
+        
 
-        // sendData(player[1]);
+        sendData(player[1]);
+        return player;
     }
 
     public static void gameState(int state)
@@ -75,11 +78,13 @@ public class UDP
         switch(state)
         {
             case 202: //game start
+                System.out.println("transmitting 202");
                 sendData("202");
                 receive = true;
                 break;
             case 221: //game end
                 for(int i = 0; i < 3; i++)
+                    System.out.println("transmitting 221");
                     sendData("221");
                 receive = false;
                 break;
