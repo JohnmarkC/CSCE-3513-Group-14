@@ -9,11 +9,13 @@ class Model
 {
     SupaBaseIntegration data;
     player_entry_view view;
-    boolean entryscreen, actiondisplay, splash;
+    boolean entryscreen, actiondisplay, splash, equipmentID, players;
     
     Model()
     {
        data = new SupaBaseIntegration(); 
+       equipmentID = false;
+       players = false;
     }
 
     public void search()
@@ -27,9 +29,11 @@ class Model
         
          //sending id search and adding name to teams
          String[] arrString =  view.Entry(false).toArray(new String[0]);
+         
          for(int i = 0; i < arrString.length/2; i++)
          {
              if(arrString[i]!=" "){
+               players =true;
                id = Integer.parseInt(arrString[i]);
                name = arrString[i+30];
               result = data.playerData(id, name, changename);
@@ -44,6 +48,9 @@ class Model
         }
         //sending signal to equipment
         String[] Eqid = view.Entry(true).toArray(new String[0]);
+        if(Eqid.length>0){
+            equipmentID = true;
+        }
         for(String Eq : Eqid){
              UDP.sendData(Eq);
         }
