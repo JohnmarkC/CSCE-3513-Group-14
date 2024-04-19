@@ -125,7 +125,6 @@ class player_entry_view extends JPanel
                     String formattedTime = String.format("%02d:%02d", minutes.get(), sec.get());
                     actionCountdownLabel.setText(formattedTime);
                     actionScreen.setVisible(true);
-                    UDP.sendData("-1");
                 }
             }
         });
