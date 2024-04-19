@@ -16,6 +16,7 @@ import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.util.Map.Entry;
 
 
 class player_entry_view extends JPanel
@@ -760,5 +761,34 @@ class player_entry_view extends JPanel
         if(!Bkeep.isEmpty()){
             StylizedB(key);
         }
+    }
+    
+    public void updateScoreForTag(String playerName, boolean isOpponentTagged, boolean isSameTeamTagged) {
+        int points = 0;
+        if (isOpponentTagged) {
+            points += 10;
+        }
+        if (isSameTeamTagged) {
+            points -= 10;
+        }
+
+        if (RedScores.containsKey(playerName)) {
+            RedScores.put(playerName, RedScores.get(playerName) + points);
+            System.out.println("adding to red player: "+playerName);
+        }
+         else if (GreenScores.containsKey(playerName)) {
+            GreenScores.put(playerName, GreenScores.get(playerName) + points);
+            System.out.println("adding to green player: "+playerName);
+        }
+    }
+
+    // Method to handle red base being scored by green team (code 53)
+    public void handleRedBaseScore(String Name) {
+        GreenScores.put(Name,GreenScores.get(Name)+100);
+    }
+
+    // Method to handle green base being scored by red team (code 43)
+    public void handleGreenBaseScore(String Name) {
+        RedScores.put(Name,RedScores.get(Name)+100);
     }
 }
