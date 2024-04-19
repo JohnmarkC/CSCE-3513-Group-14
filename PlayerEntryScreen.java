@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -30,12 +29,14 @@ class player_entry_view extends JPanel
     String [] Green_team;
     boolean players_loaded;
     HashMap<String, Integer> GreenScores, RedScores;
+    HashMap<Integer,String> Eq2nameGreen, Eq2nameRed;
     ArrayList<String> redNames = new ArrayList<String>();
     ArrayList<String> greenNames = new ArrayList<String>();
 	
 
-    JTextField RedTeam[];
-    JTextField GreenTeam[];
+    JTextField RedTeam[], RedTeamEqid[];
+    JTextField GreenTeam[], GreenTeamEqid[];
+    
     JFrame frame = new JFrame();
     int width = 1250;
     int height = 1250;
@@ -56,6 +57,8 @@ class player_entry_view extends JPanel
         //Link up the controller
         GreenScores = new HashMap<String, Integer>();
         RedScores = new HashMap<String, Integer>();
+        Eq2nameGreen= new HashMap<Integer, String>();
+        Eq2nameRed = new HashMap<Integer, String>();
         controller = new Controller(m, this);
         model = m;
     
@@ -249,8 +252,10 @@ class player_entry_view extends JPanel
         //create the text fields for player entry
 
  	int Nx, y, Nwidth, Nheight, Ix;
-    RedTeam = new JTextField[45];
-    GreenTeam = new JTextField[45];
+    RedTeam = new JTextField[30];
+    GreenTeam = new JTextField[30];
+    RedTeamEqid = new JTextField[15];
+    GreenTeamEqid = new JTextField[15];
         Ix = 25;
         y = 75;
         Nwidth = 225;
@@ -295,22 +300,22 @@ class player_entry_view extends JPanel
         }
         y = 75;
         int Eidx = Nx + Nwidth + 25;
-        for(int i = 30; i<45; i++){
-            RedTeam[i] = new JTextField(10);
-            TextPrompt tp1 = new TextPrompt("Equipment ID", RedTeam[i], TextPrompt.Show.FOCUS_GAINED);
-            RedTeam[i].setBackground(Color.WHITE);
-            Redpanel.add(RedTeam[i]);
-            RedTeam[i].addKeyListener(controller);
+        for(int i = 0; i<15; i++){
+            RedTeamEqid[i] = new JTextField(10);
+            TextPrompt tp1 = new TextPrompt("Equipment ID", RedTeamEqid[i], TextPrompt.Show.FOCUS_GAINED);
+            RedTeamEqid[i].setBackground(Color.WHITE);
+            Redpanel.add(RedTeamEqid[i]);
+            RedTeamEqid[i].addKeyListener(controller);
             tp1.changeAlpha(0.5f);
-            RedTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
+            RedTeamEqid[i].setBounds(Eidx,y,Nwidth/2,Nheight);
 
-            GreenTeam[i] = new JTextField(10);
-            TextPrompt tp2 = new TextPrompt("Equipment ID", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
-            GreenTeam[i].setBackground(Color.WHITE);
-            Greenpanel.add(GreenTeam[i]);
-            GreenTeam[i].addKeyListener(controller);
+            GreenTeamEqid[i] = new JTextField(10);
+            TextPrompt tp2 = new TextPrompt("Equipment ID", GreenTeamEqid[i], TextPrompt.Show.FOCUS_GAINED);
+            GreenTeamEqid[i].setBackground(Color.WHITE);
+            Greenpanel.add(GreenTeamEqid[i]);
+            GreenTeamEqid[i].addKeyListener(controller);
             tp2.changeAlpha(0.5f);
-            GreenTeam[i].setBounds(Eidx,y,Nwidth/2,Nheight);
+            GreenTeamEqid[i].setBounds(Eidx,y,Nwidth/2,Nheight);
             y += 35;
         }
 
@@ -399,19 +404,23 @@ class player_entry_view extends JPanel
 		{
 			redNames.add(RedTeam[i].getText());
             RedScores.put(RedTeam[i].getText(),0);
+            Eq2nameRed.put(Integer.parseInt(RedTeamEqid[i].getText()),RedTeam[i].getText());
 		}
 		if(!GreenTeam[i].getText().isBlank())
 		{
 			greenNames.add(GreenTeam[i].getText());
             GreenScores.put(GreenTeam[i].getText(),0);
+            Eq2nameGreen.put(Integer.parseInt(GreenTeamEqid[i].getText()),GreenTeam[i].getText());
 		}
 	}
+    System.out.println("RED MAP: "+Eq2nameRed);
+    System.out.println("GREEN MAP: "+Eq2nameGreen);
         actionRed = new JPanel[redNames.size()];
         actionGreen = new JPanel[greenNames.size()];
     	this.RedPlayers = new JLabel[redNames.size()];
     	this.GreenPlayers = new JLabel[greenNames.size()];
-    	int rx = 250;
-    	int gx = 1000;
+    	int rx = 250+20;
+    	int gx = 1000+20;
     	int y = 100;
     	int offset = 20;
     	
@@ -425,7 +434,7 @@ class player_entry_view extends JPanel
                 y=100;
             }
 		    RedPlayers[i] = new JLabel();
-		    RedPlayers[i].setText("   "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+		    RedPlayers[i].setText(redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
 		    RedPlayers[i].setBounds(0, 0, 250, 25);
@@ -434,7 +443,7 @@ class player_entry_view extends JPanel
         }
         else{
             RedPlayers[i] = new JLabel();
-		    RedPlayers[i].setText("   "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+		    RedPlayers[i].setText(redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -456,7 +465,7 @@ class player_entry_view extends JPanel
                 y=100;
             }
 		    GreenPlayers[i] = new JLabel();
-		    GreenPlayers[i].setText("   "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+		    GreenPlayers[i].setText(greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
 		    GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
 		    GreenPlayers[i].setBounds(0, 0, 50, 25);
@@ -466,7 +475,7 @@ class player_entry_view extends JPanel
         }
         else{
             GreenPlayers[i] = new JLabel();
-		    GreenPlayers[i].setText("   "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+		    GreenPlayers[i].setText(greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
             GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -517,7 +526,7 @@ class player_entry_view extends JPanel
     {
         for(int i = 0; i < RedPlayers.length; i++)
         {
-            RedPlayers[i].setText("   " +redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+            RedPlayers[i].setText(redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -525,12 +534,13 @@ class player_entry_view extends JPanel
         }
         for(int i = 0; i < GreenPlayers.length; i++)
         {
-            GreenPlayers[i].setText("   "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+            GreenPlayers[i].setText(greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
 		    GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
 		    GreenPlayers[i].setBounds(0, 0, 250, 25);
         }
+        
     }
 	
 	public void create_timer_actionScreen() {
@@ -638,10 +648,11 @@ class player_entry_view extends JPanel
         if(EqID){
              for(int i =0; i<30; i++){
                  if(i<15){
-                 game.add(Red_team[i+30]);
+                 game.add(RedTeamEqid[i].getText());
+                
                  }
                  else{
-                 game.add(Green_team[i+15]);
+                 game.add(GreenTeamEqid[i-15].getText());
                  }
              }
              return game;
@@ -709,7 +720,7 @@ class player_entry_view extends JPanel
         for(int i =0; i<GreenPlayers.length;i++){
             if(GreenPlayers[i].getText().contains(Name)){
                 y = (i>7)? y=100+offset*(i-8):y+offset*i;
-                x = (i>7)? 1200: 800;
+                x = (i>7)? 1200: 1000;
                 teamColor = Color.GREEN;
                 break;
             }
@@ -735,37 +746,5 @@ class player_entry_view extends JPanel
         frame.setComponentZOrder(styledB, 0);
         frame.repaint();
         frame.validate();
-    }
-
-    public void updateScoreForTag(String playerName, boolean isOpponentTagged, boolean isSameTeamTagged) {
-        int points = 0;
-        if (isOpponentTagged) {
-            points += 10;
-        }
-        if (isSameTeamTagged) {
-            points -= 10;
-        }
-        
-        if (RedScores.containsKey(playerName)) {
-            RedScores.put(playerName, RedScores.get(playerName) + points);
-        } else if (GreenScores.containsKey(playerName)) {
-            GreenScores.put(playerName, GreenScores.get(playerName) + points);
-        }
-    }
-
-    // Method to handle red base being scored by green team (code 53)
-    public void handleRedBaseScore() {
-        for (Entry<String, Integer> entry : GreenScores.entrySet()) {
-            GreenScores.put(entry.getKey(), entry.getValue() + 100);
-            StylizedB(entry.getKey());  // Call StylizedB for each player who scores
-        }
-    }
-
-    // Method to handle green base being scored by red team (code 43)
-    public void handleGreenBaseScore() {
-        for (Entry<String, Integer> entry : RedScores.entrySet()) {
-            RedScores.put(entry.getKey(), entry.getValue() + 100);
-            StylizedB(entry.getKey());  // Call StylizedB for each player who scores
-        }
     }
 }
