@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -734,5 +735,37 @@ class player_entry_view extends JPanel
         frame.setComponentZOrder(styledB, 0);
         frame.repaint();
         frame.validate();
+    }
+
+    public void updateScoreForTag(String playerName, boolean isOpponentTagged, boolean isSameTeamTagged) {
+        int points = 0;
+        if (isOpponentTagged) {
+            points += 10;
+        }
+        if (isSameTeamTagged) {
+            points -= 10;
+        }
+        
+        if (RedScores.containsKey(playerName)) {
+            RedScores.put(playerName, RedScores.get(playerName) + points);
+        } else if (GreenScores.containsKey(playerName)) {
+            GreenScores.put(playerName, GreenScores.get(playerName) + points);
+        }
+    }
+
+    // Method to handle red base being scored by green team (code 53)
+    public void handleRedBaseScore() {
+        for (Entry<String, Integer> entry : GreenScores.entrySet()) {
+            GreenScores.put(entry.getKey(), entry.getValue() + 100);
+            StylizedB(entry.getKey());  // Call StylizedB for each player who scores
+        }
+    }
+
+    // Method to handle green base being scored by red team (code 43)
+    public void handleGreenBaseScore() {
+        for (Entry<String, Integer> entry : RedScores.entrySet()) {
+            RedScores.put(entry.getKey(), entry.getValue() + 100);
+            StylizedB(entry.getKey());  // Call StylizedB for each player who scores
+        }
     }
 }
