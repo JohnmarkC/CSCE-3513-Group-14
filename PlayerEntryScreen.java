@@ -102,7 +102,7 @@ class player_entry_view extends JPanel
         Timer timer = new Timer(1000, e -> {
             if (minutes.get() == 0 && sec.get() == 0) {
                 ((Timer) e.getSource()).stop(); // Stop the timer when countdown reaches 0
-		UDP.gameState(221);
+		        UDP.gameState(221);
                 gameOver();
                 model.actiondisplay = false;
 
