@@ -12,10 +12,10 @@ class Model
     SupaBaseIntegration data;
     player_entry_view view;
     boolean entryscreen, actiondisplay, splash, equipmentID, players;
-    HashMap<Integer,String> Eq2nameGreen, Eq2nameRed;
     ArrayList<String> rednames; 
     ArrayList<String> greennames;
     int members = 1;
+    String [] ID;
 
     
     Model()
@@ -23,10 +23,12 @@ class Model
        data = new SupaBaseIntegration(); 
        equipmentID = false;
        players = false;
-       Eq2nameGreen = new HashMap<Integer,String>();
-       Eq2nameRed = new HashMap<Integer, String>();
        rednames = new ArrayList<String>(); 
        greennames = new ArrayList<String>(); 
+       ID = new String[30];
+       for(int i =0; i<30; i++){
+        ID[i]= "";
+       }
        
     }
 
@@ -52,7 +54,6 @@ class Model
                 
                 if(i<15){
                      view.RedTeam[i].setText(result);
-
                      members++;
              }
               else if(i>=15 && i<30){
@@ -63,44 +64,58 @@ class Model
          }
         }
         
+        
         //sending signal to equipment
-        String[] Eqid = view.Entry(true).toArray(new String[0]);
-        if(Eqid.length>0){
-            equipmentID = true;
-            for(int i =0; i<Eqid.length; i++){
-             if(!Eqid[i].isBlank()){
-                if(!Eq2nameRed.containsKey(Integer.parseInt(Eqid[i]))&& i<Eqid.length/2 && !rednames.isEmpty()){
-                    UDP.sendData(Eqid[i]);
-                    Eq2nameRed.put(Integer.parseInt(Eqid[i]),rednames.get(i));
-                }
-                else if(!Eq2nameGreen.containsKey(Integer.parseInt(Eqid[i])) && !greennames.isEmpty()){
-                    UDP.sendData(Eqid[i]);
-                    Eq2nameGreen.put(Integer.parseInt(Eqid[i]),greennames.get(i));
+        String[] Eqid = new String[30];
+        
+        for(int i =0; i<30; i++){
+           if(i<15){
+                Eqid[i]=view.RedTeamEqid[i].getText();
+           }
+           else{
+                Eqid[i]=view.GreenTeamEqid[i-15].getText();
+           }
+        }
+        int i =0;
+            for(String Eq: Eqid){
+
+                if(!Eq.isBlank()){
+                    equipmentID = true;
+                    if(ID[i].isEmpty()){
+                        ID[i]=Eq;
+                        UDP.sendData(Eqid[i]);
+                    }
                 }
                 i++;
-             }
             }
-        }
+
+
     }
 
     public void recievedHit(String[] player){
+        String name;
         switch(player[1])
         {
             case "53":
                 //green player shot red base
                 System.out.println("53 works");
                 UDP.sendData("53");
+                name= view.Eq2nameGreen.get(Integer.parseInt(player[0]));
+                view.StylizedB(name);
                 break;
             case "43":
                 //red player shot green base
                 System.out.println("43 works");
                 UDP.sendData("43");
+                name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
+                System.out.println(name);
+                view.StylizedB(name);
                 break;
             default:
                 //red/green player has shot green/red player
                 System.out.println(player[0]+" has shot "+player[1]);
-                if((Eq2nameRed.containsKey(Integer.parseInt(player[0])) && Eq2nameRed.containsKey(Integer.parseInt(player[1]))) ||
-                    (Eq2nameGreen.containsKey(Integer.parseInt(player[0])) && Eq2nameGreen.containsKey(Integer.parseInt(player[1])))){
+                if((view.Eq2nameRed.containsKey(Integer.parseInt(player[0])) && view.Eq2nameRed.containsKey(Integer.parseInt(player[1]))) ||
+                    (view.Eq2nameGreen.containsKey(Integer.parseInt(player[0])) && view.Eq2nameGreen.containsKey(Integer.parseInt(player[1])))){
                      UDP.sendData(player[0]);
                      System.out.println("Sending Shooter");
                 }
@@ -169,8 +184,12 @@ class Model
              view.Green_team[i] = "";
         }
         view.game.clear();
-        Eq2nameGreen.clear();
-        Eq2nameRed.clear();
+        view.Eq2nameGreen.clear();
+        view.Eq2nameRed.clear();
+        for(int i =0; i<30; i++)
+        {
+            ID[i]="";
+        }
     }
 
 
