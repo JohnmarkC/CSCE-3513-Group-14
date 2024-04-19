@@ -30,6 +30,7 @@ class player_entry_view extends JPanel
     boolean players_loaded;
     HashMap<String, Integer> GreenScores, RedScores;
     HashMap<Integer,String> Eq2nameGreen, Eq2nameRed;
+    HashMap<String, Integer> Bkeep;
     ArrayList<String> redNames = new ArrayList<String>();
     ArrayList<String> greenNames = new ArrayList<String>();
 	
@@ -82,6 +83,7 @@ class player_entry_view extends JPanel
 	this.Red_team = new String[45];
         this.Green_team = new String[45];
         this.game = new Vector<String>();  
+        Bkeep = new HashMap<String, Integer>();
     }
 
     public void create_splash()
@@ -405,16 +407,16 @@ class player_entry_view extends JPanel
 			redNames.add(RedTeam[i].getText());
             RedScores.put(RedTeam[i].getText(),0);
             Eq2nameRed.put(Integer.parseInt(RedTeamEqid[i].getText()),RedTeam[i].getText());
+            Bkeep.put(RedTeam[i].getText(),0);
 		}
 		if(!GreenTeam[i].getText().isBlank())
 		{
 			greenNames.add(GreenTeam[i].getText());
             GreenScores.put(GreenTeam[i].getText(),0);
             Eq2nameGreen.put(Integer.parseInt(GreenTeamEqid[i].getText()),GreenTeam[i].getText());
+            Bkeep.put(GreenTeam[i].getText(),0);
 		}
 	}
-    System.out.println("RED MAP: "+Eq2nameRed);
-    System.out.println("GREEN MAP: "+Eq2nameGreen);
         actionRed = new JPanel[redNames.size()];
         actionGreen = new JPanel[greenNames.size()];
     	this.RedPlayers = new JLabel[redNames.size()];
@@ -437,7 +439,7 @@ class player_entry_view extends JPanel
 		    RedPlayers[i].setText(redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
-		    RedPlayers[i].setBounds(0, 0, 250, 25);
+		    RedPlayers[i].setBounds(0, 0, 200, 25);
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
             actionRed[i].setBounds(rx+200,y,200,30);
         }
@@ -447,7 +449,7 @@ class player_entry_view extends JPanel
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
-		    RedPlayers[i].setBounds(0, 0, 250, 25);
+		    RedPlayers[i].setBounds(0, 0, 200, 25);
         }
 		actionRed[i].add(RedPlayers[i]);
         actionRed[i].setVisible(true);
@@ -479,7 +481,7 @@ class player_entry_view extends JPanel
             GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
-		    GreenPlayers[i].setBounds(0, 0, 250, 25);
+		    GreenPlayers[i].setBounds(0, 0, 200, 25);
         }
         actionGreen[i].add(GreenPlayers[i]);
         actionGreen[i].setVisible(true);
@@ -519,6 +521,7 @@ class player_entry_view extends JPanel
             }
         }
         draw_players();
+
     }
 
 	
@@ -530,7 +533,11 @@ class player_entry_view extends JPanel
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
-		    RedPlayers[i].setBounds(0, 0, 250, 25);
+		    RedPlayers[i].setBounds(0, 0, 200, 25);
+            
+                if(Bkeep.get(redNames.get(i))>0){
+                    redrawB(redNames.get(i));
+                }
         }
         for(int i = 0; i < GreenPlayers.length; i++)
         {
@@ -538,11 +545,12 @@ class player_entry_view extends JPanel
 		    GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
-		    GreenPlayers[i].setBounds(0, 0, 250, 25);
+		    GreenPlayers[i].setBounds(0, 0, 200, 25);
+                if(Bkeep.get(greenNames.get(i))>0){
+                    redrawB(greenNames.get(i));
+                }
         }
-        
     }
-	
 	public void create_timer_actionScreen() {
 
         //30s warning before the 6 minute game
@@ -706,6 +714,7 @@ class player_entry_view extends JPanel
 
     }
     public void StylizedB(String Name){
+        Bkeep.put(Name, 1);
         int y = 110;
         int x = 0;
         int offset = 20;
@@ -746,5 +755,10 @@ class player_entry_view extends JPanel
         frame.setComponentZOrder(styledB, 0);
         frame.repaint();
         frame.validate();
+    }
+    public void redrawB(String key){
+        if(!Bkeep.isEmpty()){
+            StylizedB(key);
+        }
     }
 }
