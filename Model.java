@@ -108,7 +108,6 @@ class Model
                 System.out.println("43 works");
                 UDP.sendData("43");
                 name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
-                System.out.println(name);
                 view.StylizedB(name);
                 break;
             default:
@@ -117,11 +116,9 @@ class Model
                 if((view.Eq2nameRed.containsKey(Integer.parseInt(player[0])) && view.Eq2nameRed.containsKey(Integer.parseInt(player[1]))) ||
                     (view.Eq2nameGreen.containsKey(Integer.parseInt(player[0])) && view.Eq2nameGreen.containsKey(Integer.parseInt(player[1])))){
                      UDP.sendData(player[0]);
-                     System.out.println("Sending Shooter");
                 }
                 else{
                     UDP.sendData(player[1]);
-                    System.out.println("Sending Hit "+player[1]);
                 }
                 break;
         } 
@@ -176,16 +173,21 @@ class Model
     {
 
         System.out.println("F12 Key Pressed");
-        for(int i = 0; i <45 ; i++)
+        for(int i = 0; i <30 ; i++)
         {
              view.RedTeam[i].setText("");
              view.GreenTeam[i].setText("");
              view.Red_team[i] = "";
              view.Green_team[i] = "";
         }
+        for(int i =0; i<15;i++){
+            view.GreenTeamEqid[i].setText("");
+            view.RedTeamEqid[i].setText("");
+        }
         view.game.clear();
         view.Eq2nameGreen.clear();
         view.Eq2nameRed.clear();
+        view.Bkeep.clear();
         for(int i =0; i<30; i++)
         {
             ID[i]="";
