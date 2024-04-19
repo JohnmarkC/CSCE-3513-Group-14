@@ -1,21 +1,9 @@
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-
-import javax.imageio.plugins.bmp.BMPImageWriteParam;
 
 public class UDP
 {
-    public static boolean receive = false;
-
-    // public UDP()
-    // {
-    //     receive = false;
-    // }
-
     public static void sendData(String data)
     {
         try {
@@ -24,22 +12,31 @@ public class UDP
             transmitterSocket.send(transmitterPacket);
             transmitterSocket.close();
         } 
-        catch(IOException i) {
-            System.out.println("error occured in packet data transmission");
+        catch(Exception e) {
+            System.out.println("Error has occured in packet data transmission");
+            e.printStackTrace();
         }
     }
 
-    public static String[] receiveData(byte[] packetData, DatagramSocket receiverSocket) throws IOException
+    public static String[] receiveData(byte[] packetData, DatagramSocket receiverSocket)
     {
-        DatagramPacket receiverPacket = new DatagramPacket(packetData, packetData.length);
-        receiverSocket.receive(receiverPacket);
+        try {
+            DatagramPacket receiverPacket = new DatagramPacket(packetData, packetData.length);
+            receiverSocket.receive(receiverPacket);
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error has occurred in packet reception");
+            e.printStackTrace();
+        }
 
         //reconstruct packet into string, separate player[0] = shooter, player[1] = player who was shot
         String playerIn = data(packetData).toString();
         String[] player = playerIn.split(":");
-     
-    
-        
+        for(int i = 0; i < player.length; i++) {
+            if(!player[i].matches("\\d+")) //checks if the entries in player[] contain only integers, if not it will clear both entries
+                player[i] = " ";
+        }
         return player;
     }
 
@@ -50,13 +47,12 @@ public class UDP
             case 202: //game start
                 System.out.println("transmitting 202");
                 sendData("202");
-                receive = true;
                 break;
             case 221: //game end
-                for(int i = 0; i < 3; i++)
+                for(int i = 0; i < 3; i++) {
                     System.out.println("transmitting 221");
                     sendData("221");
-                receive = false;
+                }
                 break;
             default:
                 break;
