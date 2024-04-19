@@ -102,6 +102,7 @@ class Model
                 UDP.sendData("53");
                 name= view.Eq2nameGreen.get(Integer.parseInt(player[0]));
                 view.StylizedB(name);
+                view.handleRedBaseScore(name);
                 break;
             case "43":
                 //red player shot green base
@@ -109,6 +110,7 @@ class Model
                 UDP.sendData("43");
                 name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
                 view.StylizedB(name);
+                view.handleGreenBaseScore(name);
                 break;
             default:
                 //red/green player has shot green/red player
@@ -116,8 +118,22 @@ class Model
                 if((view.Eq2nameRed.containsKey(Integer.parseInt(player[0])) && view.Eq2nameRed.containsKey(Integer.parseInt(player[1]))) ||
                     (view.Eq2nameGreen.containsKey(Integer.parseInt(player[0])) && view.Eq2nameGreen.containsKey(Integer.parseInt(player[1])))){
                      UDP.sendData(player[0]);
+                     if(view.Eq2nameRed.containsKey(Integer.parseInt(player[0]))){
+                        name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
+                    }
+                    else{
+                        name = view.Eq2nameGreen.get(Integer.parseInt(player[0]));
+                    }
+                     view.updateScoreForTag(name, false, true);
                 }
                 else{
+                    if(view.Eq2nameRed.containsKey(Integer.parseInt(player[0]))){
+                        name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
+                    }
+                    else{
+                        name = view.Eq2nameGreen.get(Integer.parseInt(player[0]));
+                    }
+                    view.updateScoreForTag(name, true, false);
                     UDP.sendData(player[1]);
                 }
                 break;
