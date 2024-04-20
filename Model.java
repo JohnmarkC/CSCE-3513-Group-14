@@ -93,6 +93,7 @@ class Model
 
     public void recievedHit(String[] player){
         String name;
+        String event = "BLANK";
         switch(player[1])
         {
             case "53":
@@ -102,6 +103,8 @@ class Model
                 name= view.Eq2nameGreen.get(Integer.parseInt(player[0]));
                 view.StylizedB(name);
                 view.handleRedBaseScore(name);
+                event = (player[0]+ " has hit Red base");
+                view.addEvent(event);
                 break;
             case "43":
                 //red player shot green base
@@ -110,21 +113,22 @@ class Model
                 name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
                 view.StylizedB(name);
                 view.handleGreenBaseScore(name);
+                event = (player[0]+ " has hit Green base");
+                view.addEvent(event);
                 break;
             default:
                 //red/green player has shot green/red player
                 System.out.println(player[0]+" has shot "+player[1]);
-                String event = "BLANK";
                 if((view.Eq2nameRed.containsKey(Integer.parseInt(player[0])) && view.Eq2nameRed.containsKey(Integer.parseInt(player[1]))) ||
                     (view.Eq2nameGreen.containsKey(Integer.parseInt(player[0])) && view.Eq2nameGreen.containsKey(Integer.parseInt(player[1])))){
                      UDP.sendData(player[0]);
                      if(view.Eq2nameRed.containsKey(Integer.parseInt(player[0]))){
                         name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
-                        event = ("Player " + view.Eq2nameRed.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameRed.get(Integer.parseInt(player[1])));
+                        event = ("Player " + view.Eq2nameRed.get(Integer.parseInt(player[0])) +" has shot player "+ view.Eq2nameRed.get(Integer.parseInt(player[1])));
                     }
                     else{
                         name = view.Eq2nameGreen.get(Integer.parseInt(player[0]));
-                        event = ("Player " + view.Eq2nameGreen.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameGreen.get(Integer.parseInt(player[1])));
+                        event = ("Player " + view.Eq2nameGreen.get(Integer.parseInt(player[0])) +" has shot player "+ view.Eq2nameGreen.get(Integer.parseInt(player[1])));
                     }
                      view.updateScoreForTag(name, false, true);
                      view.addEvent(event);
@@ -132,11 +136,11 @@ class Model
                 else{
                     if(view.Eq2nameRed.containsKey(Integer.parseInt(player[0]))){
                         name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
-                        event = ("Player " + view.Eq2nameRed.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameGreen.get(Integer.parseInt(player[1])));
+                        event = ("Player " + view.Eq2nameRed.get(Integer.parseInt(player[0])) +" has shot player "+ view.Eq2nameGreen.get(Integer.parseInt(player[1])));
                     }
                     else{
                         name = view.Eq2nameGreen.get(Integer.parseInt(player[0]));
-                        event = ("Player " + view.Eq2nameGreen.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameRed.get(Integer.parseInt(player[1])));
+                        event = ("Player " + view.Eq2nameGreen.get(Integer.parseInt(player[0])) +" has shot player "+ view.Eq2nameRed.get(Integer.parseInt(player[1])));
                     }
                     view.updateScoreForTag(name, true, false);
                     view.addEvent(event);
