@@ -120,11 +120,11 @@ class Model
                      UDP.sendData(player[0]);
                      if(view.Eq2nameRed.containsKey(Integer.parseInt(player[0]))){
                         name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
-                        event = ("Player " + view.Eq2nameRed.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameRed.get(Integer.parseInt(player[1])));
+                        event = ("Player " + view.Eq2nameRed.get(Integer.parseInt(player[0])) +" has shot player "+ view.Eq2nameRed.get(Integer.parseInt(player[1])));
                     }
                     else{
                         name = view.Eq2nameGreen.get(Integer.parseInt(player[0]));
-                        event = ("Player " + view.Eq2nameGreen.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameGreen.get(Integer.parseInt(player[1])));
+                        event = ("Player " + view.Eq2nameGreen.get(Integer.parseInt(player[0])) +" has shot player "+ view.Eq2nameGreen.get(Integer.parseInt(player[1])));
                     }
                      view.updateScoreForTag(name, false, true);
                      view.addEvent(event);
@@ -132,11 +132,11 @@ class Model
                 else{
                     if(view.Eq2nameRed.containsKey(Integer.parseInt(player[0]))){
                         name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
-                        event = ("Player " + view.Eq2nameRed.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameGreen.get(Integer.parseInt(player[1])));
+                        event = ("Player " + view.Eq2nameRed.get(Integer.parseInt(player[0])) +" has shot player "+ view.Eq2nameGreen.get(Integer.parseInt(player[1])));
                     }
                     else{
                         name = view.Eq2nameGreen.get(Integer.parseInt(player[0]));
-                        event = ("Player " + view.Eq2nameGreen.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameRed.get(Integer.parseInt(player[1])));
+                        event = ("Player " + view.Eq2nameGreen.get(Integer.parseInt(player[0])) +" has shot player "+ view.Eq2nameRed.get(Integer.parseInt(player[1])));
                     }
                     view.updateScoreForTag(name, true, false);
                     view.addEvent(event);
