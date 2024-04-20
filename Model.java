@@ -114,25 +114,32 @@ class Model
             default:
                 //red/green player has shot green/red player
                 System.out.println(player[0]+" has shot "+player[1]);
+                String event = "BLANK";
                 if((view.Eq2nameRed.containsKey(Integer.parseInt(player[0])) && view.Eq2nameRed.containsKey(Integer.parseInt(player[1]))) ||
                     (view.Eq2nameGreen.containsKey(Integer.parseInt(player[0])) && view.Eq2nameGreen.containsKey(Integer.parseInt(player[1])))){
                      UDP.sendData(player[0]);
                      if(view.Eq2nameRed.containsKey(Integer.parseInt(player[0]))){
                         name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
+                        event = ("Player " + view.Eq2nameRed.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameRed.get(Integer.parseInt(player[1])));
                     }
                     else{
                         name = view.Eq2nameGreen.get(Integer.parseInt(player[0]));
+                        event = ("Player " + view.Eq2nameGreen.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameGreen.get(Integer.parseInt(player[1])));
                     }
                      view.updateScoreForTag(name, false, true);
+                     view.addEvent(event);
                 }
                 else{
                     if(view.Eq2nameRed.containsKey(Integer.parseInt(player[0]))){
                         name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
+                        event = ("Player " + view.Eq2nameRed.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameGreen.get(Integer.parseInt(player[1])));
                     }
                     else{
                         name = view.Eq2nameGreen.get(Integer.parseInt(player[0]));
+                        event = ("Player " + view.Eq2nameGreen.get(Integer.parseInt(player[0])) +" has shot player: "+ view.Eq2nameRed.get(Integer.parseInt(player[1])));
                     }
                     view.updateScoreForTag(name, true, false);
+                    view.addEvent(event);
                     UDP.sendData(player[1]);
                 }
                 break;
