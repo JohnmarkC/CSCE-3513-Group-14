@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.util.Map.Entry;
+import java.util.List;
 
 
 class player_entry_view extends JPanel
@@ -45,6 +46,8 @@ class player_entry_view extends JPanel
     int width = 1250;
     int height = 1250;
     JPanel actionScreen;
+    JTextArea eventTextArea;
+    List<String> events;
     JPanel warning, timer;
     JPanel actionRed[], actionGreen[], actiondisplay[];
     JLabel timeRemaining;
@@ -92,6 +95,8 @@ class player_entry_view extends JPanel
             boolean c = false;
             nameChange[i]= c;
         }
+
+        
     }
 
     public void create_splash()
@@ -432,6 +437,7 @@ class player_entry_view extends JPanel
         frame.add(timer);
         actionScreen.setVisible(true);
        
+        eventDisplayPanel();
        
         load_players();
         
@@ -850,5 +856,35 @@ class player_entry_view extends JPanel
     // Method to handle green base being scored by red team (code 43)
     public void handleGreenBaseScore(String Name) {
         RedScores.put(Name,RedScores.get(Name)+100);
+    }
+
+    public void eventDisplayPanel() {
+        events = new ArrayList<>();
+
+        JPanel eventBox = new JPanel(){
+            protected void paintComponent(Graphics action) {
+                Font timeNewRomanFont = new Font("Times New Roman", Font.PLAIN, 40);
+                action.setFont(timeNewRomanFont);
+                action.setColor(Color.RED);
+                int yOffset = 530; // Initial y-offset for the first event
+                for (String event : events) {
+                action.drawString(event, 150, yOffset);
+                yOffset -= 40; // Increase y-offset for the next event
+                }
+            }
+        };
+        frame.add(eventBox);
+        frame.repaint();
+        frame.validate();
+    }
+    public void addEvent(String event) {
+        events.add(0, event);
+        
+        // If the list size exceeds 5, remove the oldest event
+        if (events.size() > 5) {
+            events.remove(5);
+        }
+
+        frame.repaint();
     }
 }
