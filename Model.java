@@ -103,7 +103,7 @@ class Model
                 name= view.Eq2nameGreen.get(Integer.parseInt(player[0]));
                 view.StylizedB(name);
                 view.handleRedBaseScore(name);
-                event = ("Player"+name+ " has hit Red base");
+                event = ("Player "+name+ " has hit Red base");
                 view.addEvent(event);
                 break;
             case "43":
@@ -113,7 +113,7 @@ class Model
                 name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
                 view.StylizedB(name);
                 view.handleGreenBaseScore(name);
-                event = ("Player"+name+ " has hit Green base");
+                event = ("Player "+name+ " has hit Green base");
                 view.addEvent(event);
                 break;
             default:
