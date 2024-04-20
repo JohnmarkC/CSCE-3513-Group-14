@@ -34,10 +34,12 @@ class player_entry_view extends JPanel
     HashMap<String, Integer> Bkeep;
     ArrayList<String> redNames = new ArrayList<String>();
     ArrayList<String> greenNames = new ArrayList<String>();
-	
+	Boolean[] nameChange;
 
     JTextField RedTeam[], RedTeamEqid[];
     JTextField GreenTeam[], GreenTeamEqid[];
+    JCheckBox RedNameChange[], GreenNameChange[];
+
     
     JFrame frame = new JFrame();
     int width = 1250;
@@ -85,6 +87,11 @@ class player_entry_view extends JPanel
         this.Green_team = new String[45];
         this.game = new Vector<String>();  
         Bkeep = new HashMap<String, Integer>();
+        nameChange = new Boolean[30];
+        for(int i =0; i<nameChange.length;i++){
+            boolean c = false;
+            nameChange[i]= c;
+        }
     }
 
     public void create_splash()
@@ -143,6 +150,7 @@ class player_entry_view extends JPanel
     {   
        //create a panel for the green team and red team
        this.frame.repaint();
+       this.frame.getContentPane().removeAll();
         JPanel Redpanel = new JPanel();
         JPanel Greenpanel = new JPanel();
         Redpanel.setLayout(null);
@@ -161,7 +169,17 @@ class player_entry_view extends JPanel
         j.setHorizontalAlignment(JLabel.CENTER);
         j.setVerticalAlignment(JLabel.TOP);
         j.setFont(new Font("calibri", Font.BOLD, 18));
-        this.frame.add(j);
+
+        //create the label to tell how to change name
+        JLabel b = new JLabel("Glide mouse of left side of ID boxes to show Name Change check boxes. Checked = Name changing, Blank = Search.");
+        b.setForeground(Color.WHITE);
+        b.setHorizontalAlignment(JLabel.CENTER);
+        b.setVerticalAlignment(JLabel.BOTTOM);
+        b.setFont(new Font("calibri", Font.BOLD, 18));
+        
+        frame.setLayout(new BorderLayout());
+        frame.add(j, BorderLayout.NORTH);
+        frame.add(b, BorderLayout.SOUTH);
 
         //create the red team and green team labels
         JLabel r = new JLabel("Red Team");
@@ -259,6 +277,8 @@ class player_entry_view extends JPanel
     GreenTeam = new JTextField[30];
     RedTeamEqid = new JTextField[15];
     GreenTeamEqid = new JTextField[15];
+    GreenNameChange = new JCheckBox[15];
+    RedNameChange = new JCheckBox[15];
         Ix = 25;
         y = 75;
         Nwidth = 225;
@@ -272,6 +292,20 @@ class player_entry_view extends JPanel
             RedTeam[i].addKeyListener(controller);
             tp1.changeAlpha(0.5f);
             RedTeam[i].setBounds(Nx,y,Nwidth,Nheight);
+            RedNameChange[i]= new JCheckBox();
+            final int check = i;
+            RedNameChange[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JCheckBox cb = (JCheckBox) e.getSource();
+                    boolean isSelected = cb.isSelected();  
+                    nameChange[check]=isSelected;
+                }
+            });
+            RedNameChange[i].setBounds(Ix-25, y,25, Nheight);
+            RedNameChange[i].setBackground(Color.RED);
+            RedNameChange[i].setForeground((Color.WHITE));
+            Redpanel.add(RedNameChange[i]);
             
             GreenTeam[i] = new JTextField(10);
             TextPrompt tp2 = new TextPrompt("Enter your name", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
@@ -280,6 +314,20 @@ class player_entry_view extends JPanel
             GreenTeam[i].addKeyListener(controller);
             tp2.changeAlpha(0.5f);
             GreenTeam[i].setBounds(Nx,y,Nwidth,Nheight);
+            GreenNameChange[i]= new JCheckBox();
+            GreenNameChange[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JCheckBox cb = (JCheckBox) e.getSource();
+                    boolean isSelected = cb.isSelected(); 
+                    nameChange[check+15]=isSelected;
+                }
+            });
+            GreenNameChange[i].setBounds(Ix-25, y,25, Nheight);
+        
+            GreenNameChange[i].setBackground(Color.GREEN);
+            GreenNameChange[i].setForeground((Color.WHITE));
+            Greenpanel.add(GreenNameChange[i]);
             y += 35;
         }
         y = 75;
@@ -291,6 +339,7 @@ class player_entry_view extends JPanel
             RedTeam[i].addKeyListener(controller);
             tp1.changeAlpha(0.5f);
             RedTeam[i].setBounds(Ix,y,Nwidth/2,Nheight);
+            
 
             GreenTeam[i] = new JTextField(10);
             TextPrompt tp2 = new TextPrompt("Enter player ID", GreenTeam[i], TextPrompt.Show.FOCUS_GAINED);
@@ -528,6 +577,7 @@ class player_entry_view extends JPanel
 	
     public void draw_players()
     {
+      
         for(int i = 0; i < RedPlayers.length; i++)
         {
             RedPlayers[i].setText(redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
@@ -536,10 +586,8 @@ class player_entry_view extends JPanel
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
 		    RedPlayers[i].setBounds(0, 0, 200, 25);
             
-                if(Bkeep.get(redNames.get(i))>0){
-                    redrawB(redNames.get(i));
-                }
         }
+      
         for(int i = 0; i < GreenPlayers.length; i++)
         {
             GreenPlayers[i].setText(greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
@@ -547,9 +595,7 @@ class player_entry_view extends JPanel
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
 		    GreenPlayers[i].setBounds(0, 0, 200, 25);
-                if(Bkeep.get(greenNames.get(i))>0){
-                    redrawB(greenNames.get(i));
-                }
+              
         }
     }
 	public void create_timer_actionScreen() {
@@ -714,6 +760,8 @@ class player_entry_view extends JPanel
         frame.revalidate();
 
     }
+
+    ArrayList<JPanel> bMarkers = new ArrayList<>();
     public void StylizedB(String Name){
         Bkeep.put(Name, 1);
         int y = 110;
@@ -752,15 +800,27 @@ class player_entry_view extends JPanel
         styledB.setBounds(x,y,20,20);
         styledB.repaint();
         styledB.setVisible(true);
+        if(model.entryscreen){
+            styledB.setVisible(false);
+        }
         frame.add(styledB);
         frame.setComponentZOrder(styledB, 0);
         frame.repaint();
         frame.validate();
+        bMarkers.add(styledB);
     }
     public void redrawB(String key){
-        if(!Bkeep.isEmpty()){
+        if(!Bkeep.isEmpty() && Bkeep.get(key)>0){
             StylizedB(key);
         }
+    }
+
+    public void removeB(){
+        for (JPanel bMarker : bMarkers) {
+            frame.remove(bMarker); 
+        }
+        bMarkers.clear(); 
+        frame.repaint();
     }
     
     public void updateScoreForTag(String playerName, boolean isOpponentTagged, boolean isSameTeamTagged) {

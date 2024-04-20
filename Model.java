@@ -37,7 +37,6 @@ class Model
         if(entryscreen){
           int id = 0;
           String name = "";
-          boolean changename = false;
           String result = "";
           System.out.println("Enter Key Pressed");
         
@@ -50,7 +49,7 @@ class Model
                players =true;
                id = Integer.parseInt(arrString[i]);
                name = arrString[i+30];
-                result = data.playerData(id, name, changename);
+                result = data.playerData(id, name, view.nameChange[i]);
                 
                 if(i<15){
                      view.RedTeam[i].setText(result);
@@ -169,6 +168,7 @@ class Model
         view.timer.setVisible(false);
         view.warning.setVisible(false);
         view.game_over.setVisible(false);
+        view.removeB();
         view.create();
         entryscreen = true;
         clear();
@@ -180,7 +180,6 @@ class Model
         entryscreen = false;
         actiondisplay = true;
         System.out.println("F5 Key Pressed");
-        view.frame.getContentPane().removeAll();
         view.frame.repaint();
         view.create_action_screen();
     }
@@ -195,6 +194,11 @@ class Model
              view.GreenTeam[i].setText("");
              view.Red_team[i] = "";
              view.Green_team[i] = "";
+             if(i<15){
+                view.GreenNameChange[i].setSelected(false);
+                view.RedNameChange[i].setSelected(false);
+
+             }
         }
         for(int i =0; i<15;i++){
             view.GreenTeamEqid[i].setText("");
@@ -204,6 +208,7 @@ class Model
         view.Eq2nameGreen.clear();
         view.Eq2nameRed.clear();
         view.Bkeep.clear();
+        
         for(int i =0; i<30; i++)
         {
             ID[i]="";
