@@ -166,20 +166,26 @@ class Model
 
     public void resetgame(){
        
-        view.actionScreen.setVisible(false);
+        view.actionScreen.removeAll();
         view.actionCountdownLabel.setVisible(false);
+       view.frame.remove(view.actionScreen);
+       view.frame.remove(view.actionCountdownLabel);
         for(int i=0; i<view.actionGreen.length;i++){
-            view.actionGreen[i].setVisible(false);
+            view.frame.remove(view.actionGreen[i]);
         }
         for(int i=0; i<view.actionRed.length;i++){
-            view.actionRed[i].setVisible(false);
+            view.frame.remove(view.actionRed[i]);
         }
-        view.timeRemaining.setVisible(false);
-        view.warningLabel.setVisible(false);
-        view.timer.setVisible(false);
-        view.warning.setVisible(false);
+        view.frame.remove(view.timeRemaining);
+        view.frame.remove(view.warningLabel);
+        view.frame.remove(view.warning);
         view.game_over.setVisible(false);
+        view.redNames.clear();
+        view.greenNames.clear();
+
         view.removeB();
+        view.frame.repaint();
+        view.frame.revalidate();
         view.create();
         entryscreen = true;
         clear();

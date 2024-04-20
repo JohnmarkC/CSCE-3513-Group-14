@@ -480,12 +480,12 @@ class player_entry_view extends JPanel
     	int rx = 250+20;
     	int gx = 1000+20;
     	int y = 100;
-    	int offset = 20;
+    	int offset = 25;
     	
 	for(int i = 0; i < RedPlayers.length; i++)
 	{
         actionRed[i] = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        actionRed[i].setBounds(rx,y,200,30);
+        actionRed[i].setBounds(rx,y,200,25);
         actionRed[i].setBackground(Color.BLACK);
 		if(i>7){
             if(i==8){
@@ -497,7 +497,7 @@ class player_entry_view extends JPanel
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
 		    RedPlayers[i].setBounds(0, 0, 200, 25);
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
-            actionRed[i].setBounds(rx+200,y,200,30);
+            actionRed[i].setBounds(rx+200,y,200,25);
         }
         else{
             RedPlayers[i] = new JLabel();
@@ -516,7 +516,7 @@ class player_entry_view extends JPanel
 	for(int i = 0; i < GreenPlayers.length; i++)
 	{
         actionGreen[i] = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        actionGreen[i].setBounds(gx,y,200,30);
+        actionGreen[i].setBounds(gx,y,200,25);
         actionGreen[i].setBackground(Color.BLACK);
         if(i>7){
             if(i==8){
@@ -528,7 +528,7 @@ class player_entry_view extends JPanel
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
 		    GreenPlayers[i].setBounds(0, 0, 50, 25);
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
-            actionGreen[i].setBounds(gx+200,y,200,30);
+            actionGreen[i].setBounds(gx+200,y,200,25);
 
         }
         else{
@@ -538,10 +538,12 @@ class player_entry_view extends JPanel
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
 		    GreenPlayers[i].setBounds(0, 0, 200, 25);
+            
         }
         actionGreen[i].add(GreenPlayers[i]);
         actionGreen[i].setVisible(true);
         actionGreen[i].repaint();
+
         y=y+offset;
 
 	}
@@ -767,17 +769,19 @@ class player_entry_view extends JPanel
 
     }
 
-    ArrayList<JPanel> bMarkers = new ArrayList<>();
+  JPanel[]bMarkers = new JPanel[30];
     public void StylizedB(String Name){
+        int index =0;
         Bkeep.put(Name, 1);
         int y = 110;
         int x = 0;
-        int offset = 20;
+        int offset = 25;
         Color teamColor = Color.RED;
         for(int i =0; i<RedPlayers.length;i++){
             if(RedPlayers[i].getText().contains(Name)){
                 y = (i>7)? y=110+offset*(i-8):y+offset*i;
                 x=(i>7)? 450: 250;
+                index = i;
                 break;
             }
         }
@@ -785,6 +789,7 @@ class player_entry_view extends JPanel
             if(GreenPlayers[i].getText().contains(Name)){
                 y = (i>7)? y=100+offset*(i-8):y+offset*i;
                 x = (i>7)? 1200: 1000;
+                index = i+15;
                 teamColor = Color.GREEN;
                 break;
             }
@@ -809,11 +814,12 @@ class player_entry_view extends JPanel
         if(model.entryscreen){
             styledB.setVisible(false);
         }
-        frame.add(styledB);
-        frame.setComponentZOrder(styledB, 0);
+        bMarkers[index]= styledB;
+        frame.add(bMarkers[index]);
+        frame.setComponentZOrder(bMarkers[index], 0);
         frame.repaint();
         frame.validate();
-        bMarkers.add(styledB);
+        
     }
     public void redrawB(String key){
         if(!Bkeep.isEmpty() && Bkeep.get(key)>0){
@@ -822,10 +828,13 @@ class player_entry_view extends JPanel
     }
 
     public void removeB(){
-        for (JPanel bMarker : bMarkers) {
-            frame.remove(bMarker); 
+        for (int i = 0;i <30; i++){
+           if(!(bMarkers[i]==null))
+           {
+                frame.remove(bMarkers[i]);
+           }
+           bMarkers[i] = null;
         }
-        bMarkers.clear(); 
         frame.repaint();
     }
     
