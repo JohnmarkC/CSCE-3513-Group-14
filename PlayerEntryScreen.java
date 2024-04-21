@@ -18,7 +18,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.util.Map.Entry;
 import java.util.List;
-
+import java.util.Map;
 
 class player_entry_view extends JPanel
 {
@@ -56,7 +56,8 @@ class player_entry_view extends JPanel
     JLabel warningCountdownLabel;
     JPanel game_over;
     JLabel[] RedPlayers, GreenPlayers;
-
+    JPanel actionRedScore, actionGreenScore;
+    JLabel RedScoreDisplay, GreenScoreDisplay;
 
     //Contructor
     player_entry_view(Model m)
@@ -896,4 +897,53 @@ class player_entry_view extends JPanel
 
         frame.repaint();
     }
+
+	//Function that will display total team scores throughout the game, and update scores
+    public void TeamScoreDisplay()
+    {
+        System.out.println("Team Score Display function has been called");
+        
+        int RedTeamScore = 0;
+        int GreenTeamScore = 0;
+        
+        //iterating through hashmap of red team scores
+        for(Map.Entry<String,Integer> Score : RedScores.entrySet() )
+        {
+            int value = Score.getValue();
+            RedTeamScore = RedTeamScore + value;
+            System.out.println("Adding red player score to team total");
+        }
+
+        //iterating through hashmap of green team scores
+        for(Map.Entry<String,Integer> Score : GreenScores.entrySet() )
+        {
+            int value = Score.getValue();
+            GreenTeamScore = GreenTeamScore + value;
+            System.out.println("Adding green player score to team total");
+
+        }
+
+         // Drawing total scores for both teams
+     actionRedScore = new JPanel(new FlowLayout(FlowLayout.LEFT));
+     
+     actionRedScore.setOpaque(false);
+     actionRedScore.setBounds(350,100,200,30);
+     actionRedScore.setBackground(Color.WHITE);
+    
+     RedScoreDisplay = new JLabel(String.valueOf(RedTeamScore));
+	 //RedScoreDisplay.setText(String.valueOf(RedTeamScore));
+	 RedScoreDisplay.setForeground(Color.WHITE);
+	 RedScoreDisplay.setFont(new Font("TimesRoman", Font.BOLD, 20));
+	 RedScoreDisplay.setBounds(0, 0, 200, 25);
+     
+     actionRedScore.add(RedScoreDisplay);
+     actionRedScore.setVisible(true);
+     actionRedScore.repaint();
+    //  frame.setComponentZOrder(RedScoreDisplay, 0);
+    //  frame.setComponentZOrder(actionRedScore, 0);
+
+
+     System.out.println("Team Scores have been updated");
+    }
+
 }
