@@ -548,6 +548,7 @@ class player_entry_view extends JPanel
         y=y+offset;
 
 	}
+    TeamScoreDisplay();
     players_loaded = true;
 
 
@@ -606,6 +607,7 @@ class player_entry_view extends JPanel
 		    GreenPlayers[i].setBounds(0, 0, 200, 25);
               
         }
+        TeamUpdate();
     }
 	public void create_timer_actionScreen() {
 
@@ -912,6 +914,7 @@ class player_entry_view extends JPanel
             int value = Score.getValue();
             RedTeamScore = RedTeamScore + value;
             System.out.println("Adding red player score to team total");
+            System.out.println("Value being added "+value);
         }
 
         //iterating through hashmap of green team scores
@@ -920,30 +923,82 @@ class player_entry_view extends JPanel
             int value = Score.getValue();
             GreenTeamScore = GreenTeamScore + value;
             System.out.println("Adding green player score to team total");
+            System.out.println("Value being added "+value);
 
         }
 
          // Drawing total scores for both teams
      actionRedScore = new JPanel(new FlowLayout(FlowLayout.LEFT));
+     actionRedScore.setBounds(450,70,100,35);
+     actionRedScore.setBackground(Color.BLACK);
+     actionGreenScore = new JPanel(new FlowLayout(FlowLayout.LEFT));
+     actionGreenScore.setBounds(1225, 70, 100, 35);
+     actionGreenScore.setBackground(Color.BLACK);
      
-     actionRedScore.setOpaque(false);
-     actionRedScore.setBounds(350,100,200,30);
-     actionRedScore.setBackground(Color.WHITE);
     
-     RedScoreDisplay = new JLabel(String.valueOf(RedTeamScore));
+     RedScoreDisplay = new JLabel();
+     RedScoreDisplay.setText(String.valueOf(RedTeamScore));
 	 //RedScoreDisplay.setText(String.valueOf(RedTeamScore));
 	 RedScoreDisplay.setForeground(Color.WHITE);
-	 RedScoreDisplay.setFont(new Font("TimesRoman", Font.BOLD, 20));
-	 RedScoreDisplay.setBounds(0, 0, 200, 25);
+	 RedScoreDisplay.setFont(new Font("TimesRoman", Font.BOLD, 25));
+	 RedScoreDisplay.setBounds(0, 0, 100, 30);
      
+     GreenScoreDisplay = new JLabel();
+     GreenScoreDisplay.setText(String.valueOf(GreenTeamScore));
+     GreenScoreDisplay.setForeground(Color.WHITE);
+     GreenScoreDisplay.setFont(new Font("TimesRoman", Font.BOLD, 25));
+	 GreenScoreDisplay.setBounds(0, 0, 100, 30);
+
      actionRedScore.add(RedScoreDisplay);
      actionRedScore.setVisible(true);
      actionRedScore.repaint();
-    //  frame.setComponentZOrder(RedScoreDisplay, 0);
+
+     actionGreenScore.add(GreenScoreDisplay);
+     actionGreenScore.setVisible(true);
+     actionGreenScore.repaint();
+     frame.add(actionRedScore);
+     frame.add(actionGreenScore);
+     frame.repaint();
+    
     //  frame.setComponentZOrder(actionRedScore, 0);
 
 
      System.out.println("Team Scores have been updated");
+    }
+    void TeamUpdate(){
+        int RedTeamScore = 0;
+        int GreenTeamScore = 0;
+        
+        //iterating through hashmap of red team scores
+        for(Map.Entry<String,Integer> Score : RedScores.entrySet() )
+        {
+            int value = Score.getValue();
+            RedTeamScore = RedTeamScore + value;
+            System.out.println("Adding red player score to team total");
+            System.out.println("Value being added "+value);
+        }
+
+        //iterating through hashmap of green team scores
+        for(Map.Entry<String,Integer> Score : GreenScores.entrySet() )
+        {
+            int value = Score.getValue();
+            GreenTeamScore = GreenTeamScore + value;
+            System.out.println("Adding green player score to team total");
+            System.out.println("Value being added "+value);
+
+        }
+
+         RedScoreDisplay.setText(String.valueOf(RedTeamScore));
+	     //RedScoreDisplay.setText(String.valueOf(RedTeamScore));
+	     RedScoreDisplay.setForeground(Color.WHITE);
+    	 RedScoreDisplay.setFont(new Font("TimesRoman", Font.BOLD, 25));
+	     RedScoreDisplay.setBounds(0, 0, 100, 30);
+     
+         GreenScoreDisplay.setText(String.valueOf(GreenTeamScore));
+         GreenScoreDisplay.setForeground(Color.WHITE);
+         GreenScoreDisplay.setFont(new Font("TimesRoman", Font.BOLD, 25));
+    	 GreenScoreDisplay.setBounds(0, 0, 100, 30);
+
     }
 
 }
