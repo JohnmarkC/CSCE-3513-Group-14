@@ -4,6 +4,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.TimerTask;
+import java.util.Random;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -43,13 +44,96 @@ class Controller implements KeyListener, MouseListener
 
     // Load the audio file
     private void loadAudio() {
-        try {
-            File audioFile = new File("Track01.wav"); // Replace with your audio file path
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
-            audioClip = AudioSystem.getClip();
-            audioClip.open(audioInputStream);
-        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
-            e.printStackTrace();
+        Random rand = new Random();
+        int track = rand.nextInt(9); //random integer between 0 and 8
+        System.out.println(track);
+        if(track == 0)
+        {
+            try {
+                File audioFile = new File("Track01.wav"); // Replace with your audio file path
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+                audioClip = AudioSystem.getClip();
+                audioClip.open(audioInputStream);
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (track == 1)
+        {
+            try {
+                File audioFile = new File("Track02.wav"); // Replace with your audio file path
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+                audioClip = AudioSystem.getClip();
+                audioClip.open(audioInputStream);
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (track == 2)
+        {
+            try {
+                File audioFile = new File("Track03.wav"); // Replace with your audio file path
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+                audioClip = AudioSystem.getClip();
+                audioClip.open(audioInputStream);
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (track == 3)
+        {
+            try {
+                File audioFile = new File("Track04.wav"); // Replace with your audio file path
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+                audioClip = AudioSystem.getClip();
+                audioClip.open(audioInputStream);
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (track == 4)
+        {
+            try {
+                File audioFile = new File("Track05.wav"); // Replace with your audio file path
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+                audioClip = AudioSystem.getClip();
+                audioClip.open(audioInputStream);
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (track == 5)
+        {
+            try {
+                File audioFile = new File("Track06.wav"); // Replace with your audio file path
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+                audioClip = AudioSystem.getClip();
+                audioClip.open(audioInputStream);
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (track == 6)
+        {
+            try {
+                File audioFile = new File("Track07.wav"); // Replace with your audio file path
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+                audioClip = AudioSystem.getClip();
+                audioClip.open(audioInputStream);
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (track == 7)
+        {
+            try {
+                File audioFile = new File("Track08.wav"); // Replace with your audio file path
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+                audioClip = AudioSystem.getClip();
+                audioClip.open(audioInputStream);
+            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -84,13 +168,15 @@ class Controller implements KeyListener, MouseListener
                 model.search();
                 break;
             case KeyEvent.VK_F5: //F5 key pressed
-                if(model.equipmentID && model.players){
+                model.start();
+                loadAndStartAudioAfterDelay();
+                /*if(model.equipmentID && model.players){
                     model.start();
                 
                 //create the game
                 //start the audio when F5 is pressed
                     loadAndStartAudioAfterDelay(); 
-                }
+                }*/
                 break;
             case KeyEvent.VK_F12: // F12 key pressed
                 model.clear();
