@@ -39,6 +39,7 @@ public class Client {
         {
             packetData = new byte[256];
             playerscreen.sort_players();
+            playerscreen.TeamScoreDisplay();
             try
             {
                 Thread.sleep(1000);
