@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.Image;
@@ -598,6 +599,9 @@ class player_entry_view extends JPanel
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
 		    RedPlayers[i].setBounds(0, 0, 200, 25);
+            if(bMarkers.containsKey(redNames.get(i))){
+                moveB(redNames.get(i));
+            }
             
         }
       
@@ -608,8 +612,12 @@ class player_entry_view extends JPanel
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
 		    GreenPlayers[i].setBounds(0, 0, 200, 25);
+            if(bMarkers.containsKey(greenNames.get(i))){
+                moveB(greenNames.get(i));
+            }
               
         }
+        
         TeamUpdate();
     }
 	public void create_timer_actionScreen() {
@@ -775,27 +783,24 @@ class player_entry_view extends JPanel
 
     }
 
-  JPanel[]bMarkers = new JPanel[30];
+    HashMap<String, JPanel>bMarkers = new HashMap<String, JPanel>();
     public void StylizedB(String Name){
-        int index =0;
         Bkeep.put(Name, 1);
         int y = 110;
         int x = 0;
         int offset = 25;
         Color teamColor = Color.RED;
         for(int i =0; i<RedPlayers.length;i++){
-            if(RedPlayers[i].getText().contains(Name)){
+            if(redNames.get(i).equals(Name)){
                 y = (i>7)? y=110+offset*(i-8):y+offset*i;
                 x=(i>7)? 450: 250;
-                index = i;
                 break;
             }
         }
         for(int i =0; i<GreenPlayers.length;i++){
-            if(GreenPlayers[i].getText().contains(Name)){
+            if(greenNames.get(i).equals(Name)){
                 y = (i>7)? y=100+offset*(i-8):y+offset*i;
                 x = (i>7)? 1200: 1000;
-                index = i+15;
                 teamColor = Color.GREEN;
                 break;
             }
@@ -820,28 +825,31 @@ class player_entry_view extends JPanel
         if(model.entryscreen){
             styledB.setVisible(false);
         }
-        bMarkers[index]= styledB;
-        frame.add(bMarkers[index]);
-        frame.setComponentZOrder(bMarkers[index], 0);
+        bMarkers.put(Name,styledB);
+        frame.add(bMarkers.get(Name));
+        frame.setComponentZOrder(bMarkers.get(Name), 0);
         frame.repaint();
         frame.validate();
         
     }
-    public void redrawB(String key){
-        if(!Bkeep.isEmpty() && Bkeep.get(key)>0){
-            StylizedB(key);
-        }
+    public void moveB(String Name){
+        Container parent = bMarkers.get(Name).getParent();
+        parent.remove(bMarkers.get(Name));
+        bMarkers.get(Name).setVisible(false);
+        StylizedB(Name);
     }
 
     public void removeB(){
-        for (int i = 0;i <30; i++){
-           if(!(bMarkers[i]==null))
-           {
-                frame.remove(bMarkers[i]);
-           }
-           bMarkers[i] = null;
+        for (Map.Entry<String,JPanel> panel : bMarkers.entrySet()) {
+            if (panel != null) {
+                Container parent = panel.getValue().getParent();
+                if (parent != null) {
+                    System.out.println("Removing from parent: " + parent.getClass().getName());
+                    parent.remove(panel.getValue());  // Remove the panel from its actual parent
+                    panel.getValue().setVisible(false); // Optionally make the panel invisible
+                }
+            }
         }
-        frame.repaint();
     }
     
     public void updateScoreForTag(String playerName, boolean isOpponentTagged, boolean isSameTeamTagged) {

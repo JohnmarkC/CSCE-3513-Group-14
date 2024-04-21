@@ -182,7 +182,8 @@ class Model
         view.game_over.setVisible(false);
         view.redNames.clear();
         view.greenNames.clear();
-
+        view.GreenScores.clear();
+        view.RedScores.clear();
         view.removeB();
         view.frame.repaint();
         view.frame.revalidate();

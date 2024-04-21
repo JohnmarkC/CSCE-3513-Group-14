@@ -66,7 +66,6 @@ public class Client {
        
         while(true)
         {
-            packetData = new byte[256];
             playerscreen.sort_players();
             if(playerscreen.GreenTeamScore > playerscreen.RedTeamScore)
             {
@@ -96,6 +95,7 @@ public class Client {
         while(true)
         {
             try{
+                packetData = new byte[256];
                 model.recievedHit(UDP.receiveData(packetData, receiverSocket));
             }catch(Exception e){
                 e.printStackTrace();
