@@ -58,6 +58,9 @@ class player_entry_view extends JPanel
     JLabel[] RedPlayers, GreenPlayers;
     JPanel actionRedScore, actionGreenScore;
     JLabel RedScoreDisplay, GreenScoreDisplay;
+    int RedTeamScore = 0;
+    int GreenTeamScore = 0;
+
 
     //Contructor
     player_entry_view(Model m)
@@ -572,7 +575,7 @@ class player_entry_view extends JPanel
         {
             for(int j = 0; j < greenNames.size() -i -1; j++)
             {
-                if (GreenScores.get(greenNames.get(j)) > GreenScores.get(greenNames.get(j + 1)))
+                if (GreenScores.get(greenNames.get(j)) < GreenScores.get(greenNames.get(j + 1)))
                 {
                     String temp = greenNames.get(j);
                     greenNames.set(j, greenNames.get(j + 1));
@@ -966,8 +969,8 @@ class player_entry_view extends JPanel
      System.out.println("Team Scores have been updated");
     }
     void TeamUpdate(){
-        int RedTeamScore = 0;
-        int GreenTeamScore = 0;
+        RedTeamScore = 0;
+        GreenTeamScore = 0;
         
         //iterating through hashmap of red team scores
         for(Map.Entry<String,Integer> Score : RedScores.entrySet() )
@@ -998,7 +1001,39 @@ class player_entry_view extends JPanel
          GreenScoreDisplay.setForeground(Color.WHITE);
          GreenScoreDisplay.setFont(new Font("TimesRoman", Font.BOLD, 25));
     	 GreenScoreDisplay.setBounds(0, 0, 100, 30);
+    }
 
+    public void green_score_flash()
+    {
+        RedScoreDisplay.setVisible(true);
+        if(GreenScoreDisplay.isVisible())
+        {
+            GreenScoreDisplay.setVisible(false);
+        }
+        else
+        {
+            GreenScoreDisplay.setVisible(true);
+        }
+        frame.repaint();
+    }
+
+    public void red_score_flash()
+    {
+        GreenScoreDisplay.setVisible(true);
+        if(RedScoreDisplay.isVisible())
+        {
+            RedScoreDisplay.setVisible(false);
+        }
+        else
+        {
+            RedScoreDisplay.setVisible(true);
+        }
+        frame.repaint();
+    }
+    public void scores_visible()
+    {
+        GreenScoreDisplay.setVisible(true);
+        RedScoreDisplay.setVisible(true);
     }
 
 }
