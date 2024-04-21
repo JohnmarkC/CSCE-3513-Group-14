@@ -46,11 +46,10 @@ class Controller implements KeyListener, MouseListener
     private void loadAudio() {
         Random rand = new Random();
         int track = rand.nextInt(9); //random integer between 0 and 8
-        System.out.println(track);
         if(track == 0)
         {
             try {
-                File audioFile = new File("Track01.wav"); // Replace with your audio file path
+                File audioFile = new File("music_tracks/Track01.wav"); // Replace with your audio file path
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
                 audioClip = AudioSystem.getClip();
                 audioClip.open(audioInputStream);
@@ -61,7 +60,7 @@ class Controller implements KeyListener, MouseListener
         else if (track == 1)
         {
             try {
-                File audioFile = new File("Track02.wav"); // Replace with your audio file path
+                File audioFile = new File("music_tracks/Track02.wav"); // Replace with your audio file path
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
                 audioClip = AudioSystem.getClip();
                 audioClip.open(audioInputStream);
@@ -72,7 +71,7 @@ class Controller implements KeyListener, MouseListener
         else if (track == 2)
         {
             try {
-                File audioFile = new File("Track03.wav"); // Replace with your audio file path
+                File audioFile = new File("music_tracks/Track03.wav"); // Replace with your audio file path
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
                 audioClip = AudioSystem.getClip();
                 audioClip.open(audioInputStream);
@@ -83,7 +82,7 @@ class Controller implements KeyListener, MouseListener
         else if (track == 3)
         {
             try {
-                File audioFile = new File("Track04.wav"); // Replace with your audio file path
+                File audioFile = new File("music_tracks/Track04.wav"); // Replace with your audio file path
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
                 audioClip = AudioSystem.getClip();
                 audioClip.open(audioInputStream);
@@ -94,7 +93,7 @@ class Controller implements KeyListener, MouseListener
         else if (track == 4)
         {
             try {
-                File audioFile = new File("Track05.wav"); // Replace with your audio file path
+                File audioFile = new File("music_tracks/Track05.wav"); // Replace with your audio file path
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
                 audioClip = AudioSystem.getClip();
                 audioClip.open(audioInputStream);
@@ -105,7 +104,7 @@ class Controller implements KeyListener, MouseListener
         else if (track == 5)
         {
             try {
-                File audioFile = new File("Track06.wav"); // Replace with your audio file path
+                File audioFile = new File("music_tracks/Track06.wav"); // Replace with your audio file path
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
                 audioClip = AudioSystem.getClip();
                 audioClip.open(audioInputStream);
@@ -116,7 +115,7 @@ class Controller implements KeyListener, MouseListener
         else if (track == 6)
         {
             try {
-                File audioFile = new File("Track07.wav"); // Replace with your audio file path
+                File audioFile = new File("music_tracks/Track07.wav"); // Replace with your audio file path
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
                 audioClip = AudioSystem.getClip();
                 audioClip.open(audioInputStream);
@@ -127,7 +126,7 @@ class Controller implements KeyListener, MouseListener
         else if (track == 7)
         {
             try {
-                File audioFile = new File("Track08.wav"); // Replace with your audio file path
+                File audioFile = new File("music_tracks/Track08.wav"); // Replace with your audio file path
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
                 audioClip = AudioSystem.getClip();
                 audioClip.open(audioInputStream);
