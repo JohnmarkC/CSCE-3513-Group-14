@@ -167,15 +167,13 @@ class Controller implements KeyListener, MouseListener
                 model.search();
                 break;
             case KeyEvent.VK_F5: //F5 key pressed
-                model.start();
-                loadAndStartAudioAfterDelay();
-                /*if(model.equipmentID && model.players){
+                if(model.equipmentID && model.players){
                     model.start();
                 
                 //create the game
                 //start the audio when F5 is pressed
                     loadAndStartAudioAfterDelay(); 
-                }*/
+                }
                 break;
             case KeyEvent.VK_F12: // F12 key pressed
                 model.clear();
