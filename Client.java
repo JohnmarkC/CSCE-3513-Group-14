@@ -24,7 +24,36 @@ public class Client {
                 Thread.currentThread().interrupt();
             }
         }
-        startUpdates();    
+        Thread screenThread = new Thread() 
+        {
+            public void run()
+            {
+                try
+                {
+                    startUpdates();
+                }
+                catch (Exception e)
+                {
+                    System.out.println(e);
+                }
+            }
+        };
+        Thread udpThread = new Thread()
+        {
+            public void run()
+            {
+                try
+                {
+                    receivingUpdates();
+                }
+                catch (Exception e)
+                {
+                    System.out.println(e);
+                }
+            }
+        };
+        screenThread.start();
+        udpThread.start();    
     }
 
     public void startUpdates()
@@ -39,14 +68,33 @@ public class Client {
         {
             packetData = new byte[256];
             playerscreen.sort_players();
+            if(playerscreen.GreenTeamScore > playerscreen.RedTeamScore)
+            {
+                playerscreen.green_score_flash();
+            }
+            if(playerscreen.RedTeamScore > playerscreen.GreenTeamScore)
+            {
+                playerscreen.red_score_flash();
+            }
+            if(playerscreen.GreenTeamScore == playerscreen.RedTeamScore)
+            {
+                playerscreen.scores_visible();
+            }
             try
             {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             }
             catch(InterruptedException e)
             {
                 Thread.currentThread().interrupt();
             }
+        }
+    }
+
+    public void receivingUpdates()
+    {
+        while(true)
+        {
             try{
                 model.recievedHit(UDP.receiveData(packetData, receiverSocket));
             }catch(Exception e){
