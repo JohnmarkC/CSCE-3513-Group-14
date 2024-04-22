@@ -20,5 +20,8 @@ Instructions:
 - Download the main branch as a .zip file
 - Go to where you downloaded the main branch and unzip the file
 - Open the directory containing this project in the terminal
+- Start the traffic generator with the command "python3 trafficgen.py"
+- Enter the equipment ids you will be using
+- Open the directory containing this project in a seperate terminal window
 - Run the command "./run.sh"
 - If the terminal says you don't have permission, run the command "chmod -R 777 ." and then run the command "./run.sh" again
