@@ -13,6 +13,7 @@ Group 14's phaser station software engineering project
 
 
 Please run this in the VM provided: http://turing.csce.uark.edu/~jps011/ubuntu_22.04.03.7z
+Please update Java to version 20.0.2
 
 Instructions:
 - Download the main branch as a .zip file
