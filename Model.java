@@ -1,4 +1,6 @@
 import javax.swing.RowFilter.Entry;
+import javax.swing.SwingUtilities;
+
 import java.lang.String;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -101,7 +103,13 @@ class Model
                 System.out.println("53 works");
                 UDP.sendData("53");
                 name= view.Eq2nameGreen.get(Integer.parseInt(player[0]));
-                view.StylizedB(name);
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        view.StylizedB(name);
+                        view.frame.repaint();
+                        view.frame.revalidate();
+                    }
+                });
                 view.handleRedBaseScore(name);
                 event = ("Player "+name+ " has hit Red base");
                 view.addEvent(event);
@@ -111,7 +119,13 @@ class Model
                 System.out.println("43 works");
                 UDP.sendData("43");
                 name = view.Eq2nameRed.get(Integer.parseInt(player[0]));
-                view.StylizedB(name);
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        view.StylizedB(name);
+                        view.frame.repaint();
+                        view.frame.revalidate();
+                    }
+                });
                 view.handleGreenBaseScore(name);
                 event = ("Player "+name+ " has hit Green base");
                 view.addEvent(event);
@@ -184,7 +198,6 @@ class Model
         view.greenNames.clear();
         view.GreenScores.clear();
         view.RedScores.clear();
-        view.removeB();
         view.frame.repaint();
         view.frame.revalidate();
         view.create();
@@ -222,14 +235,20 @@ class Model
             view.GreenTeamEqid[i].setText("");
             view.RedTeamEqid[i].setText("");
         }
+        System.out.println("cleared entry");
+
         view.game.clear();
         view.Eq2nameGreen.clear();
         view.Eq2nameRed.clear();
         view.Bkeep.clear();
-        
-        for(int i =0; i<30; i++)
-        {
-            ID[i]="";
+        System.out.println("cleared action");
+        if(ID.length>0){
+            for(int i =0; i<30; i++)
+            {
+                if(!(ID[i]==null)){
+                    ID[i]="";
+                }
+            }
         }
     }
 

@@ -497,7 +497,7 @@ class player_entry_view extends JPanel
                 y=100;
             }
 		    RedPlayers[i] = new JLabel();
-		    RedPlayers[i].setText(redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+		    RedPlayers[i].setText("  "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
 		    RedPlayers[i].setBounds(0, 0, 200, 25);
@@ -506,7 +506,7 @@ class player_entry_view extends JPanel
         }
         else{
             RedPlayers[i] = new JLabel();
-		    RedPlayers[i].setText(redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+		    RedPlayers[i].setText("  "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -528,7 +528,7 @@ class player_entry_view extends JPanel
                 y=100;
             }
 		    GreenPlayers[i] = new JLabel();
-		    GreenPlayers[i].setText(greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+		    GreenPlayers[i].setText("  "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
 		    GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
 		    GreenPlayers[i].setBounds(0, 0, 50, 25);
@@ -538,7 +538,7 @@ class player_entry_view extends JPanel
         }
         else{
             GreenPlayers[i] = new JLabel();
-		    GreenPlayers[i].setText(greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+		    GreenPlayers[i].setText("  "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
             GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -594,28 +594,29 @@ class player_entry_view extends JPanel
       
         for(int i = 0; i < RedPlayers.length; i++)
         {
-            RedPlayers[i].setText(redNames.get(i)+"  "+ RedScores.get(redNames.get(i)));
+            String display = "  "+redNames.get(i)+"  "+ RedScores.get(redNames.get(i));
+            if(bmarker.containsKey(redNames.get(i))){
+                display = "<html><span style='color:red;'>B </span>"+ display;
+            }
+            RedPlayers[i].setText(display);
 		    RedPlayers[i].setForeground(Color.WHITE);
 		    RedPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             RedPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
 		    RedPlayers[i].setBounds(0, 0, 200, 25);
-            if(bMarkers.containsKey(redNames.get(i))){
-                moveB(redNames.get(i));
-            }
+            
             
         }
       
         for(int i = 0; i < GreenPlayers.length; i++)
-        {
-            GreenPlayers[i].setText(greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i)));
+        {   String display = "  "+greenNames.get(i)+"  "+ GreenScores.get(greenNames.get(i));
+            if(bmarker.containsKey(greenNames.get(i))){
+               display = "<html><span style='color:green;'>B </span>"+ display;
+             }
+            GreenPlayers[i].setText(display);
 		    GreenPlayers[i].setForeground(Color.WHITE);
 		    GreenPlayers[i].setFont(new Font("TimesRoman", Font.BOLD, 15));
             GreenPlayers[i].setAlignmentX(Component.LEFT_ALIGNMENT);
 		    GreenPlayers[i].setBounds(0, 0, 200, 25);
-            if(bMarkers.containsKey(greenNames.get(i))){
-                moveB(greenNames.get(i));
-            }
-              
         }
         
         TeamUpdate();
@@ -783,74 +784,29 @@ class player_entry_view extends JPanel
 
     }
 
-    HashMap<String, JPanel>bMarkers = new HashMap<String, JPanel>();
+    HashMap<String, Boolean> bmarker =new HashMap<>();
     public void StylizedB(String Name){
-        Bkeep.put(Name, 1);
-        int y = 110;
-        int x = 0;
-        int offset = 25;
-        Color teamColor = Color.RED;
-        for(int i =0; i<RedPlayers.length;i++){
+        for(int i = 0;i<RedPlayers.length;i++){
+            String displayed = RedPlayers[i].getText();
             if(redNames.get(i).equals(Name)){
-                y = (i>7)? y=110+offset*(i-8):y+offset*i;
-                x=(i>7)? 450: 250;
+                RedPlayers[i].setText("<html><span style='color:red;'>B </span>"+displayed);
+                RedPlayers[i].repaint();
+                bmarker.put(Name,true);
                 break;
             }
         }
-        for(int i =0; i<GreenPlayers.length;i++){
+        for(int i = 0;i<GreenPlayers.length;i++){
+            String displayed = GreenPlayers[i].getText();
             if(greenNames.get(i).equals(Name)){
-                y = (i>7)? y=100+offset*(i-8):y+offset*i;
-                x = (i>7)? 1200: 1000;
-                teamColor = Color.GREEN;
+                GreenPlayers[i].setText("<html><span style='color:green;'>B </span>"+displayed);
+                GreenPlayers[i].repaint();
+                bmarker.put(Name,true);
                 break;
             }
         }
-
-        final Color finalTeamColor = teamColor;
-        final int xbase = x;
-        final int ybase = y;
-       
-    
-        JPanel styledB = new JPanel(){
-            protected void paintComponent(Graphics action) {
-                action.setColor(finalTeamColor);
-                action.drawRect(xbase, ybase, 12, 12);
-                action.drawString("B", xbase+2, ybase+10);
-                
-            }
-        };
-        styledB.setBounds(x,y,20,20);
-        styledB.repaint();
-        styledB.setVisible(true);
-        if(model.entryscreen){
-            styledB.setVisible(false);
-        }
-        bMarkers.put(Name,styledB);
-        frame.add(bMarkers.get(Name));
-        frame.setComponentZOrder(bMarkers.get(Name), 0);
-        frame.repaint();
-        frame.validate();
         
     }
-    public void moveB(String Name){
-        Container parent = bMarkers.get(Name).getParent();
-        parent.remove(bMarkers.get(Name));
-        bMarkers.get(Name).setVisible(false);
-        StylizedB(Name);
-    }
 
-    public void removeB(){
-        for (Map.Entry<String,JPanel> panel : bMarkers.entrySet()) {
-            if (panel != null) {
-                Container parent = panel.getValue().getParent();
-                if (parent != null) {
-                    System.out.println("Removing from parent: " + parent.getClass().getName());
-                    parent.remove(panel.getValue());  // Remove the panel from its actual parent
-                    panel.getValue().setVisible(false); // Optionally make the panel invisible
-                }
-            }
-        }
-    }
     
     public void updateScoreForTag(String playerName, boolean isOpponentTagged, boolean isSameTeamTagged) {
         int points = 0;
@@ -863,11 +819,9 @@ class player_entry_view extends JPanel
 
         if (RedScores.containsKey(playerName)) {
             RedScores.put(playerName, RedScores.get(playerName) + points);
-            System.out.println("adding to red player: "+playerName);
         }
          else if (GreenScores.containsKey(playerName)) {
             GreenScores.put(playerName, GreenScores.get(playerName) + points);
-            System.out.println("adding to green player: "+playerName);
         }
     }
 
@@ -914,8 +868,6 @@ class player_entry_view extends JPanel
 	//Function that will display total team scores throughout the game, and update scores
     public void TeamScoreDisplay()
     {
-        System.out.println("Team Score Display function has been called");
-        
         int RedTeamScore = 0;
         int GreenTeamScore = 0;
         
@@ -924,8 +876,6 @@ class player_entry_view extends JPanel
         {
             int value = Score.getValue();
             RedTeamScore = RedTeamScore + value;
-            System.out.println("Adding red player score to team total");
-            System.out.println("Value being added "+value);
         }
 
         //iterating through hashmap of green team scores
@@ -933,8 +883,6 @@ class player_entry_view extends JPanel
         {
             int value = Score.getValue();
             GreenTeamScore = GreenTeamScore + value;
-            System.out.println("Adding green player score to team total");
-            System.out.println("Value being added "+value);
 
         }
 
@@ -972,9 +920,6 @@ class player_entry_view extends JPanel
      frame.repaint();
     
     //  frame.setComponentZOrder(actionRedScore, 0);
-
-
-     System.out.println("Team Scores have been updated");
     }
     void TeamUpdate(){
         RedTeamScore = 0;
@@ -985,8 +930,6 @@ class player_entry_view extends JPanel
         {
             int value = Score.getValue();
             RedTeamScore = RedTeamScore + value;
-            System.out.println("Adding red player score to team total");
-            System.out.println("Value being added "+value);
         }
 
         //iterating through hashmap of green team scores
@@ -994,8 +937,6 @@ class player_entry_view extends JPanel
         {
             int value = Score.getValue();
             GreenTeamScore = GreenTeamScore + value;
-            System.out.println("Adding green player score to team total");
-            System.out.println("Value being added "+value);
 
         }
 
