@@ -652,7 +652,7 @@ class player_entry_view extends JPanel
             
             // start 6 minute game countdown
             timeRemaining = new JLabel("Time Remaining:");
-            timeRemaining.setFont(new Font("TimesRoman", Font.BOLD, 40));
+            timeRemaining.setFont(new Font("TimesRoman", Font.BOLD, 35));
             timeRemaining.setBounds(-10, -20, 960, 1000);
             timeRemaining.setForeground(Color.WHITE);
             timer.add(timeRemaining);
@@ -888,10 +888,10 @@ class player_entry_view extends JPanel
 
          // Drawing total scores for both teams
      actionRedScore = new JPanel(new FlowLayout(FlowLayout.LEFT));
-     actionRedScore.setBounds(450+25,70,100,35);
+     actionRedScore.setBounds(475,70,100,35);
      actionRedScore.setBackground(Color.BLACK);
      actionGreenScore = new JPanel(new FlowLayout(FlowLayout.LEFT));
-     actionGreenScore.setBounds(1225+25, 70, 100, 35);
+     actionGreenScore.setBounds(1250, 70, 100, 35);
      actionGreenScore.setBackground(Color.BLACK);
      
     
