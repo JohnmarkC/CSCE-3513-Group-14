@@ -13,6 +13,9 @@ import java.awt.Toolkit;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseAdapter;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.awt.Graphics;
@@ -20,6 +23,7 @@ import java.awt.GridLayout;
 import java.util.Map.Entry;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 class player_entry_view extends JPanel
 {
@@ -757,27 +761,27 @@ class player_entry_view extends JPanel
     }   
 
     public void gameOver(){
-        game_over = new JPanel();
-
-        game_over.setOpaque(false);
-        game_over.setBounds(frame.getWidth()/4,frame.getHeight()/4,frame.getWidth()/2, frame.getHeight()/2);
-        
-        JLabel endgame = new JLabel("Game Over", SwingConstants.CENTER);
-        endgame.setFont(new Font("TimesRoman", Font.BOLD, 100));
-        endgame.setForeground(Color.WHITE);
-       
-        JLabel instructions = new JLabel("Press Enter to return", SwingConstants.CENTER);
-        instructions.setFont(new Font("TimesRoman", Font.BOLD, 50));
-        instructions.setForeground(Color.WHITE);
     
+        JDialog dialog = new JDialog(frame, "GAME OVER", true);
+    	JButton button = new JButton("OK");
+        button.addMouseListener(new MouseAdapter() {
 
-        game_over.setLayout(new GridLayout(2,1));
-        game_over.add(endgame);
-        game_over.add(instructions);
-        game_over.setVisible(true);
-
-        frame.add(game_over);
-        frame.setComponentZOrder(game_over, 0);
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+            	model.resetgame();
+            	dialog.dispose();
+        }
+    });
+    	JPanel panel = new JPanel();
+    	JLabel gameOver = new JLabel("Press OK to restart");
+    	panel.add(button);
+    	panel.add(gameOver);
+    	JButton[] buttons = { button };
+    	JOptionPane optionPane = new JOptionPane(panel, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, buttons, button);
+    	dialog.getContentPane().add(optionPane);
+    	dialog.setSize(250,150);
+    	dialog.setLocationRelativeTo(frame);
+    	dialog.setVisible(true);
 
         frame.repaint();
         frame.revalidate();
