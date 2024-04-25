@@ -193,7 +193,6 @@ class Model
         view.frame.remove(view.timeRemaining);
         view.frame.remove(view.warningLabel);
         view.frame.remove(view.warning);
-        view.game_over.setVisible(false);
         view.redNames.clear();
         view.greenNames.clear();
         view.GreenScores.clear();
