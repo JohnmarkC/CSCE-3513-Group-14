@@ -59,7 +59,8 @@ public class Client {
     public void startUpdates()
     {
         try{
-            receiverSocket = new DatagramSocket(7501, InetAddress.getLocalHost());
+            InetAddress addr = InetAddress.getByName("127.0.0.1");
+            receiverSocket = new DatagramSocket(7501, addr);
         }catch(Exception e){
             e.printStackTrace();
         }
