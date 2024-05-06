@@ -8,7 +8,8 @@ public class UDP
     {
         try {
             DatagramSocket transmitterSocket = new DatagramSocket();
-            DatagramPacket transmitterPacket = new DatagramPacket(data.getBytes(), data.length(), InetAddress.getLocalHost(), 7500);
+            InetAddress addr = InetAddress.getByName("127.0.0.1");
+            DatagramPacket transmitterPacket = new DatagramPacket(data.getBytes(), data.length(), addr, 7500);
             transmitterSocket.send(transmitterPacket);
             transmitterSocket.close();
         } 
